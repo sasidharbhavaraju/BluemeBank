@@ -2354,8 +2354,12 @@ async function saveToSheets(requestType) {
   const d = window._assessmentData;
   if (!d) return;
 
-  const payload = {
-    requestType: requestType, // 'auto', 'save', 'synthesis'
+const emailEl = document.getElementById('userEmail');
+const userEmail = (emailEl ? emailEl.value.trim() : '') || '';
+
+const payload = {
+    requestType: requestType,
+    userEmail: userEmail,
     institution: d.institutionData,
     scores: {
       ad: d.ay,
