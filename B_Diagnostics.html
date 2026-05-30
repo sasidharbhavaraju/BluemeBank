@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BluemeBank · The Bridge Diagnostic</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Raleway:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:       #0A1628;
+  --navy-mid:   #0f1e38;
+  --navy-light: #162844;
+  --navy-card:  #111f35;
+  --gold:       #C9A84C;
+  --gold-light: #E8C96A;
+  --gold-dim:   rgba(201,168,76,0.15);
+  --white:      #F4F1EA;
+  --grey:       #5a6f88;
+  --grey-light: #8a9db5;
+  --teal:       #2E9E8E;
+  --red:        #C0392B;
+  --amber:      #D97B35;
+  --green:      #2E8B5A;
+  --blue-soft:  #A8C4DC;
+  --border:     rgba(201,168,76,0.12);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--navy); scroll-behavior: smooth; }
+
+body {
+  background: var(--navy);
+  color: var(--white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ── */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 40px;
+  background: rgba(10,22,40,0.96);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-name { font-family: 'Raleway', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: -0.5px; line-height: 1; }
+.logo-name .blueme { color: var(--gold); }
+.logo-name .bank   { color: var(--white); }
+.logo-sub { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--grey); letter-spacing: 2px; text-transform: uppercase; margin-top: 2px; }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.api-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; }
+.api-input {
+  width: 320px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(201,168,76,0.22);
+  border-radius: 6px; padding: 7px 14px;
+  color: var(--blue-soft);
+  font-family: 'DM Mono', monospace; font-size: 11px;
+  outline: none; transition: border-color 0.2s;
+}
+.api-input:focus { border-color: var(--gold); }
+.api-input::placeholder { color: var(--grey); }
+
+/* ── HERO ── */
+.hero {
+  padding: 120px 40px 60px;
+  max-width: 900px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.hero-left {}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 16px;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.4rem, 4.5vw, 3.4rem);
+  font-weight: 300; line-height: 1.08;
+  color: var(--white); margin-bottom: 20px;
+}
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-rule { width: 40px; height: 1px; background: var(--gold); margin-bottom: 20px; }
+.hero-desc {
+  font-size: 13px; color: var(--grey-light); line-height: 1.8;
+  margin-bottom: 28px; max-width: 380px;
+}
+.hero-start-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--gold); color: var(--navy);
+  border: none; border-radius: 8px;
+  padding: 14px 28px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 2px;
+  cursor: pointer; transition: all 0.2s;
+}
+.hero-start-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(201,168,76,0.25); }
+
+.hero-right { display: flex; flex-direction: column; gap: 12px; }
+.metric-pill {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px;
+  display: flex; align-items: center; gap: 14px;
+  transition: border-color 0.2s;
+}
+.metric-pill:hover { border-color: rgba(201,168,76,0.35); }
+.metric-icon { font-size: 20px; opacity: 0.85; }
+.metric-info {}
+.metric-name { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; }
+.metric-desc { font-size: 11px; color: var(--grey-light); margin-top: 2px; }
+
+/* ── PROGRESS BAR ── */
+.progress-wrap {
+  position: fixed; top: 63px; left: 0; right: 0; z-index: 190;
+  background: var(--navy-mid);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 40px;
+  display: none;
+}
+.progress-wrap.visible { display: block; }
+.progress-steps { display: flex; gap: 0; max-width: 900px; margin: 0 auto; }
+.progress-step {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  position: relative; padding-bottom: 8px; cursor: pointer;
+}
+.progress-step::after {
+  content: ''; position: absolute; top: 10px; left: 50%; right: -50%;
+  height: 1px; background: rgba(255,255,255,0.08); z-index: -1;
+}
+.progress-step:last-child::after { display: none; }
+.step-dot {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid var(--grey);
+  background: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 9px; color: var(--grey);
+  transition: all 0.3s; margin-bottom: 6px; position: relative; z-index: 1;
+}
+.progress-step.active .step-dot { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+.progress-step.done .step-dot { border-color: var(--teal); background: rgba(46,158,142,0.15); color: var(--teal); }
+.step-label { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--grey); letter-spacing: 1px; text-transform: uppercase; text-align: center; }
+.progress-step.active .step-label { color: var(--gold); }
+.progress-step.done .step-label { color: var(--teal); }
+
+/* ── MAIN CONTENT ── */
+.main { max-width: 900px; margin: 0 auto; padding: 0 40px 80px; }
+
+/* ── INSTITUTION SETUP ── */
+.setup-section { padding-top: 140px; }
+.section-header { margin-bottom: 32px; }
+.section-number {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--gold); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2rem; font-weight: 400; line-height: 1.15;
+  margin-bottom: 8px;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.section-sub { font-size: 12px; color: var(--grey-light); max-width: 560px; line-height: 1.7; }
+
+.setup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+.setup-field { display: flex; flex-direction: column; gap: 8px; }
+.setup-field.full { grid-column: 1 / -1; }
+.field-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--grey-light); letter-spacing: 1.5px; text-transform: uppercase; }
+.field-input, .field-select {
+  background: var(--navy-card);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px; padding: 12px 16px;
+  color: var(--white);
+  font-family: 'Raleway', sans-serif; font-size: 13px;
+  outline: none; transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.field-input:focus, .field-select:focus { border-color: var(--gold); }
+.field-input::placeholder { color: var(--grey); }
+.field-select option { background: var(--navy-mid); }
+
+
+/* ── PLANES FOOTNOTE ── */
+.planes-footnote {
+  font-size: 10px; color: var(--grey); line-height: 1.6;
+  margin-top: 12px; padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  font-style: italic;
+}
+/* ── QUESTION SECTIONS ── */
+.q-section { padding-top: 134px; display: none; }
+.q-section.visible { display: block; }
+
+.q-section-header {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px 28px;
+  margin-bottom: 28px;
+  display: flex; align-items: flex-start; gap: 20px;
+}
+.q-section-icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+.q-section-info {}
+.q-section-tag {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--gold); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.q-section-name { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+.q-section-desc { font-size: 12px; color: var(--grey-light); line-height: 1.7; }
+.q-section-metric {
+  margin-left: auto; flex-shrink: 0;
+  background: var(--gold-dim);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 6px; padding: 6px 12px;
+  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold);
+  letter-spacing: 1px; white-space: nowrap;
+}
+
+.question-card {
+  background: var(--navy-card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px; padding: 22px 24px;
+  margin-bottom: 14px;
+  transition: border-color 0.2s;
+}
+.question-card.answered { border-color: rgba(46,158,142,0.25); }
+.q-number {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--grey); letter-spacing: 1px; margin-bottom: 8px;
+}
+.q-text { font-size: 13px; font-weight: 600; line-height: 1.6; margin-bottom: 16px; color: var(--white); }
+.q-context { font-size: 11px; color: var(--grey-light); margin-bottom: 14px; line-height: 1.6; font-style: italic; }
+.q-hint { font-size: 11px; color: var(--grey); margin-bottom: 14px; line-height: 1.6; font-style: italic; }
+
+.option-body { flex: 1; min-width: 0; }
+.option-hover {
+  font-size: 10.5px;
+  color: var(--grey);
+  margin-top: 6px;
+  line-height: 1.55;
+  font-style: italic;
+  max-height: 0; overflow: hidden;
+  transition: max-height 0.25s ease, margin-top 0.25s ease, opacity 0.2s;
+  opacity: 0;
+}
+.option:hover .option-hover { max-height: 80px; opacity: 1; margin-top: 6px; }
+.option.selected .option-hover { max-height: 80px; opacity: 1; color: var(--grey-light); }
+.option-info {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1px solid var(--grey);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--grey);
+  flex-shrink: 0; cursor: help;
+  transition: all 0.15s;
+}
+.option:hover .option-info { border-color: var(--gold); color: var(--gold); }
+.option.selected .option-info { display: none; }
+.option-dontknow { border-style: dashed; margin-top: 4px; }
+.option-dontknow:hover { border-color: rgba(138,157,181,0.4); background: rgba(138,157,181,0.04); }
+.option-dontknow.selected { border-color: var(--grey); background: rgba(138,157,181,0.08); }
+
+.options { display: flex; flex-direction: column; gap: 8px; }
+.option {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 11px 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 7px; cursor: pointer;
+  transition: all 0.18s; background: rgba(255,255,255,0.02);
+}
+.option:hover { border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.04); }
+.option.selected { border-color: var(--gold); background: rgba(201,168,76,0.08); }
+.option-dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  border: 1.5px solid var(--grey); flex-shrink: 0; margin-top: 1px;
+  transition: all 0.15s; display: flex; align-items: center; justify-content: center;
+}
+.option.selected .option-dot { border-color: var(--gold); background: var(--gold); }
+.option-dot::after {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--navy); opacity: 0; transition: opacity 0.15s;
+}
+.option.selected .option-dot::after { opacity: 1; }
+.option-text { font-size: 12px; line-height: 1.6; color: var(--grey-light); }
+.option.selected .option-text { color: var(--white); }
+.option-score { 
+  margin-left: auto; flex-shrink: 0;
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--grey); opacity: 0; transition: opacity 0.2s;
+}
+
+/* ── NAVIGATION ── */
+.nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 190;
+  background: rgba(10,22,40,0.97);
+  border-top: 1px solid var(--border);
+  padding: 16px 40px;
+  display: none; align-items: center; justify-content: space-between;
+  backdrop-filter: blur(12px);
+}
+.nav-bar.visible { display: flex; }
+.nav-left { display: flex; align-items: center; gap: 8px; }
+.nav-section-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--grey); letter-spacing: 1px; }
+.nav-section-name { font-size: 12px; font-weight: 600; color: var(--grey-light); }
+.nav-progress { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--grey); }
+.nav-right { display: flex; gap: 10px; }
+.btn-back {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 7px; padding: 10px 22px;
+  color: var(--grey-light); font-family: 'Raleway', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-back:hover { border-color: rgba(255,255,255,0.25); color: var(--white); }
+.btn-next {
+  background: var(--gold); color: var(--navy);
+  border: none; border-radius: 7px; padding: 10px 28px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-next:hover { background: var(--gold-light); box-shadow: 0 4px 18px rgba(201,168,76,0.25); }
+.btn-next:disabled { opacity: 0.35; cursor: not-allowed; box-shadow: none; }
+
+/* ── RESULTS ── */
+.results-section { padding-top: 140px; display: none; }
+.results-section.visible { display: block; }
+
+.results-header { margin-bottom: 36px; }
+.results-institution { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+.results-title { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 300; margin-bottom: 8px; }
+.results-title em { font-style: italic; color: var(--gold); }
+.results-date { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--grey); }
+
+/* ── AY HEADLINE ── */
+.ay-headline {
+  background: linear-gradient(135deg, rgba(201,168,76,0.12) 0%, rgba(201,168,76,0.04) 100%);
+  border: 1px solid rgba(201,168,76,0.35);
+  border-radius: 16px; padding: 40px 36px;
+  margin-bottom: 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.ay-headline::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(201,168,76,0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+.ay-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
+  position: relative;
+}
+.ay-number-row {
+  display: flex; align-items: flex-start; justify-content: center;
+  gap: 6px; margin-bottom: 8px;
+  position: relative;
+}
+.ay-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 8rem; font-weight: 300; line-height: 0.9;
+  color: var(--gold);
+  letter-spacing: -3px;
+}
+.ay-unit {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3rem; font-weight: 300;
+  color: var(--gold);
+  margin-top: 18px;
+}
+.ay-classification {
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 16px;
+  position: relative;
+}
+.ay-classification.low { color: #E06050; }
+.ay-classification.mid { color: var(--amber); }
+.ay-classification.high { color: var(--teal); }
+.ay-strap {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--white);
+  line-height: 1.55;
+  max-width: 620px; margin: 0 auto;
+  position: relative;
+}
+
+
+/* ── STAGE SCALE ── */
+.stage-scale { margin-top: 18px; }
+.scale-track { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; }
+.scale-segment {
+  padding: 10px 12px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.02);
+  text-align: center; transition: all 0.2s;
+}
+.scale-segment.active-stage { border-color: var(--gold); background: rgba(201,168,76,0.1); }
+.scale-seg-label { font-size: 11px; font-weight: 700; color: var(--grey-light); }
+.scale-segment.active-stage .scale-seg-label { color: var(--gold); }
+.scale-seg-sub { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--grey); margin-top: 3px; }
+
+/* ── AY MATHS ── */
+.ay-maths {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 26px 28px;
+  margin-bottom: 32px;
+}
+.ay-maths-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--grey); margin-bottom: 18px;
+}
+.ay-formula-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 16px; align-items: stretch;
+}
+.ay-formula-block {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px; padding: 16px 14px;
+  text-align: center;
+}
+.ay-formula-block.ay-formula-final {
+  background: rgba(201,168,76,0.08);
+  border-color: rgba(201,168,76,0.35);
+}
+.ay-formula-tag {
+  font-family: 'DM Mono', monospace; font-size: 9px;
+  color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.ay-formula-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--grey-light);
+  margin-bottom: 10px;
+}
+.ay-formula-value {
+  font-family: 'DM Mono', monospace;
+  font-size: 22px; font-weight: 500;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+.ay-formula-block.ay-formula-final .ay-formula-value { color: var(--gold); }
+.ay-formula-note {
+  font-size: 10px; color: var(--grey);
+  font-style: italic; line-height: 1.4;
+}
+.ay-formula-op {
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; color: var(--gold);
+  font-weight: 300;
+}
+
+/* ── CARDINAL HEADER ── */
+.cardinal-header {
+  margin-bottom: 16px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.cardinal-tag {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--gold); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.cardinal-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; font-weight: 400; color: var(--white);
+}
+
+/* Stage Banner */
+.stage-banner {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px 32px;
+  margin-bottom: 28px;
+  display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center;
+}
+.stage-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--grey-light); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px; }
+.stage-name { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+.stage-name.s1 { color: var(--amber); }
+.stage-name.s2 { color: var(--gold); }
+.stage-name.s3 { color: var(--teal); }
+.stage-desc { font-size: 12px; color: var(--grey-light); line-height: 1.7; max-width: 520px; }
+.stage-score-wrap { text-align: right; }
+.stage-score { font-family: 'Cormorant Garamond', serif; font-size: 4rem; font-weight: 300; line-height: 1; }
+.stage-score.s1 { color: var(--amber); }
+.stage-score.s2 { color: var(--gold); }
+.stage-score.s3 { color: var(--teal); }
+.stage-score-sub { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }
+
+/* Metric Scores */
+.metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 28px; }
+.metric-card {
+  background: var(--navy-card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 10px; padding: 18px 16px;
+}
+.metric-card-name { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+.metric-card-full { font-size: 11px; color: var(--grey-light); margin-bottom: 12px; }
+.metric-bar-wrap { height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; margin-bottom: 8px; }
+.metric-bar { height: 100%; border-radius: 2px; transition: width 1s ease; width: 0%; }
+.metric-bar.low { background: var(--red); }
+.metric-bar.mid { background: var(--amber); }
+.metric-bar.high { background: var(--teal); }
+.metric-pct { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 500; }
+.metric-pct.low { color: var(--red); }
+.metric-pct.mid { color: var(--amber); }
+.metric-pct.high { color: var(--teal); }
+.metric-stage-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--grey); letter-spacing: 1px; }
+
+/* Move recommendation */
+.move-card {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px 32px;
+  margin-bottom: 28px;
+}
+.move-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.move-num {
+  width: 42px; height: 42px; border-radius: 50%;
+  border: 1.5px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 500; color: var(--gold);
+}
+.move-info {}
+.move-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--grey); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 3px; }
+.move-name { font-size: 16px; font-weight: 700; }
+.move-desc { font-size: 12px; color: var(--grey-light); line-height: 1.8; margin-bottom: 20px; }
+
+/* Priority Actions */
+.priorities-title { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--grey); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 14px; }
+.priority-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.priority-item:last-child { border-bottom: none; }
+.priority-num {
+  width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+  background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold);
+}
+.priority-text { font-size: 12px; color: var(--grey-light); line-height: 1.7; }
+.priority-text strong { color: var(--white); font-weight: 700; }
+
+/* AI Synthesis */
+.synthesis-card {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 28px 32px;
+  margin-bottom: 28px;
+}
+.synthesis-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.synthesis-icon {
+  width: 36px; height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.synthesis-title-wrap {}
+.synthesis-tag { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 2px; }
+.synthesis-name { font-size: 14px; font-weight: 700; }
+.synthesis-status {
+  margin-left: auto;
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  padding: 5px 12px; border-radius: 4px; letter-spacing: 0.5px; font-weight: 700;
+}
+.synthesis-status.generating { background: rgba(201,168,76,0.1); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+.synthesis-status.done { background: rgba(46,158,142,0.1); color: var(--teal); border: 1px solid rgba(46,158,142,0.3); }
+.synthesis-status.waiting { background: rgba(107,126,150,0.1); color: var(--grey); border: 1px solid rgba(107,126,150,0.2); }
+
+.synthesis-output {
+  font-size: 13px; color: var(--grey-light); line-height: 1.9;
+  font-family: 'Raleway', sans-serif;
+  min-height: 80px;
+}
+.synthesis-output.streaming::after {
+  content: '▋'; animation: blink 0.8s infinite; color: var(--gold);
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+.no-api-note {
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.18);
+  border-radius: 8px; padding: 14px 18px;
+  font-size: 12px; color: var(--grey-light); line-height: 1.7;
+}
+.no-api-note strong { color: var(--gold); }
+
+/* Readiness signal chips */
+.signal-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+.signal-chip {
+  font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 700;
+  letter-spacing: 0.5px; padding: 4px 10px; border-radius: 4px; text-transform: uppercase;
+}
+.signal-chip.gap { background: rgba(192,57,43,0.12); color: #E06050; border: 1px solid rgba(192,57,43,0.3); }
+.signal-chip.partial { background: rgba(217,123,53,0.12); color: #E8A060; border: 1px solid rgba(217,123,53,0.3); }
+.signal-chip.ready { background: rgba(46,139,90,0.12); color: #5CBF82; border: 1px solid rgba(46,139,90,0.3); }
+
+/* Print / export */
+.export-row { display: flex; gap: 10px; margin-top: 8px; }
+.btn-export {
+  display: flex; align-items: center; gap: 8px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 7px; padding: 10px 20px;
+  color: var(--grey-light); font-family: 'Raleway', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-export:hover { border-color: var(--gold); color: var(--gold); }
+.btn-restart {
+  background: var(--gold); color: var(--navy);
+  border: none; border-radius: 7px; padding: 10px 24px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 11px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-restart:hover { background: var(--gold-light); }
+
+/* LOADING OVERLAY */
+.loading-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(10,22,40,0.94);
+  display: none; align-items: center; justify-content: center;
+  flex-direction: column; gap: 20px;
+  backdrop-filter: blur(8px);
+}
+.loading-overlay.visible { display: flex; }
+.loading-ring {
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 2px solid var(--gold-dim);
+  border-top-color: var(--gold);
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-text { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+
+/* HIDDEN */
+.hidden { display: none !important; }
+
+@media (max-width: 700px) {
+  .header { padding: 12px 20px; }
+  .api-input { width: 180px; font-size: 10px; }
+  .hero { grid-template-columns: 1fr; padding: 110px 20px 40px; gap: 32px; }
+  .hero-right { display: none; }
+  .main { padding: 0 20px 80px; }
+  .setup-grid { grid-template-columns: 1fr; }
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .stage-banner { grid-template-columns: 1fr; }
+  .progress-wrap { padding: 10px 20px; }
+  .ay-headline { padding: 28px 20px; }
+  .ay-number { font-size: 5.5rem; }
+  .ay-unit { font-size: 2.2rem; margin-top: 10px; }
+  .ay-strap { font-size: 14px; }
+  .ay-formula-row { grid-template-columns: 1fr; gap: 12px; }
+  .ay-formula-op { font-size: 22px; padding: 4px 0; }
+}
+
+/* ── METHODOLOGY CARDS ── */
+.methodology-note {
+  background: var(--navy-card);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px; padding: 22px 26px;
+  margin-bottom: 28px;
+}
+.methodology-tag {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--grey); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.meth-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.meth-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px; padding: 16px 14px;
+  text-align: center;
+}
+.meth-card-highlight {
+  background: rgba(201,168,76,0.06);
+  border-color: rgba(201,168,76,0.25);
+}
+.meth-card-icon {
+  font-size: 18px; color: var(--gold);
+  margin-bottom: 8px; display: block;
+}
+.meth-card-name {
+  font-size: 11px; font-weight: 700;
+  color: var(--white); margin-bottom: 6px;
+}
+.meth-card-formula {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; color: var(--gold);
+  margin-bottom: 8px; line-height: 1.5;
+  letter-spacing: 0.3px;
+}
+.meth-card-note {
+  font-size: 10px; color: var(--grey); line-height: 1.5;
+}
+@media (max-width: 700px) {
+  .meth-cards { grid-template-columns: 1fr 1fr; }
+}
+
+
+/* ── DATA DISCLOSURE ── */
+.data-disclosure {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px; padding: 14px 18px;
+  margin-bottom: 20px;
+}
+.disclosure-icon {
+  color: var(--gold); font-size: 14px; flex-shrink: 0; margin-top: 1px;
+}
+.disclosure-text {
+  font-size: 11px; color: var(--grey); line-height: 1.7;
+}
+
+/* ── NO API KEY OPTIONS ── */
+.no-key-options {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px 24px;
+  margin-bottom: 24px;
+}
+.no-key-label {
+  font-family: 'DM Mono', monospace; font-size: 10px;
+  color: var(--gold); letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.no-key-desc {
+  font-size: 12px; color: var(--grey-light); line-height: 1.7;
+}
+
+
+/* ════════════════════════════════════════════
+   GLOBAL TYPOGRAPHY CONSISTENCY FIXES
+   ════════════════════════════════════════════ */
+
+/* ALL DM Mono uppercase labels — one standard */
+.section-num,
+.q-number,
+.q-section-tag,
+.metric-card-tag,
+.q-section-metric,
+.ay-label,
+.ay-maths-label,
+.cardinal-tag,
+.cardinal-title,
+.stage-label,
+.stage-score-sub,
+.move-tag,
+.priorities-title,
+.synthesis-tag,
+.methodology-tag,
+.glossary-tag,
+.no-key-label,
+.disclosure-icon,
+.results-institution,
+.results-date,
+.nav-section-label,
+.nav-progress,
+.api-label,
+.cover-date,
+.field-label,
+.hero-eyebrow,
+.meth-card-formula,
+.meth-card-name,
+.days-card-period,
+.cover-eyebrow {
+  font-family: 'DM Mono', monospace !important;
+  font-size: 10px !important;
+  letter-spacing: 2.5px !important;
+  text-transform: uppercase !important;
+  color: var(--gold) !important;
+}
+
+/* Section descriptor tags - slightly larger */
+.q-section-name,
+.move-name,
+.synthesis-name,
+.cardinal-title {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: var(--white) !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  font-family: 'Raleway', sans-serif !important;
+}
+
+/* QUESTIONS — brighter, slightly larger */
+.q-text {
+  font-size: 14.5px !important;
+  font-weight: 600 !important;
+  color: #D4E4F0 !important;
+  line-height: 1.6 !important;
+  margin-bottom: 12px !important;
+}
+
+/* Question hints */
+.q-hint {
+  font-size: 11.5px !important;
+  color: #8AABC8 !important;
+  margin-bottom: 14px !important;
+}
+
+/* ANSWER OPTIONS — brighter */
+.option-text {
+  font-size: 12.5px !important;
+  color: #C0D4E8 !important;
+  line-height: 1.65 !important;
+}
+.option.selected .option-text {
+  color: var(--white) !important;
+}
+
+/* Option hover text */
+.option-hover {
+  font-size: 11px !important;
+  color: #7A9AB8 !important;
+}
+
+/* Section descriptions */
+.q-section-desc {
+  font-size: 12px !important;
+  color: #8AABC8 !important;
+  line-height: 1.75 !important;
+}
+
+/* RESULTS PAGE — consistent label sizing */
+.stage-name {
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  font-family: 'Raleway', sans-serif !important;
+}
+
+.stage-desc {
+  font-size: 13px !important;
+  color: #A0BCCC !important;
+  line-height: 1.75 !important;
+}
+
+/* Move card description */
+.move-desc {
+  font-size: 13px !important;
+  color: #A0BCCC !important;
+  line-height: 1.75 !important;
+  margin-bottom: 20px !important;
+}
+
+/* Priority items */
+.priority-text {
+  font-size: 12.5px !important;
+  color: #B0C8DC !important;
+  line-height: 1.75 !important;
+}
+
+/* Synthesis output */
+.synthesis-output {
+  font-size: 13px !important;
+  color: #B8CCD8 !important;
+}
+
+/* Body text across results */
+.body-text {
+  font-size: 13.5px !important;
+  color: #A8BCCC !important;
+}
+
+/* ════════════════════════════════════════════
+   GLOSSARY — FIX CARD RENDERING
+   ════════════════════════════════════════════ */
+.glossary-section {
+  background: var(--navy-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 14px !important;
+  padding: 28px 32px !important;
+  margin-bottom: 28px !important;
+}
+
+.glossary-grid {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 14px !important;
+}
+
+.glossary-item {
+  padding: 16px 18px !important;
+  background: rgba(255,255,255,0.025) !important;
+  border: 1px solid rgba(201,168,76,0.12) !important;
+  border-radius: 8px !important;
+}
+
+.glossary-term {
+  font-family: 'DM Mono', monospace !important;
+  font-size: 10px !important;
+  color: var(--gold) !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 5px !important;
+  display: block !important;
+}
+
+.glossary-full {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: var(--white) !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+.glossary-def {
+  font-size: 11.5px !important;
+  color: #9AAECC !important;
+  line-height: 1.7 !important;
+  display: block !important;
+}
+
+@media (max-width: 700px) {
+  .glossary-grid { grid-template-columns: 1fr !important; }
+}
+
+/* ════════════════════════════════════════════
+   MOVE ROADMAP — make active state much more visible
+   ════════════════════════════════════════════ */
+.move-road-item.active-move {
+  border-color: var(--gold) !important;
+  background: rgba(201,168,76,0.1) !important;
+}
+.move-road-item.active-move .mroad-num {
+  border-color: var(--gold) !important;
+  color: var(--gold) !important;
+  background: rgba(201,168,76,0.15) !important;
+}
+.move-road-item.active-move .mroad-label {
+  color: var(--white) !important;
+  font-weight: 700 !important;
+}
+.mroad-label {
+  font-size: 10.5px !important;
+  color: #7A9AB8 !important;
+}
+.mroad-num {
+  font-size: 12px !important;
+  font-weight: 600 !important;
+}
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">
+    <div>
+      <div class="logo-name"><span class="blueme">Blueme</span><span class="bank">Bank</span></div>
+      <div class="logo-sub">The Bridge Diagnostic</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="api-label">Nerve Core</div>
+    <input class="api-input" type="password" id="apiKey" placeholder="Nerve Core key (optional · enables AI synthesis)" />
+  </div>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-steps">
+    <div class="progress-step" id="pstep-0" onclick="jumpToStep(0)"><div class="step-dot">1</div><div class="step-label">Institution</div></div>
+    <div class="progress-step" id="pstep-1" onclick="jumpToStep(1)"><div class="step-dot">2</div><div class="step-label">DCI</div></div>
+    <div class="progress-step" id="pstep-2" onclick="jumpToStep(2)"><div class="step-dot">3</div><div class="step-label">RRV</div></div>
+    <div class="progress-step" id="pstep-3" onclick="jumpToStep(3)"><div class="step-dot">4</div><div class="step-label">DARR</div></div>
+    <div class="progress-step" id="pstep-4" onclick="jumpToStep(4)"><div class="step-dot">5</div><div class="step-label">DQIRR</div></div>
+    <div class="progress-step" id="pstep-5" onclick="jumpToStep(5)"><div class="step-dot">6</div><div class="step-label">Results</div></div>
+  </div>
+</div>
+
+<!-- NAV BAR -->
+<div class="nav-bar" id="navBar">
+  <div class="nav-left">
+    <div>
+      <div class="nav-section-label" id="navSectionLabel">Section</div>
+      <div class="nav-section-name" id="navSectionName">—</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:20px">
+    <div class="nav-progress" id="navProgress"></div>
+    <div class="nav-right">
+      <button class="btn-back" id="btnBack" onclick="goBack()">← Back</button>
+      <button class="btn-next" id="btnNext" onclick="goNext()">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-ring"></div>
+  <div class="loading-text">Nerve Core Synthesising</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- HERO -->
+  <div id="heroSection">
+    <div class="hero">
+      <div class="hero-left">
+        <div class="hero-eyebrow">Module 01 · The Autonomy Dividend Diagnostic</div>
+        <h1 class="hero-title">The Bridge<br><em>Diagnostic</em></h1>
+        <div class="hero-rule"></div>
+        <p class="hero-desc">A 15-minute self-assessment that produces your institution's <strong style="color:var(--gold)">Autonomy Dividend</strong> — the percentage of decisions that could safely operate autonomously today. Calculated transparently from four cardinal metrics. Synthesised by the Nerve Core.</p>
+        <button class="hero-start-btn" onclick="startDiagnostic()">Begin Assessment ◈</button>
+      </div>
+      <div class="hero-right">
+        <div class="metric-pill"><div class="metric-icon">⬡</div><div class="metric-info"><div class="metric-name">DCI</div><div class="metric-desc">Data Convergence Index — shared identity & lineage across systems</div></div></div>
+        <div class="metric-pill"><div class="metric-icon">⟳</div><div class="metric-info"><div class="metric-name">RRV</div><div class="metric-desc">Regulatory Response Velocity — days from requirement to data availability</div></div></div>
+        <div class="metric-pill"><div class="metric-icon">◫</div><div class="metric-info"><div class="metric-name">DARR</div><div class="metric-desc">Data Asset Reuse Ratio — shared capability vs repeated build</div></div></div>
+        <div class="metric-pill"><div class="metric-icon">◉</div><div class="metric-info"><div class="metric-name">DQIRR</div><div class="metric-desc">Data Quality Issue Resolution Rate — traceable fix accountability</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 0: Institution Setup -->
+  <div id="section-0" class="setup-section hidden">
+    <div class="section-header">
+      <div class="section-number">Step 01 / 05</div>
+      <h2 class="section-title">Your <em>Institution</em></h2>
+      <p class="section-sub">Basic context to calibrate the assessment. This information shapes how results are framed and is not stored or transmitted.</p>
+    </div>
+    <div class="setup-grid">
+      <div class="setup-field">
+        <label class="field-label">Institution Name</label>
+        <input class="field-input" id="instName" type="text" placeholder="e.g. Northern Regional Bank" />
+      </div>
+
+      <div class="setup-field">
+        <label class="field-label">Institution Size</label>
+        <select class="field-select" id="instSize">
+          <option value="">Select size...</option>
+          <option value="tier1">Tier 1 Global — Assets > USD 500bn</option>
+          <option value="tier2">Tier 2 Regional — Assets USD 50–500bn</option>
+          <option value="tier3">Mid-Size — Assets USD 5–50bn</option>
+          <option value="tier4">Community / Challenger — Assets < USD 5bn</option>
+        </select>
+      </div>
+      <div class="setup-field">
+        <label class="field-label">Primary Jurisdiction</label>
+        <select class="field-select" id="instJurisdiction">
+          <option value="">Select jurisdiction...</option>
+          <option value="uk">United Kingdom (PRA / FCA)</option>
+          <option value="au">Australia (APRA / ASIC)</option>
+          <option value="in">India (RBI / SEBI)</option>
+          <option value="sg">Singapore (MAS)</option>
+          <option value="us">United States (Fed / OCC / FDIC)</option>
+          <option value="eu">European Union (ECB / EBA)</option>
+          <option value="hk">Hong Kong (HKMA)</option>
+          <option value="asia">Asia-Pacific (Multi-regulator)</option>
+          <option value="other">Other / Global</option>
+        </select>
+      </div>
+      <div class="setup-field full">
+        <label class="field-label">Current Transformation State (optional)</label>
+        <input class="field-input" id="instContext" type="text" placeholder="e.g. Cloud migration underway, CDAO appointed 18 months ago, 3 AI pilots in progress" />
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTIONS 1–4: Questions -->
+  <div id="section-1" class="q-section hidden">
+    <div class="q-section-header">
+      <div class="q-section-icon">⬡</div>
+      <div class="q-section-info">
+        <div class="q-section-tag">Section A · 6 Questions · DCI</div>
+        <div class="q-section-name">Data Convergence Index</div>
+        <div class="q-section-desc">Can you find the same customer across your systems and trust the answer? Measures whether identity, lineage, and validation are coherent enough to feed multiple simultaneously operating AI decision functions* with one version of the truth.</div>
+      </div>
+      <div class="q-section-metric">DCI</div>
+    </div>
+    <div id="questions-1"></div>
+  </div>
+
+  <div id="section-2" class="q-section hidden">
+    <div class="q-section-header">
+      <div class="q-section-icon">⟳</div>
+      <div class="q-section-info">
+        <div class="q-section-tag">Section B · 6 Questions · RRV</div>
+        <div class="q-section-name">Regulatory Response Velocity</div>
+        <div class="q-section-desc">When a new rule lands, how fast can you produce certified, lineage-traced data for it? Measures whether your technology infrastructure makes regulatory agility a structural property or a heroic effort.</div>
+      </div>
+      <div class="q-section-metric">RRV</div>
+    </div>
+    <div id="questions-2"></div>
+  </div>
+
+  <div id="section-3" class="q-section hidden">
+    <div class="q-section-header">
+      <div class="q-section-icon">◫</div>
+      <div class="q-section-info">
+        <div class="q-section-tag">Section C · 6 Questions · DARR</div>
+        <div class="q-section-name">Data Asset Reuse Ratio</div>
+        <div class="q-section-desc">When you need new data, are you building it again or reusing what you already built? Measures whether your funding model, ownership, and governance are designed to produce shared institutional capability or repeated use-case delivery.</div>
+      </div>
+      <div class="q-section-metric">DARR</div>
+    </div>
+    <div id="questions-3"></div>
+  </div>
+
+  <div id="section-4" class="q-section hidden">
+    <div class="q-section-header">
+      <div class="q-section-icon">◉</div>
+      <div class="q-section-info">
+        <div class="q-section-tag">Section D · 6 Questions · DQIRR</div>
+        <div class="q-section-name">DQ Issue Resolution Rate</div>
+        <div class="q-section-desc">When something is wrong with your data, does it actually get fixed? Measures whether accountability for fixes is real, whether roles are shaped for continuous operation, and whether the human transition is being deliberately managed.</div>
+      </div>
+      <div class="q-section-metric">DQIRR</div>
+    </div>
+    <div id="questions-4"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results-section" class="results-section hidden">
+    <div class="results-header">
+      <div class="results-institution" id="resultInstitution">— Assessment Complete —</div>
+      <h2 class="results-title">Autonomy <em>Dividend</em> Report</h2>
+      <div class="results-date" id="resultsDate"></div>
+    </div>
+
+    <!-- AY HEADLINE -->
+    <div class="ay-headline" id="ayHeadline">
+      <div class="ay-label">Autonomy Dividend</div>
+      <div class="ay-number-row">
+        <div class="ay-number" id="adNumber">—</div>
+        <div class="ay-unit">%</div>
+      </div>
+      <div class="ay-classification" id="ayClassification">—</div>
+      <div class="ay-strap" id="ayStrap">—</div>
+      <div class="stage-scale" style="margin-top:24px;">
+        <div class="scale-track">
+          <div class="scale-segment s1-seg" id="scaleS1">
+            <div class="scale-seg-label">Foundation Constrained</div>
+            <div class="scale-seg-sub">AD below 15%</div>
+          </div>
+          <div class="scale-segment s2-seg" id="scaleS2">
+            <div class="scale-seg-label">Operational Translation</div>
+            <div class="scale-seg-sub">AD 15–35%</div>
+          </div>
+          <div class="scale-segment s3-seg" id="scaleS3">
+            <div class="scale-seg-label">Bridge-Ready</div>
+            <div class="scale-seg-sub">AD above 35%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AY MATHS -->
+    <div class="ay-maths" id="ayMaths">
+      <div class="ay-maths-label">How it is calculated</div>
+      <div class="ay-formula-row">
+        <div class="ay-formula-block">
+          <div class="ay-formula-tag">Technical Autonomy Ceiling</div>
+          <div class="ay-formula-text">min ( DCI , RRV )</div>
+          <div class="ay-formula-value" id="ceilingValue">—</div>
+          <div class="ay-formula-note">You cannot outrun your bottleneck.</div>
+        </div>
+        <div class="ay-formula-op">×</div>
+        <div class="ay-formula-block">
+          <div class="ay-formula-tag">Operational Clearance Factor</div>
+          <div class="ay-formula-text">DARR × DQIRR / 100</div>
+          <div class="ay-formula-value" id="clearanceValue">—</div>
+          <div class="ay-formula-note">Independent failures compound, not average.</div>
+        </div>
+        <div class="ay-formula-op">=</div>
+        <div class="ay-formula-block ay-formula-final">
+          <div class="ay-formula-tag">Autonomy Dividend</div>
+          <div class="ay-formula-text">AD</div>
+          <div class="ay-formula-value" id="adValueMaths">—</div>
+          <div class="ay-formula-note">The boardroom number.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDINAL METRICS -->
+    <div class="cardinal-header">
+      <div class="cardinal-tag">The Four Cardinal Metrics</div>
+      <div class="cardinal-title">Where the Score Comes From</div>
+    </div>
+    <div class="metrics-grid" id="metricsGrid">
+      <!-- populated by JS -->
+    </div>
+
+    <!-- BRIDGE SCORE CONTEXT -->
+    <div class="stage-banner" id="stageBanner">
+      <div>
+        <div class="stage-label">CIQ · Continuous Intelligence Quotient</div>
+        <div class="stage-name" id="stageName">—</div>
+        <div class="stage-desc" id="stageDesc">—</div>
+        <div class="signal-row" id="signalRow"></div>
+      </div>
+      <div class="stage-score-wrap">
+        <div class="stage-score" id="stageScore">—</div>
+        <div class="stage-score-sub">CIQ Score</div>
+      </div>
+    </div>
+
+
+
+    <!-- DON'T KNOW FLAGS -->
+    <div class="dontknow-card hidden" id="dontknowCard">
+      <div class="dontknow-header">
+        <div class="dontknow-tag">◈ Visibility Gaps Identified</div>
+        <div class="dontknow-desc">The following questions were answered as unknown. These are themselves diagnostic signals — a CDAO who cannot answer these questions has identified an accountability or transparency gap worth investigating.</div>
+      </div>
+      <div id="dontknowList"></div>
+    </div>
+
+    <!-- METHODOLOGY NOTE -->
+    <div class="methodology-note">
+      <div class="methodology-tag">◈ How this is calculated</div>
+      <div class="meth-cards">
+        <div class="meth-card">
+          <div class="meth-card-icon">①</div>
+          <div class="meth-card-name">Section Scores</div>
+          <div class="meth-card-formula">6 questions × score 1–4</div>
+          <div class="meth-card-note">Raw ÷ 24 × 100 = %. Unknown answers score 1.</div>
+        </div>
+        <div class="meth-card">
+          <div class="meth-card-icon">②</div>
+          <div class="meth-card-name">CIQ Score</div>
+          <div class="meth-card-formula">50% avg + 50% min</div>
+          <div class="meth-card-note">Weighted to the weakest dimension. 90/90/90/20 ≠ 72%.</div>
+        </div>
+        <div class="meth-card meth-card-highlight">
+          <div class="meth-card-icon">③</div>
+          <div class="meth-card-name">Autonomy Dividend</div>
+          <div class="meth-card-formula">min(DCI,RRV) × (DARR×DQIRR÷100)</div>
+          <div class="meth-card-note">Failures compound. Ceiling × Clearance.</div>
+        </div>
+        <div class="meth-card">
+          <div class="meth-card-icon">◈</div>
+          <div class="meth-card-name">Projected values</div>
+          <div class="meth-card-formula">24 responses, not live data</div>
+          <div class="meth-card-note">Diagnostic estimate. Accurate to the honesty of responses given.</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- GLOSSARY -->
+    <div class="glossary-section">
+      <div class="glossary-tag">◈ Key Terms</div>
+      <div class="glossary-grid">
+        <div class="glossary-item">
+          <div class="glossary-term">AD</div>
+          <div class="glossary-full">Autonomy Dividend</div>
+          <div class="glossary-def">The headline metric. The percentage of an institution's consequential decisions that could safely operate autonomously today — given its actual data foundation, infrastructure, governance, and organisational readiness. Calculated as: min(DCI, RRV) × (DARR × DQIRR ÷ 100).</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">CIQ</div>
+          <div class="glossary-full">Continuous Intelligence Quotient</div>
+          <div class="glossary-def">The overall readiness score. Weighted toward the weakest dimension: 50% average of the four cardinal metrics plus 50% minimum score. A bank scoring 90/90/90/20 is not 72% ready — it is constrained by its weakest pillar.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Technical Autonomy Ceiling</div>
+          <div class="glossary-full">min ( DCI , RRV )</div>
+          <div class="glossary-def">The maximum AD an institution can achieve given its data and infrastructure constraints. Derived from the minimum of DCI and RRV — because you cannot outrun your bottleneck. Grounded in Liebig's Law of the Minimum: a system's output is constrained by its scarcest resource, not its average.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Operational Clearance Factor</div>
+          <div class="glossary-full">DARR × DQIRR ÷ 100</div>
+          <div class="glossary-def">The fraction of technically capable decisions that actually make it to autonomous execution without being blocked by governance or quality failure. Derived from reliability theory: independent failure modes compound rather than average. A 70% DARR and 60% DQIRR does not give 65% clearance — it gives 42%.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">DCI</div>
+          <div class="glossary-full">Data Convergence Index</div>
+          <div class="glossary-def">The proportion of critical data entities — customer, account, counterparty, product — that share a common identity key resolvable across three or more core systems, with documented lineage. Three systems is the threshold: two sharing a key is often a point-to-point integration. Three signals genuine institutional coherence.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">RRV</div>
+          <div class="glossary-full">Regulatory Response Velocity</div>
+          <div class="glossary-def">The average elapsed time between a new regulatory requirement being published and the institution having certified, lineage-traced data available to meet it. A proxy for technology infrastructure maturity — whether the data fabric can be adapted rather than rebuilt when requirements change.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">DARR</div>
+          <div class="glossary-full">Data Asset Reuse Ratio</div>
+          <div class="glossary-def">The proportion of new use case data requirements met by reusing or extending existing certified data assets — rather than commissioning new ones. Measures whether the data programme is building shared institutional capability or repeatedly building the same data for different use cases.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">DQIRR</div>
+          <div class="glossary-full">Data Quality Issue Resolution Rate</div>
+          <div class="glossary-def">The proportion of data quality issues raised by downstream consumers that receive a complete, traceable resolution response — root cause identified, upstream owner confirmed, fix timeline committed — within a defined service level. Measures whether accountability for data quality fixes is real or nominal.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="move-card" id="moveCard">
+      <div class="move-header">
+        <div class="move-num" id="moveNum">—</div>
+        <div class="move-info">
+          <div class="move-tag">Current Sequencing Position</div>
+          <div class="move-name" id="moveName">—</div>
+        </div>
+      </div>
+      <div class="move-roadmap">
+        <div class="move-road-item" id="mroad-1"><div class="mroad-num">1</div><div class="mroad-label">Assess Before<br>You Activate</div></div>
+        <div class="mroad-arrow">→</div>
+        <div class="move-road-item" id="mroad-2"><div class="mroad-num">2</div><div class="mroad-label">Choose the<br>Right Wedge</div></div>
+        <div class="mroad-arrow">→</div>
+        <div class="move-road-item" id="mroad-3"><div class="mroad-num">3</div><div class="mroad-label">Build the Sequence,<br>Not the Plan</div></div>
+        <div class="mroad-arrow">→</div>
+        <div class="move-road-item" id="mroad-4"><div class="mroad-num">4</div><div class="mroad-label">Measure Progress,<br>Not Activity</div></div>
+      </div>
+      <div class="move-desc" id="moveDesc">—</div>
+      <div class="priorities-title">Priority Actions Before Moving Forward</div>
+      <div id="priorityList">—</div>
+    </div>
+
+    <div class="synthesis-card" id="synthesisCard">
+      <div class="synthesis-header">
+        <div class="synthesis-icon">◈</div>
+        <div class="synthesis-title-wrap">
+          <div class="synthesis-tag">Nerve Core · AI-Generated Synthesis</div>
+          <div class="synthesis-name">Diagnostic Narrative</div>
+        </div>
+        <div class="synthesis-status waiting" id="synthesisStatus">Waiting for API Key</div>
+      </div>
+      <div class="synthesis-output" id="synthesisOutput">
+        <div class="no-api-note" id="noApiNote">
+          <strong>To activate the Nerve Core synthesis</strong> — enter your key in the header above and click the button below. The Nerve Core will read all 24 of your responses and produce a practitioner-grade narrative specific to your institution: where the gaps are structural vs tactical, what the sequencing logic should be, and what to bring to the board.<br><br>Without the key, your scored assessment, Autonomy Dividend, and priority actions are still complete and usable.
+        </div>
+      </div>
+      <div class="synthesis-disclosure" id="synthesisDisclosure" style="display:none;margin-top:14px;padding:10px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:6px;font-size:10px;color:var(--grey);line-height:1.7;font-style:italic;">This narrative was generated by an AI model based on the 24 responses provided to this diagnostic, interpreted through the BluemeBank architectural framework (Bhavaraju, 2026). It represents a structured synthesis of those inputs — not an independent audit or regulatory opinion. Conclusions should be validated against institutional data before being used in board or regulatory submissions.</div>
+      <div style="margin-top:16px;display:flex;gap:10px;align-items:center">
+        <button class="btn-next" id="btnSynthesize" onclick="runSynthesis()" style="font-size:10px;padding:10px 22px;">◈ Generate Nerve Core Synthesis</button>
+        <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--grey)">Requires Nerve Core key · ~20 seconds</span>
+      </div>
+    </div>
+
+    <!-- DATA DISCLOSURE -->
+    <div class="data-disclosure">
+      <div class="disclosure-icon">◈</div>
+      <div class="disclosure-text">Your responses are saved to a secure database accessible only by the author, Sasidhar Bhavaraju. They are used solely to generate your synthesis and to improve the diagnostic framework. They are not shared with any third party.</div>
+    </div>
+
+    <!-- NO API KEY OPTIONS -->
+    <div class="no-key-options">
+      <div class="no-key-label">Save your results or request a synthesis</div>
+      <div class="no-key-desc">Enter your email to save your results. You will receive a copy of your scores and — if requested — Sasidhar will return a personalised Nerve Core narrative within 48 hours.</div>
+      <div style="display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap;">
+        <input type="email" id="userEmail" placeholder="your@email.com" style="flex:1;min-width:220px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.25);border-radius:7px;padding:10px 16px;color:var(--white);font-family:'Raleway',sans-serif;font-size:13px;outline:none;" />
+        <button class="btn-next" id="btnRequestSynthesis" onclick="requestSynthesisEmail()" style="font-size:10px;padding:10px 22px;white-space:nowrap;">✉ Request Synthesis</button>
+        <button class="btn-export" id="btnSaveResults" onclick="saveResultsManually()" style="white-space:nowrap;">⊕ Save Only</button>
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--grey);font-style:italic;">Your results will be emailed to you as a reference. Sasidhar will also receive your scores to prepare the synthesis.</div>
+      <div id="synthesisRequestConfirm" style="display:none;margin-top:14px;padding:12px 16px;background:rgba(46,158,142,0.08);border:1px solid rgba(46,158,142,0.25);border-radius:8px;font-size:12px;color:var(--teal);line-height:1.7;">
+        ✓ Your results have been saved and emailed to you. Sasidhar will return your personalised Nerve Core synthesis within 48 hours.
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button class="btn-export" onclick="window.print()">⊕ Print / Save PDF</button>
+      <button class="btn-restart" onclick="restart()">↺ New Assessment</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONFIGURATION — Replace with your deployed Apps Script URL
+// ═══════════════════════════════════════════════════════════════
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxFJzsbMCYOokR8_gUEzfUPJjhZ6PHFdvXj9ar78dcL70Q8YNCcatFMPUCG9nOMaURVPQ/exec'; // paste your deployed web app URL here
+
+// ═══════════════════════════════════════════════════════════════
+// DATA — Questions, Options, Scores
+// ═══════════════════════════════════════════════════════════════
+
+const sections = [
+  { id: 1, key: 'dci',   name: 'Data Convergence',     metric: 'DCI',   question: 'Can you find the same customer across your systems?' },
+  { id: 2, key: 'rrv',   name: 'Regulatory Velocity',  metric: 'RRV',   question: 'When a new rule lands, how fast can you respond?' },
+  { id: 3, key: 'darr',  name: 'Asset Reuse',          metric: 'DARR',  question: 'Are you building shared capability or repeating yourself?' },
+  { id: 4, key: 'dqirr', name: 'Quality Resolution',   metric: 'DQIRR', question: 'When something is wrong, does it get fixed?' }
+];
+
+const questions = {
+  // ═══════════════════════════════════════════════════════════════
+  // SECTION 1 — DCI (Data Convergence Index)
+  // Question: Can you find the same customer across your systems and trust the answer?
+  // ═══════════════════════════════════════════════════════════════
+  1: [
+    {
+      id: 'D1',
+      text: 'How is the same customer identified across your core systems?',
+      hint: 'Think about how a customer ID in your retail core relates to one in wholesale, KYC, or risk.',
+      options: [
+        { text: 'Each system uses its own customer ID. Matching is manual or batch-reconciled.', hover: 'Two systems can be holding records for the same customer with no automated way to know it.', score: 1 },
+        { text: 'A common ID exists for some domains but not consistently applied across the institution.', hover: 'Retail and digital are usually aligned. Wholesale, treasury, and risk often sit outside.', score: 2 },
+        { text: 'A master customer ID is used by most systems with some manual reconciliation still required.', hover: 'The strategic ID exists but legacy systems lag, often needing batch matching to stay current.', score: 3 },
+        { text: 'A single resolved customer identity is available in real time across all core systems.', hover: 'A change in one system propagates to all consumers with documented lineage.', score: 4 }
+      ]
+    },
+    {
+      id: 'D2',
+      text: 'For critical data entities (customer, account, counterparty, product), how many share an identity key across three or more systems?',
+      hint: 'Three is the threshold — two systems sharing a key is often just a point-to-point integration.',
+      options: [
+        { text: 'Under 20% of critical entities resolve cleanly across three or more systems.', hover: 'Most entities are siloed or require expensive matching exercises to bring together.', score: 1 },
+        { text: 'Roughly 20-40%. Customer and counterparty partially resolve; product and transaction lag.', hover: 'Identity has been solved for the highest-priority entities but not systematically.', score: 2 },
+        { text: 'Roughly 40-70%. Several entity types resolve coherently; some domains remain fragmented.', hover: 'Strong convergence in core domains, weaker in product taxonomies and transactional data.', score: 3 },
+        { text: 'Over 70% of critical entities share resolvable identity across three or more systems.', hover: 'The institutional data fabric is genuinely coherent and supports cross-domain queries natively.', score: 4 }
+      ]
+    },
+    {
+      id: 'D3',
+      text: 'Is data lineage traceable from source system to point of use?',
+      hint: 'If a regulator asked where a number on a report came from, how hard would the trace be?',
+      options: [
+        { text: 'Lineage is not systematically maintained. Tracing requires manual investigation.', hover: 'Each trace becomes a project, often involving multiple teams across business and IT.', score: 1 },
+        { text: 'Lineage exists for regulatory reporting but is not consistently maintained elsewhere.', hover: 'BCBS 239 or equivalent has forced lineage in specific flows but not as a default.', score: 2 },
+        { text: 'Automated lineage tools are deployed across major data domains but coverage is partial.', hover: 'A lineage platform exists; coverage of legacy and operational systems remains incomplete.', score: 3 },
+        { text: 'End-to-end lineage is automated and current across critical data flows.', hover: 'Lineage is a property of the system, not a periodic documentation exercise.', score: 4 }
+      ]
+    },
+    {
+      id: 'D4',
+      text: 'Is data validated at the point it enters the institution, or reconciled later by downstream consumers?',
+      hint: 'When something is wrong, does the source fix it or does each consumer fix it for themselves?',
+      options: [
+        { text: 'Downstream functions independently validate and reconcile to use the data.', hover: 'Risk, Finance, and Operations each have their own reconciliation teams doing similar work.', score: 1 },
+        { text: 'Some upstream validation exists but downstream reconciliation estate remains substantial.', hover: 'Upstream improvements have not yet reduced the size of the reconciliation function.', score: 2 },
+        { text: 'Validation is increasingly embedded upstream; reconciliation estate is being deliberately reduced.', hover: 'The institution has committed to shifting validation to source and is measuring the shift.', score: 3 },
+        { text: 'Upstream validation is the default. Reconciliation is the exception, not the rule.', hover: 'The reconciliation estate has shrunk visibly; trust in source data is genuine.', score: 4 }
+      ]
+    },
+    {
+      id: 'D5',
+      text: 'When two systems disagree about the same customer or transaction, what typically happens?',
+      hint: 'This is a quick gut-check on real coherence vs documented coherence.',
+      options: [
+        { text: 'It is discovered downstream during reporting or reconciliation. Resolution is manual and slow.', hover: 'Different parts of the bank operate with subtly different versions of the truth.', score: 1 },
+        { text: 'A defined system of record exists but exceptions are common and require manual intervention.', hover: 'The rule exists on paper; in practice, conflicts surface regularly and need human judgment.', score: 2 },
+        { text: 'Automated reconciliation surfaces conflicts quickly and most resolve through established rules.', hover: 'Conflicts are visible early and resolved through defined precedence, with few escalations.', score: 3 },
+        { text: 'Conflicts are rare. When they occur, automated rules resolve them and source systems update consistently.', hover: 'The data fabric is coherent enough that conflicts are noteworthy events, not daily occurrences.', score: 4 }
+      ]
+    },
+    {
+      id: 'D6',
+      text: 'Forward view: Is your data foundation ready to feed multiple AI decision functions reasoning simultaneously*?',
+      hint: 'Could Risk, Compliance, and Operations all reason on the same customer in real time, with the same understanding of who that customer is?',
+      options: [
+        { text: 'No. Each function would need to assemble its own view of the customer from fragmented sources.', hover: 'A multi-plane architecture would surface the fragmentation immediately as inconsistent recommendations.', score: 1 },
+        { text: 'Partially. Some domains could feed two or three planes; others would require significant work.', hover: 'A wedge use case is feasible. Bank-wide multi-AI decision layer operation* is not yet supportable.', score: 2 },
+        { text: 'Mostly. A coordinated view exists for major customer and counterparty domains; some gaps remain.', hover: 'initial AI decision layer activation* is feasible across multiple domains with manageable remediation.', score: 3 },
+        { text: 'Yes. A coherent, real-time view of customers and entities exists that multiple planes can reason on simultaneously.', hover: 'The data foundation is genuinely plane-ready. The constraint sits elsewhere.', score: 4 }
+      ]
+    }
+  ],
+
+  // ═══════════════════════════════════════════════════════════════
+  // SECTION 2 — RRV (Regulatory Response Velocity)
+  // Question: When a new rule lands, how fast can you produce certified data for it?
+  // ═══════════════════════════════════════════════════════════════
+  2: [
+    {
+      id: 'T1',
+      text: 'How does data move from core systems to downstream consumers today?',
+      hint: 'Is it batch overnight, hourly, near-real-time, or streaming?',
+      options: [
+        { text: 'Primarily overnight batch across most critical domains.', hover: 'Decisions made today are based on yesterday’s closed positions.', score: 1 },
+        { text: 'Intraday batch for some domains, overnight for others.', hover: 'Hourly or every-few-hours refreshes exist for payments and some customer flows.', score: 2 },
+        { text: 'Near-real-time (minutes) for several core domains; some streaming in production.', hover: 'CDC or message-based flows exist for key domains; full streaming is partial.', score: 3 },
+        { text: 'Event-streaming is the default. Batch is the exception, used only where genuinely needed.', hover: 'Kafka or equivalent is in production across most critical data domains.', score: 4 }
+      ]
+    },
+    {
+      id: 'T2',
+      text: 'Does Change Data Capture (CDC) exist from your core banking systems?',
+      hint: 'CDC — Change Data Capture — streams real-time updates from core systems to modern infrastructure without replacing legacy. It is the bridge between batch-era core banking and event-driven architecture.',
+      options: [
+        { text: 'No. Data extraction from core systems is batch-file based.', hover: 'Modernisation requires building this from scratch or replacing core systems first.', score: 1 },
+        { text: 'CDC exists in production for one or two systems, typically built for a specific use case.', hover: 'Proof of concept exists; not yet a systematic capability across the estate.', score: 2 },
+        { text: 'CDC covers most core systems with documented patterns but quality varies by domain.', hover: 'The capability is real but legacy-era systems often need bespoke handling.', score: 3 },
+        { text: 'CDC is in production across all critical core systems with consistent quality and monitoring.', hover: 'Streaming is the operating model, not a project. Modern infrastructure operates on top of legacy reliably.', score: 4 }
+      ]
+    },
+    {
+      id: 'T3',
+      text: 'Where is your current technology modernisation programme primarily pointed?',
+      hint: 'The destination architecture determines whether the journey takes you somewhere useful. If no active programme exists, select the first option.',
+      options: [
+        { text: 'No active modernisation programme. Core systems are in maintenance mode with no planned infrastructure investment.', hover: 'More common than acknowledged. The modernisation case has not been made or funded.', score: 1 },
+        { text: 'Cost reduction only — offloading mainframe workloads, consolidating data centres.', hover: 'Legitimate objectives. But cost-led infrastructure may not support AI decision layer activation.', score: 2 },
+        
+        { text: 'Both cost and capability — event-driven architecture is explicit in current investment.', hover: 'Some balance has been struck. Real-time appears in current-year deliverables.', score: 3 },
+        { text: 'Building toward continuous, event-driven operation. Cost reduction is a by-product, not the goal.', hover: 'The destination is stated and investment is calibrated to it. The CDAO and CTO are aligned.', score: 4 }
+      ]
+    },
+    {
+      id: 'T4',
+      text: 'Does your institution have a governed API layer exposing core data to internal consumers?',
+      hint: 'This is the interface layer between your data fabric and the people, applications, and AI agents that need to use it.',
+      options: [
+        { text: 'No systematic API layer. Data access is file-based or direct database connections.', hover: 'Every new consumer requires bespoke pipeline work and bilateral negotiation.', score: 1 },
+        { text: 'APIs exist for customer-facing channels but internal consumption is still file-based.', hover: 'Open Banking compliance has built API capability outward; internal layer remains weak.', score: 2 },
+        { text: 'An internal API layer covers some domains with informal governance.', hover: 'APIs exist for major domains; standards, versioning, and access controls are inconsistent.', score: 3 },
+        { text: 'A governed API layer with documented standards covers most core data domains.', hover: 'Consuming data is a self-service activity within governance, not a project.', score: 4 }
+      ]
+    },
+    {
+      id: 'T5',
+      text: 'When a new regulatory requirement arrives, how long does it typically take to deliver certified, lineage-traced data for it?',
+      hint: 'Think of the last few real examples — DORA, CPS 230, Operational Resilience, IRRBB updates, climate disclosures.',
+      options: [
+        { text: 'Over 180 days. New requirements typically need a new programme with its own funding case.', hover: 'Each requirement is essentially rebuilt because existing assets cannot be adapted.', score: 1 },
+        { text: '90-180 days. The institution can meet most requirements with significant effort and lead time.', hover: 'Lineage documentation often lags the data delivery itself.', score: 2 },
+        { text: '30-90 days. Existing assets are adapted; lineage and certification work runs in parallel.', hover: 'The data fabric is coherent enough that adaptation rather than rebuild is the default.', score: 3 },
+        { text: 'Under 30 days for most requirements. The fabric is adapted, not rebuilt.', hover: 'Regulatory agility is a structural property, not the result of heroic effort.', score: 4 }
+      ]
+    },
+    {
+      id: 'T6',
+      text: 'Forward view: Is your infrastructure ready to support latency-sensitive AI decisioning across multiple domains?',
+      hint: 'A risk plane making a real-time exposure decision needs data delivered in sub-seconds — across several domains at once.',
+      options: [
+        { text: 'No. Most data is not available within the latency window an AI decisioning layer would require.', hover: 'AI use cases would be limited to non-time-sensitive decisions on enriched batch data.', score: 1 },
+        { text: 'Possible for low-volume, low-latency use cases on specific domains. Not scalable.', hover: 'A specific wedge can be activated but the wider architecture is not yet supportable.', score: 2 },
+        { text: 'Several domains are latency-ready. Multi-domain coordination in real time is achievable with engineering effort.', hover: 'The Compliance and Identity AI functions are feasible*; Risk plane requires further investment.', score: 3 },
+        { text: 'Yes. Infrastructure is engineered for sub-second multi-domain decisioning across the priority planes.', hover: 'The architecture would not be the constraint on Stage Two AI decision layer activation*.', score: 4 }
+      ]
+    }
+  ],
+
+  // ═══════════════════════════════════════════════════════════════
+  // SECTION 3 — DARR (Data Asset Reuse Ratio)
+  // Question: When you need new data, are you building it again or reusing what you already built?
+  // ═══════════════════════════════════════════════════════════════
+  3: [
+    {
+      id: 'G1',
+      text: 'How is data investment funded?',
+      hint: 'The funding model determines whether you build shared capability or repeat yourself.',
+      options: [
+        { text: 'Entirely use-case led. Each business unit funds its own data needs.', hover: 'The same data gets built multiple times because each requester pays for their own version.', score: 1 },
+        { text: 'Mostly use-case led, with some shared platform costs absorbed centrally.', hover: 'Shared infrastructure exists but is perpetually under-funded and contested.', score: 2 },
+        { text: 'A shared capability fund exists but is renegotiated or raided each budget cycle.', hover: 'The intent is there but the fund is not structurally protected from short-term priorities.', score: 3 },
+        { text: 'A ring-fenced bank-wide capability fund, agreed at board level, separate from use-case investment.', hover: 'Shared foundations are funded as institutional capability, not as overhead.', score: 4 }
+      ]
+    },
+    {
+      id: 'G2',
+      text: 'When a new use case needs data, what is the team’s first instinct?',
+      hint: 'Genuine reuse shows up in instinct, not in policy.',
+      options: [
+        { text: 'Build new — easier and faster than navigating what already exists.', hover: 'Existing assets are unknown, unreliable, or too painful to consume.', score: 1 },
+        { text: 'Build new, but check whether something similar exists in the same business area.', hover: 'Reuse happens within silos but not across them.', score: 2 },
+        { text: 'Check the data catalogue first, build new where existing assets do not fit.', hover: 'A catalogue exists and is used; existing assets are often not quite right for the new use.', score: 3 },
+        { text: 'Default is reuse. Building new requires a justification that existing assets cannot serve.', hover: 'The capability fund and asset library have made reuse genuinely easier than building new.', score: 4 }
+      ]
+    },
+    {
+      id: 'G3',
+      text: 'Who has the authority to compel data standards across organisational boundaries?',
+      hint: 'Ownership without authority is the most common failure mode in bank data governance.',
+      options: [
+        { text: 'No one. Standards are negotiated and contested across business lines.', hover: 'The CDAO is accountable for outcomes but cannot compel the changes that produce them.', score: 1 },
+        { text: 'The CDAO has influence and persuasion but not formal authority.', hover: 'Progress depends on relationships and goodwill, not structural power.', score: 2 },
+        { text: 'A governance forum has authority but enforcement is inconsistent.', hover: 'Decisions are made; execution depends on whether the mandated team has bandwidth.', score: 3 },
+        { text: 'A cross-boundary Data Design Authority has genuine, exercised authority over standards.', hover: 'Standards are set, enforced, and embedded in systems — not negotiated case by case.', score: 4 }
+      ]
+    },
+    {
+      id: 'G4',
+      text: 'How is the CDAO’s authority calibrated against their accountability?',
+      hint: 'Most CDAOs are accountable for things they do not control.',
+      options: [
+        { text: 'Accountable for outcomes across domains they do not own and cannot compel.', hover: 'A structurally impossible role. Success depends on individual heroics or political capital.', score: 1 },
+        { text: 'Significant influence; meaningful gaps between accountability and authority remain.', hover: 'The CDAO can push hard but cannot ultimately force decisions across business boundaries.', score: 2 },
+        { text: 'Clear authority within their direct function; meaningful influence outside it.', hover: 'The right structural starting point but cross-boundary disputes still escalate to ExCo.', score: 3 },
+        { text: 'Authority and accountability are matched. The CDAO has the structural power to deliver what they own.', hover: 'Decisions can be made and enforced; the role is set up to succeed.', score: 4 }
+      ]
+    },
+    {
+      id: 'G5',
+      text: 'What is the tenure of your current data governance mandate?',
+      hint: 'Long-horizon capability cannot be built under short-horizon governance.',
+      options: [
+        { text: 'No formal mandate, or one that expires annually with budget cycles.', hover: 'The programme starts from scratch each year, defending its existence rather than delivering.', score: 1 },
+        { text: 'Multi-year mandate framed around short-horizon deliverables and milestones.', hover: 'The mandate exists but governance still consumes most of the programme’s energy.', score: 2 },
+        { text: 'Multi-year board-visible mandate, but feature-based rather than foundation-based.', hover: 'The board cares about outputs; foundational work is hard to defend in steering committees.', score: 3 },
+        { text: 'A 5-8 year governance contract covers foundational milestones, agreed by board and ExCo.', hover: 'The programme is structurally protected from short-horizon pressure to declare victory early.', score: 4 }
+      ]
+    },
+    {
+      id: 'G6',
+      text: 'Forward view: Are governance and funding structures positioned to support coordinated multi-AI decision layer operation*?',
+      hint: 'Decision planes do not respect business-unit boundaries. Funding and governance must not either.',
+      options: [
+        { text: 'No. Plane-style operation would constantly run into ownership disputes and funding deadlocks.', hover: 'The structure that funded today’s capability cannot fund tomorrow’s.', score: 1 },
+        { text: 'A wedge use case is supportable. Wider AI decision layer activation* would require governance redesign first.', hover: 'One pilot is feasible. Scaling would expose structural unreadiness.', score: 2 },
+        { text: 'Cross-boundary governance and shared funding exist for major domains; gaps remain at the edges.', hover: 'The path to AI decision layer operation* is visible; remediation is identifiable rather than fundamental.', score: 3 },
+        { text: 'Governance and funding are designed for cross-boundary, continuous capability — not for use-case delivery.', hover: 'The institutional plumbing matches what continuous intelligence requires.', score: 4 }
+      ]
+    }
+  ],
+
+  // ═══════════════════════════════════════════════════════════════
+  // SECTION 4 — DQIRR (Data Quality Issue Resolution Rate)
+  // Question: When something is wrong with your data, does it actually get fixed?
+  // ═══════════════════════════════════════════════════════════════
+  4: [
+    {
+      id: 'O1',
+      text: 'When a data quality issue is identified, what typically happens next?',
+      hint: 'The path from finding to fix is where most data programmes stall.',
+      options: [
+        { text: 'A ticket is raised. Resolution depends on whether the upstream team has bandwidth.', hover: 'Issues accumulate. The same problems resurface across reports and use cases.', score: 1 },
+        { text: 'Issues are logged with ownership but resolution timelines are inconsistent.', hover: 'The system records what needs to be fixed; closing the loop is the weak link.', score: 2 },
+        { text: 'A formal issue management process with SLAs exists; business funding for fixes is contested.', hover: 'The process is there but funding for upstream remediation often is not.', score: 3 },
+        { text: 'End-to-end accountability is clear — upstream business owners are accountable, with funding mechanisms in place.', hover: 'Finding and fixing are owned together; resolution within SLA is the norm.', score: 4 }
+      ]
+    },
+    {
+      id: 'O2',
+      text: 'Who owns the fix when an upstream data issue blocks a downstream business outcome?',
+      hint: 'Owning the finding is easy. Owning the fix is where most institutions fail.',
+      options: [
+        { text: 'No one clearly. Negotiation determines who acts and when.', hover: 'The data team is asked to fix what only the upstream business can actually change.', score: 1 },
+        { text: 'The data team owns identification; the business owns the decision to fund a fix.', hover: 'The split creates a structural delay between knowing and acting.', score: 2 },
+        { text: 'The upstream business owns the fix in principle; in practice ExCo escalation is often needed.', hover: 'Accountability is clear on paper, contested when funding is required.', score: 3 },
+        { text: 'The upstream business is accountable as a business outcome, with funding attached.', hover: 'Data quality is a business KPI, not a technical obligation.', score: 4 }
+      ]
+    },
+    {
+      id: 'O3',
+      text: 'How are roles structured relative to the data and decisions they handle?',
+      hint: 'Role design determines who owns data quality fixes. Periodic roles produce periodic accountability. Continuous roles produce continuous resolution — which is what DQIRR measures.',
+      options: [
+        { text: 'Roles are built around periodic cycles — quarterly limits, annual KYC, monthly reconciliation.', hover: 'The job description is shaped by batch rhythm, not real-time response.', score: 1 },
+        { text: 'Some functions have adapted to faster signals (fraud, payments); core roles remain cycle-based.', hover: 'Pockets of continuous operation exist; the institutional rhythm is still periodic.', score: 2 },
+        { text: 'Role redesign for continuous operation is underway in several functions.', hover: 'The organisation is consciously preparing for AI-assisted continuous decisioning.', score: 3 },
+        { text: 'Roles are designed around continuous signal interpretation and AI-assisted decisioning.', hover: 'The human-AI division of labour is explicit and the workforce is shaped for it.', score: 4 }
+      ]
+    },
+    {
+      id: 'O4',
+      text: 'How does your institution govern the line between automated decisioning and human review?',
+      hint: 'The Translation Layer — making probabilistic AI defensible — needs explicit governance, not policy by accident.',
+      options: [
+        { text: 'No formal framework. Humans always decide; AI is informally advisory.', hover: 'There is no operating model for letting AI act, even where it could safely.', score: 1 },
+        { text: 'AI is used for low-stakes decisions; consequential decisions remain fully human.', hover: 'The boundary is implicit, not governed. The same case might be treated differently by different teams.', score: 2 },
+        { text: 'Confidence thresholds and override processes are being defined for some decision types.', hover: 'The framework is emerging; some decisions execute automatically within bounded parameters.', score: 3 },
+        { text: 'A structured framework defines automation vs review by confidence, impact and decision type.', hover: 'The boundary is governed, documented, and recalibrated as the evidence base develops.', score: 4 }
+      ]
+    },
+    {
+      id: 'O5',
+      text: 'How explicitly is the cultural and role transition being managed alongside the technology programme?',
+      hint: 'Cultural readiness directly drives resolution rates. Teams unprepared to work alongside AI accumulate quality issues rather than resolving them. Human readiness is an operational DQIRR enabler, not a soft consideration.',
+      options: [
+        { text: 'Not explicitly. The assumption is the workforce will adapt as tools are deployed.', hover: 'Adoption problems will surface after the technology lands, when fixing them is hardest.', score: 1 },
+        { text: 'Adoption is managed at the programme level; deeper role redesign is not yet addressed.', hover: 'Training and change communications exist; the job itself is not being redesigned.', score: 2 },
+        { text: 'Role redesign is acknowledged and piloted in some functions.', hover: 'The conversation has started; some teams are working in genuinely new ways.', score: 3 },
+        { text: 'The role transition is a named workstream with dedicated resources, running in parallel with technology.', hover: 'The human transition is treated with the same seriousness as the technology build.', score: 4 }
+      ]
+    },
+    {
+      id: 'O6',
+      text: 'Forward view: When an AI decision function* produces a weak or contested recommendation, can your institution trace it back to the data that caused it and fix it?',
+      hint: 'This is the operational test of whether the architecture is honest about its own limits.',
+      options: [
+        { text: 'No. A weak recommendation would create confusion, not traceable remediation.', hover: 'The institution would lose trust quickly because it cannot diagnose its own AI behaviour.', score: 1 },
+        { text: 'Partially. Trace is possible for some flows but requires significant manual effort.', hover: 'A wedge use case is supportable; failure mode response is slow and case-specific.', score: 2 },
+        { text: 'Yes for most cases. Lineage and DQ ownership combine to make resolution traceable and routine.', hover: 'The plane’s honesty about its inputs becomes a feature, not a vulnerability.', score: 3 },
+        { text: 'Yes. Weak recommendations route automatically with traceable resolution paths, owned and time-bound.', hover: 'The architecture is self-correcting at the institutional level, not just the technical one.', score: 4 }
+      ]
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+
+let currentStep = -1; // -1 = hero, 0 = setup, 1-4 = sections, 5 = results
+let answers = {};     // { 'D1': { score: 2, text: '...' }, ... }
+let institutionData = {};
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER QUESTIONS
+// ═══════════════════════════════════════════════════════════════
+
+function renderQuestions() {
+  sections.forEach(sec => {
+    const container = document.getElementById(`questions-${sec.id}`);
+    container.innerHTML = '';
+    questions[sec.id].forEach((q, qi) => {
+      const isForward = qi === 5;
+      const card = document.createElement('div');
+      card.className = 'question-card';
+      card.id = `qcard-${q.id}`;
+
+      // Build options HTML without nested template literals
+      let optsHtml = q.options.map((opt, oi) => {
+        const safeText = opt.text.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        const safeHover = (opt.hover || '').replace(/"/g, '&quot;');
+        return `<div class="option" id="opt-${q.id}-${oi}" data-qid="${q.id}" data-oi="${oi}" data-score="${opt.score}" data-dk="false">
+              <div class="option-dot"></div>
+              <div class="option-body">
+                <div class="option-text">${opt.text}</div>
+                <div class="option-hover">${opt.hover || ''}</div>
+              </div>
+              <div class="option-info" title="${safeHover}">?</div>
+            </div>`;
+      }).join('');
+
+      optsHtml += `<div class="option option-dontknow" id="opt-${q.id}-dk" data-qid="${q.id}" data-oi="dk" data-score="1" data-dk="true">
+            <div class="option-dot"></div>
+            <div class="option-body">
+              <div class="option-text" style="color:var(--grey)">I don't have visibility of this — or this doesn't apply to us.</div>
+              <div class="option-hover">Scored conservatively. Flagged in your results as an area to investigate — visibility gaps are themselves diagnostic signals.</div>
+            </div>
+            <div class="option-info" title="Unknown answers are scored conservatively and flagged in your results.">?</div>
+          </div>`;
+
+      card.innerHTML = `
+        <div class="q-number">Q${qi + 1} of 6 · ${sec.name.toUpperCase()}${isForward ? ' · FORWARD VIEW' : ''}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="q-hint">${q.hint || ''}</div>
+        <div class="options" id="opts-${q.id}">${optsHtml}</div>`;
+
+      container.appendChild(card);
+
+      // Attach click handlers after appending (avoids inline handler issues)
+      card.querySelectorAll('.option').forEach(optEl => {
+        optEl.addEventListener('click', () => {
+          const qid = optEl.dataset.qid;
+          const oi = optEl.dataset.oi;
+          const score = parseInt(optEl.dataset.score);
+          const dk = optEl.dataset.dk === 'true';
+          const q2 = findQuestion(qid);
+          const optIdx = dk ? 'dk' : parseInt(oi);
+          const text = dk ? 'Not known at this time' : (q2 ? q2.options[optIdx].text : '');
+          selectOption(qid, optIdx, score, text, dk);
+        });
+      });
+    });
+  });
+}
+
+function escText(t) { return t.replace(/`/g, "'").replace(/\$/g, '').replace(/\\/g, ''); }
+
+function selectOption(qId, optIdx, score, text, isDontKnow) {
+  answers[qId] = { score, text, optIdx, isDontKnow: !!isDontKnow };
+  const opts = document.querySelectorAll(`#opts-${qId} .option`);
+  opts.forEach((o, i) => {
+    const isMatch = optIdx === 'dk' ? o.id === `opt-${qId}-dk` : i === optIdx;
+    o.classList.toggle('selected', isMatch);
+  });
+  document.getElementById(`qcard-${qId}`).classList.add('answered');
+  updateNextButton();
+}
+
+function findQuestion(qId) {
+  for (const sec of sections) {
+    const q = questions[sec.id].find(q => q.id === qId);
+    if (q) return q;
+  }
+  return null;
+}
+
+function updateNextButton() {
+  const btn = document.getElementById('btnNext');
+  if (currentStep === 0) {
+    btn.disabled = !document.getElementById('instName').value.trim() ||
+                   !document.getElementById('instSize').value;
+    return;
+  }
+  if (currentStep >= 1 && currentStep <= 4) {
+    const sec = sections[currentStep - 1];
+    const qs = questions[sec.id];
+    btn.disabled = qs.some(q => !answers[q.id]);
+    return;
+  }
+  btn.disabled = false;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+
+function startDiagnostic() {
+  document.getElementById('heroSection').classList.add('hidden');
+  document.getElementById('progressWrap').classList.add('visible');
+  document.getElementById('navBar').classList.add('visible');
+  renderQuestions();
+  goToStep(0);
+}
+
+function goToStep(step) {
+  // hide all
+  document.getElementById('heroSection').classList.add('hidden');
+  document.querySelectorAll('.setup-section, .q-section, .results-section').forEach(el => {
+    el.classList.add('hidden');
+    el.classList.remove('visible');
+  });
+
+  currentStep = step;
+
+  if (step === 0) {
+    document.getElementById('section-0').classList.remove('hidden');
+    window.scrollTo(0, 0);
+  } else if (step >= 1 && step <= 4) {
+    const el = document.getElementById(`section-${step}`);
+    el.classList.remove('hidden');
+    el.classList.add('visible');
+    window.scrollTo(0, 0);
+  } else if (step === 5) {
+    document.getElementById('results-section').classList.remove('hidden');
+    document.getElementById('results-section').classList.add('visible');
+    window.scrollTo(0, 0);
+    buildResults();
+  }
+
+  updateProgress();
+  updateNavBar();
+  updateNextButton();
+}
+
+function goNext() {
+  if (currentStep === 0) {
+    institutionData = {
+      name: document.getElementById('instName').value.trim() || 'Your Institution',
+      role: 'Senior Practitioner',
+      size: document.getElementById('instSize').value,
+      sizeLabel: document.getElementById('instSize').options[document.getElementById('instSize').selectedIndex].text,
+      jurisdiction: document.getElementById('instJurisdiction').value,
+      jurisdictionLabel: document.getElementById('instJurisdiction').options[document.getElementById('instJurisdiction').selectedIndex].text,
+      context: document.getElementById('instContext').value.trim()
+    };
+  }
+  if (currentStep < 5) goToStep(currentStep + 1);
+}
+
+function goBack() {
+  if (currentStep > 0) goToStep(currentStep - 1);
+}
+
+function jumpToStep(target) {
+  // Can always go back to completed steps
+  // Can go forward only to completed steps or current+1
+  if (target === currentStep) return;
+  
+  // Allow jumping to any step that's been completed (done) or is current
+  const stepEl = document.getElementById(`pstep-${target}`);
+  if (!stepEl) return;
+  
+  // Don't allow jumping forward past unanswered sections
+  if (target > currentStep) {
+    // Check all sections between current and target are complete
+    for (let s = currentStep; s < target; s++) {
+      if (s >= 1 && s <= 4) {
+        const sec = sections[s - 1];
+        const qs = questions[sec.id];
+        const incomplete = qs.some(q => !answers[q.id]);
+        if (incomplete) {
+          // Flash the current step to indicate it needs completing
+          const dot = document.querySelector(`#pstep-${s} .step-dot`);
+          if (dot) {
+            dot.style.borderColor = 'var(--amber)';
+            dot.style.color = 'var(--amber)';
+            setTimeout(() => {
+              dot.style.borderColor = '';
+              dot.style.color = '';
+            }, 800);
+          }
+          return;
+        }
+      }
+      if (s === 0) {
+        if (!institutionData.name) return;
+      }
+    }
+  }
+  
+  goToStep(target);
+}
+
+function updateProgress() {
+  for (let i = 0; i <= 5; i++) {
+    const el = document.getElementById(`pstep-${i}`);
+    if (!el) continue;
+    el.classList.remove('active', 'done');
+    if (i < currentStep) el.classList.add('done');
+    else if (i === currentStep) el.classList.add('active');
+  }
+}
+
+function updateNavBar() {
+  const labels = ['Institution Setup', 'Data Convergence Index (DCI)', 'Regulatory Response Velocity (RRV)', 'Data Asset Reuse Ratio (DARR)', 'DQ Issue Resolution Rate (DQIRR)', 'Your Autonomy Dividend Report'];
+  document.getElementById('navSectionLabel').textContent = `Step ${currentStep + 1} of 6`;
+  document.getElementById('navSectionName').textContent = labels[currentStep] || '';
+
+  if (currentStep >= 1 && currentStep <= 4) {
+    const sec = sections[currentStep - 1];
+    const qs = questions[sec.id];
+    const answered = qs.filter(q => answers[q.id]).length;
+    document.getElementById('navProgress').textContent = `${answered} / ${qs.length} answered`;
+  } else {
+    document.getElementById('navProgress').textContent = '';
+  }
+
+  document.getElementById('btnBack').style.display = currentStep === 0 ? 'none' : 'block';
+  document.getElementById('btnNext').style.display = currentStep === 5 ? 'none' : 'block';
+
+  if (currentStep === 4) {
+    document.getElementById('btnNext').textContent = 'View Results →';
+  } else if (currentStep < 4) {
+    document.getElementById('btnNext').textContent = 'Continue →';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SCORING & RESULTS
+// ═══════════════════════════════════════════════════════════════
+
+function scoreSection(sectionId) {
+  const qs = questions[sectionId];
+  const total = qs.reduce((sum, q) => sum + (answers[q.id]?.score || 0), 0);
+  const max = qs.length * 4;
+  return Math.round((total / max) * 100);
+}
+
+function overallScore() {
+  const scores = sections.map(s => scoreSection(s.id));
+  return Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+}
+
+function getStage(score) {
+  if (score < 40) return 1;
+  if (score < 68) return 2;
+  return 3;
+}
+
+function getMoveForStage(stage, scores) {
+  const minScore = Math.min(...scores);
+  if (minScore < 35) return 1;
+  if (minScore < 55) return 2;
+  if (stage >= 2) return 3;
+  return 4;
+}
+
+function buildResults() {
+  // scores indexed: [0]=DCI, [1]=RRV, [2]=DARR, [3]=DQIRR
+  const scores = sections.map(s => scoreSection(s.id));
+  const dci = scores[0], rrv = scores[1], darr = scores[2], dqirr = scores[3];
+
+  // ── AUTONOMY YIELD CALCULATION ──
+  const ceiling = Math.min(dci, rrv);                      // Technical Autonomy Ceiling
+  const clearance = (darr * dqirr) / 10000;                // Operational Clearance Factor (0–1)
+  const ay = Math.round(ceiling * clearance); // Autonomy Dividend (AD)              // AY %
+
+  // CIQ = weighted toward the lowest (weakest-link aware)
+  const minScore = Math.min(...scores);
+  const avgScore = scores.reduce((a,b) => a+b, 0) / scores.length;
+  const overall = Math.round((minScore * 0.5) + (avgScore * 0.5));   // half weighted to bottleneck
+
+  const stage = getStage(overall);
+  const move = getMoveForStage(stage, scores);
+
+  // Header
+  document.getElementById('resultInstitution').textContent = institutionData.name.toUpperCase() + ' · ' + (institutionData.sizeLabel || '');
+  document.getElementById('resultsDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  // ── AY HEADLINE ──
+  document.getElementById('adNumber').textContent = ay;
+  const ayCls = ay < 15 ? 'low' : ay < 35 ? 'mid' : 'high';
+  const ayLabels = { low: 'Foundation Constrained — structural barriers limiting autonomy', mid: 'Operational Translation — capability exists, clearance is the constraint', high: 'Bridge-Ready — structural foundations in place' };
+  document.getElementById('ayClassification').textContent = ayLabels[ayCls];
+  document.getElementById('ayClassification').className = 'ay-classification ' + ayCls;
+
+  // AY strap - the single sentence that lands
+  const minMetric = ['DCI', 'RRV', 'DARR', 'DQIRR'][scores.indexOf(minScore)];
+  const metricLongName = {
+    'DCI': 'data convergence',
+    'RRV': 'regulatory response velocity',
+    'DARR': 'data asset reuse',
+    'DQIRR': 'data quality issue resolution'
+  }[minMetric];
+
+  let strap = '';
+  if (ay < 15) {
+    strap = `${ay}% Autonomy Dividend\u2019s decisions could safely operate autonomously today. The structural constraint is ${metricLongName} — and until it changes, additional investment in the other dimensions has diminishing returns.`;
+  } else if (ay < 35) {
+    strap = `${ay}% of your institution\u2019s decisions could safely operate autonomously today. The bottleneck is ${metricLongName}. A wedge use case is supportable, but bank-wide AI decision layer activation* requires this constraint to be addressed first.`;
+  } else {
+    strap = `${ay}% of your institution\u2019s decisions could safely operate autonomously today — a competitive position. The four cardinal metrics are aligned. The focus now is wedge selection, governance maturity for Stage Two, and scaling the foundations you have built.`;
+  }
+  document.getElementById('ayStrap').textContent = strap;
+
+  // ── AY MATHS ──
+  document.getElementById('ceilingValue').textContent = ceiling + '% = min(' + dci + ', ' + rrv + ')';
+  document.getElementById('clearanceValue').textContent = (clearance * 100).toFixed(1) + '% = ' + darr + '% × ' + dqirr + '%';
+  document.getElementById('adValueMaths').textContent = ay + '%';
+
+  // Stage banner
+  const stageClass = `s${stage}`;
+  const stageNames = ['', 'Pre-Foundation', 'Foundation in Progress', 'Bridge-Ready'];
+  const stageDescs = [
+    '',
+    'Your institution has the intent but the foundational conditions for continuously intelligent operation are not yet in place. The gap between where you are and where you need to be is primarily structural — funding model, governance contract, and data ownership — rather than technical. The good news: these are solvable without replacing your core systems.',
+    'Meaningful foundations are being built, but critical structural conditions remain unresolved. The risk at this stage is not capability — it is sequencing. Programmes at this stage often attempt AI decision layer activation* before the data foundations are ready, producing confident-sounding outputs on incomplete information.',
+    'Your institution has the structural foundations to sequence the transition. The infrastructure constraint is understood and being addressed, data governance is coherent, and the sequencing logic can be followed. The focus now is on wedge selection, Move Two execution, and building the confidence threshold frameworks that Stage Two requires.'
+  ];
+
+  document.getElementById('stageName').textContent = stageNames[stage];
+  document.getElementById('stageName').className = `stage-name ${stageClass}`;
+  document.getElementById('stageDesc').textContent = stageDescs[stage];
+  document.getElementById('stageScore').textContent = overall + '%';
+  document.getElementById('stageScore').className = `stage-score ${stageClass}`;
+
+  // Signal chips
+  const signalRow = document.getElementById('signalRow');
+  signalRow.innerHTML = '';
+  const chipDefs = [
+    { label: 'DCI', score: scores[0] },
+    { label: 'RRV', score: scores[1] },
+    { label: 'DARR', score: scores[2] },
+    { label: 'DQIRR', score: scores[3] }
+  ];
+  chipDefs.forEach(c => {
+    const chip = document.createElement('div');
+    chip.className = `signal-chip ${c.score < 40 ? 'gap' : c.score < 68 ? 'partial' : 'ready'}`;
+    chip.textContent = `${c.label} ${c.score}%`;
+    signalRow.appendChild(chip);
+  });
+
+  // Activate stage scale
+  ['scaleS1','scaleS2','scaleS3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active-stage');
+  });
+  const activeScale = ay < 15 ? 'scaleS1' : ay < 35 ? 'scaleS2' : 'scaleS3';
+  const activeEl = document.getElementById(activeScale);
+  if (activeEl) activeEl.classList.add('active-stage');
+
+  // Metrics grid
+  const metricDefs = [
+    { name: 'DCI',   full: 'Data Convergence Index',     score: scores[0], desc: 'Shared identity across systems' },
+    { name: 'RRV',   full: 'Regulatory Response Velocity', score: scores[1], desc: 'Infrastructure agility for new requirements' },
+    { name: 'DARR',  full: 'Data Asset Reuse Ratio',     score: scores[2], desc: 'Shared capability vs repeated build' },
+    { name: 'DQIRR', full: 'DQ Issue Resolution Rate',   score: scores[3], desc: 'Traceable fix accountability' }
+  ];
+  const grid = document.getElementById('metricsGrid');
+  grid.innerHTML = '';
+  metricDefs.forEach((m, i) => {
+    const cls = m.score < 40 ? 'low' : m.score < 68 ? 'mid' : 'high';
+    const stageTag = m.score < 40 ? 'Bottleneck' : m.score < 68 ? 'In Progress' : 'Ready';
+    const card = document.createElement('div');
+    card.className = 'metric-card';
+    card.innerHTML = `
+      <div class="metric-card-name">${m.name}</div>
+      <div class="metric-card-full">${m.full}</div>
+      <div class="metric-bar-wrap"><div class="metric-bar ${cls}" id="mbar-${i}"></div></div>
+      <div class="metric-pct ${cls}">${m.score}%</div>
+      <div class="metric-stage-tag">${stageTag}</div>`;
+    grid.appendChild(card);
+    setTimeout(() => { document.getElementById(`mbar-${i}`).style.width = m.score + '%'; }, 200 + i * 100);
+  });
+
+  // Move card
+  const moveNames = ['', 'Assess Before You Activate', 'Choose the Right Wedge', 'Build the Sequence, Not the Plan', 'Measure Progress, Not Activity'];
+  const moveDescs = [
+    '',
+    'Before any plane is activated, before any use case is selected, and before any investment case is made — your institution needs an honest picture of where it actually stands across all four dimensions. Your assessment indicates this diagnostic work is incomplete. The constraints it will surface are real, and discovering them mid-delivery is significantly more expensive than discovering them now.',
+    'Your foundational assessment is substantially complete. The next decision — which use case to activate first — is disproportionately consequential. A wedge that fails does not just fail; it sets the programme back by years and gives every sceptic the evidence they need. Selection must be equal parts commercial (does senior leadership care about this outcome?) and operational (is the data for this domain the most complete in the institution?).',
+    'The wedge is selected and the first AI decision layer activation* is underway. The sequencing logic for the full programme must now be built around three dependency principles: data before planes, infrastructure before latency-sensitive planes, and governance before autonomy. A fixed timeline is a mistake at this stage — the sequence must emerge from what the wedge reveals about your actual data and infrastructure constraints.',
+    'The hardest and most important discipline in a programme of this nature is measuring the right things. The problems that stop appearing — reconciliation breaks, regulatory findings, erroneous customer charges — are the outcomes that matter. They are also the hardest to attribute. The metrics framework is the instrument that makes the case for continued investment when the early outputs are infrastructure rather than features.'
+  ];
+
+  document.getElementById('moveNum').textContent = move;
+  document.getElementById('moveName').textContent = moveNames[move];
+  document.getElementById('moveDesc').textContent = moveDescs[move];
+
+  // Activate move roadmap
+  for (let m = 1; m <= 4; m++) {
+    const el = document.getElementById('mroad-' + m);
+    if (el) el.classList.toggle('active-move', m === move);
+  }
+
+  // Priorities
+  const priorities = buildPriorities(stage, move, scores);
+  const list = document.getElementById('priorityList');
+  list.innerHTML = '';
+  priorities.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'priority-item';
+    item.innerHTML = `<div class="priority-num">${i + 1}</div><div class="priority-text">${p}</div>`;
+    list.appendChild(item);
+  });
+
+  // Flag don't-know answers
+  const dontKnows = [];
+  const metricLabels = ['DCI', 'RRV', 'DARR', 'DQIRR'];
+  sections.forEach((sec, si) => {
+    questions[sec.id].forEach(q => {
+      if (answers[q.id] && answers[q.id].isDontKnow) {
+        dontKnows.push({ metric: metricLabels[si], question: q.text });
+      }
+    });
+  });
+  const dkCard = document.getElementById('dontknowCard');
+  const dkList = document.getElementById('dontknowList');
+  if (dontKnows.length > 0 && dkCard && dkList) {
+    dkCard.classList.remove('hidden');
+    dkList.innerHTML = '';
+    dontKnows.forEach(dk => {
+      const item = document.createElement('div');
+      item.className = 'dontknow-item';
+      item.innerHTML = `<div class="dontknow-metric">${dk.metric}</div><div>${dk.question}</div>`;
+      dkList.appendChild(item);
+    });
+  } else if (dkCard) {
+    dkCard.classList.add('hidden');
+  }
+
+  // Store for synthesis - now includes AY
+  window._assessmentData = { scores, overall, ay, ceiling, clearance, stage, move, stageNames, moveNames, institutionData, answers, dontKnows };
+
+  // Auto-save to Sheets (silent)
+  setTimeout(() => saveToSheets('auto'), 1000);
+}
+
+function buildPriorities(stage, move, scores) {
+  const priorities = [];
+  const minIdx = scores.indexOf(Math.min(...scores));
+  const sectionNames = ['Data programme funding and ownership', 'Technology infrastructure', 'Governance and accountability', 'Operating model and skills'];
+
+  // Always lead with the lowest scoring dimension
+  const lowName = sectionNames[minIdx];
+  if (scores[minIdx] < 40) {
+    priorities.push(`<strong>Address the foundational gap in ${lowName} first.</strong> At your current score (${scores[minIdx]}%), this dimension will surface as the constraint that limits every downstream step. Attempting to sequence forward before this gap is addressed produces programmes that discover their real constraints mid-delivery.`);
+  }
+
+  // Governance-specific
+  if (scores[2] < 50) {
+    priorities.push(`<strong>Establish the governance contract before the programme scales.</strong> The board conversation about long-horizon programme oversight is uncomfortable — but it is significantly more expensive to have after the first difficult steering committee. The governance contract must come before scaling, not be negotiated once the programme is under pressure.`);
+  }
+
+  // Data funding model
+  if (scores[0] < 50 && scores[2] < 60) {
+    priorities.push(`<strong>Reorient data investment from use-case led to shared capability.</strong> The most consequential structural change in your readiness assessment is the funding model. A bank-wide data capability fund — ring-fenced, board-agreed, separate from use-case investment — is the prerequisite for a data fabric that serves multiple planes simultaneously. Without it, the same data will be built multiple times for different purposes.`);
+  }
+
+  // Tech infrastructure
+  if (scores[1] < 55) {
+    priorities.push(`<strong>Identify and protect the minimum viable technology foundation for initial AI decision layer activation*.</strong> You do not need to replace your core systems before the first plane activates. You need: a Change Data Capture pipeline from core systems to a modern data platform, basic event streaming for the highest-priority data domains, and an API layer capable of exposing plane outputs. Identify which of these you already have, which are underway, and which require deliberate investment.`);
+  }
+
+  // Move 1 specific
+  if (move === 1) {
+    priorities.push(`<strong>Complete the domain-by-domain data maturity assessment before committing to a use case.</strong> An overall data quality score is not useful for sequencing decisions. What you need is a domain-by-domain assessment: which data entities are real-time capable today, which are near-real-time with known quality issues, which are batch-only. This tells you which planes can activate on current infrastructure and which require data readiness work first.`);
+  }
+
+  // Human transition
+  if (scores[3] < 50) {
+    priorities.push(`<strong>Begin the operating model and role redesign workstream in parallel, not after.</strong> Technology programmes consistently underestimate the human transition and consistently pay for it later. The people who will work alongside AI-assisted planes need to be prepared for a fundamentally different job. Starting this conversation after the technology is built produces adoption problems that cannot be solved by better change management.`);
+  }
+
+  // Cap at 4
+  return priorities.slice(0, 4);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NERVE CORE SYNTHESIS
+// ═══════════════════════════════════════════════════════════════
+
+async function runSynthesis() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (apiKey.length < 20) {
+    alert('Please enter a valid Nerve Core key in the header to activate the synthesis.');
+    return;
+  }
+
+  const d = window._assessmentData;
+  if (!d) return;
+
+  document.getElementById('synthesisStatus').textContent = 'Synthesising';
+  document.getElementById('synthesisStatus').className = 'synthesis-status generating';
+  document.getElementById('noApiNote').style.display = 'none';
+  document.getElementById('synthesisOutput').textContent = '';
+  document.getElementById('synthesisOutput').classList.add('streaming');
+  document.getElementById('btnSynthesize').disabled = true;
+  document.getElementById('loadingOverlay').classList.add('visible');
+
+  // Build answer summary
+  const answerSummary = sections.map(sec => {
+    const qs = questions[sec.id];
+    return `${sec.name.toUpperCase()} (${d.scores[sec.id - 1]}%)\n` +
+      qs.map(q => `  ${q.id}: ${d.answers[q.id]?.text || 'Not answered'}`).join('\n');
+  }).join('\n\n');
+
+  const prompt = `You are the Nerve Core of BluemeBank — an AI orchestrator that synthesises institutional readiness assessments and produces practitioner-grade advisory output for CDAOs and COOs.
+
+You have completed a Bridge Diagnostic assessment for the following institution:
+
+INSTITUTION: ${d.institutionData.name}
+SIZE: ${d.institutionData.sizeLabel || 'Not specified'}
+IMPORTANT CALIBRATION: ${d.institutionData.size === 'tier3' || d.institutionData.size === 'tier4' ? 
+'This is a mid-size or community/challenger institution. Calibrate your synthesis accordingly — the path for smaller institutions is often cleaner. The legacy estate is less complex, the board is closer to delivery reality, and modern cloud-native core banking platforms are more immediately viable. Do not apply Tier 1 global bank constraints to this institution.' : 
+'This is a Tier 1 or Tier 2 institution. The structural conditions of large banks — fragmented legacy estates, complex ownership structures, layered governance — fully apply.'}
+JURISDICTION: ${d.institutionData.jurisdictionLabel || 'Not specified'}
+ADDITIONAL CONTEXT: ${d.institutionData.context || 'None provided'}
+COMPLETING ROLE: ${d.institutionData.role || 'Senior practitioner'}
+
+ASSESSMENT SCORES:
+- Data Convergence Index (DCI): ${d.scores[0]}%
+- Regulatory Response Velocity (RRV): ${d.scores[1]}%
+- Data Asset Reuse Ratio (DARR): ${d.scores[2]}%
+- DQ Issue Resolution Rate (DQIRR): ${d.scores[3]}%
+- CIQ — Continuous Intelligence Quotient: ${d.overall}%
+- Stage: ${d.stage} (${d.stageNames[d.stage]})
+- Current Sequencing Position: Move ${d.move} — ${d.moveNames[d.move]}
+
+AUTONOMY YIELD CALCULATION:
+- Technical Autonomy Ceiling = min(DCI, RRV) = ${d.ceiling}%
+- Operational Clearance Factor = (DARR × DQIRR) / 10000 = ${(d.clearance*100).toFixed(1)}%
+- AUTONOMY DIVIDEND (AD) = ${d.ay}%
+
+AY interpretation: AD (Autonomy Dividend) represents the proportion of consequential institutional decisions that could safely operate autonomously today given the four cardinal metrics. It is the boardroom metric — derived transparently from the four pillars, designed to make the bottleneck visible at the institutional level.
+
+DETAILED RESPONSES:
+${answerSummary}
+
+Write a practitioner-grade synthesis of 4–5 paragraphs for a CDAO or COO.
+
+Paragraph 1: Open with the Autonomy Dividend number and what it means. Name the structural condition this institution is in — specifically based on which of the four pillars is the bottleneck. Be precise about why min(DCI, RRV) produces the ceiling it does, and how DARR × DQIRR is constraining clearance.
+
+Paragraph 2: What is the most consequential single thing that needs to change to move the AY? Use the formula to explain — moving the lowest cardinal metric will lift the ceiling more than improving the others. Be direct.
+
+Paragraph 3: What sequencing logic should govern the next 12 months? What must be true before the next step is possible? Name specific dependencies in plain language.
+
+Paragraph 4: What is the realistic risk if the institution continues on its current trajectory? Quantify in AD terms where possible — for example, "without addressing X, AY will remain capped at Y% regardless of further investment in Z."
+
+Paragraph 5: One sentence — the most important thing the CDAO should bring to the board in their next conversation about data investment.
+
+Write as a senior practitioner with 20+ years inside banking data and architecture. Use the language of the BluemeBank framework (planes, Nerve Core, Translation Layer, wedge selection, capability fund) where relevant. Reference the local regulator (${d.institutionData.jurisdictionLabel || 'the primary supervisor'}) naturally where it adds credibility. Be direct, specific, and honest. Do not use bullet points. Do not use headings. Write in continuous prose.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1200,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    document.getElementById('loadingOverlay').classList.remove('visible');
+
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      const msg = e.error?.message || e.message || JSON.stringify(e) || 'Unknown API error (status ' + res.status + ')';
+      throw new Error(msg);
+    }
+    const data = await res.json();
+    const text = data.content.map(b => b.text || '').join('\n');
+
+    document.getElementById('synthesisOutput').classList.remove('streaming');
+    // Render structured output with section headers highlighted
+    // Format structured output - handles ** headers and • or - bullets
+    const formatted = text
+      .split('\n')
+      .map(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return '<div style="height:6px"></div>';
+        // Bold section header
+        if (/^\*\*(.+)\*\*$/.test(trimmed)) {
+          const label = trimmed.replace(/\*\*/g, '');
+          return '<div style="color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:DM Mono,monospace;margin-top:18px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(201,168,76,0.2);">' + label + '</div>';
+        }
+        // Bullet point (• or -)
+        if (/^[•\-] (.+)/.test(trimmed)) {
+          const content = trimmed.replace(/^[•\-] /, '');
+          return '<div style="display:flex;gap:10px;margin-bottom:7px;font-size:12.5px;line-height:1.7;align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:2px">◦</span><span style="color:var(--grey-light)">' + content + '</span></div>';
+        }
+        // Regular paragraph text
+        return '<div style="font-size:13px;line-height:1.8;color:var(--grey-light);margin-bottom:6px">' + trimmed + '</div>';
+      })
+      .join('');
+    document.getElementById('synthesisOutput').innerHTML = formatted;
+
+    document.getElementById('synthesisStatus').textContent = 'Complete';
+    document.getElementById('synthesisStatus').className = 'synthesis-status done';
+    const disc = document.getElementById('synthesisDisclosure');
+    if (disc) disc.style.display = 'block';
+  } catch(err) {
+    document.getElementById('loadingOverlay').classList.remove('visible');
+    document.getElementById('synthesisOutput').classList.remove('streaming');
+    document.getElementById('synthesisOutput').textContent = `Synthesis error: ${err.message}`;
+    document.getElementById('synthesisStatus').textContent = 'Error';
+    document.getElementById('synthesisStatus').className = 'synthesis-status waiting';
+  }
+
+  document.getElementById('btnSynthesize').disabled = false;
+}
+
+async function streamText(elId, text, delay = 6) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.textContent = '';
+  for (let i = 0; i < text.length; i++) {
+    el.textContent += text[i];
+    if (i % 4 === 0) await new Promise(r => setTimeout(r, delay));
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// DATA PERSISTENCE — Google Sheets
+// ═══════════════════════════════════════════════════════════════
+
+async function saveToSheets(requestType) {
+  if (!SHEETS_URL || SHEETS_URL === 'YOUR_APPS_SCRIPT_URL') return;
+  const d = window._assessmentData;
+  if (!d) return;
+
+  const payload = {
+    requestType: requestType, // 'auto', 'save', 'synthesis'
+    institution: d.institutionData,
+    scores: {
+      ad: d.ay,
+      ciq: d.overall,
+      dci: d.scores[0],
+      rrv: d.scores[1],
+      darr: d.scores[2],
+      dqirr: d.scores[3],
+      ceiling: d.ceiling,
+      clearance: d.clearance,
+      stage: d.stage,
+      move: d.move
+    },
+    answers: d.answers
+  };
+
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      mode: 'no-cors' // Apps Script requires no-cors
+    });
+  } catch(err) {
+    console.log('Save to Sheets:', err.message);
+  }
+}
+
+async function requestSynthesisEmail() {
+  const saveBtn = document.getElementById('btnRequestSynthesis');
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Sending...';
+  }
+
+  await saveToSheets('synthesis');
+
+  if (saveBtn) {
+    saveBtn.textContent = '✓ Sent';
+    saveBtn.style.background = 'var(--teal)';
+  }
+
+  // Show confirmation
+  const conf = document.getElementById('synthesisRequestConfirm');
+  if (conf) conf.style.display = 'block';
+}
+
+async function saveResultsManually() {
+  const btn = document.getElementById('btnSaveResults');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+  }
+
+  await saveToSheets('save');
+
+  if (btn) {
+    btn.textContent = '✓ Saved';
+    btn.style.borderColor = 'var(--teal)';
+    btn.style.color = 'var(--teal)';
+  }
+}
+
+
+function restart() {
+  answers = {};
+  institutionData = {};
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.question-card').forEach(c => c.classList.remove('answered'));
+  document.getElementById('instName').value = '';
+  
+  document.getElementById('instSize').value = '';
+  document.getElementById('instJurisdiction').value = '';
+  document.getElementById('instContext').value = '';
+  const dkCard = document.getElementById('dontknowCard');
+  if (dkCard) dkCard.classList.add('hidden');
+
+  document.getElementById('progressWrap').classList.remove('visible');
+  document.getElementById('navBar').classList.remove('visible');
+  document.querySelectorAll('.setup-section, .q-section, .results-section').forEach(el => {
+    el.classList.add('hidden');
+    el.classList.remove('visible');
+  });
+  document.getElementById('heroSection').classList.remove('hidden');
+  currentStep = -1;
+  window.scrollTo(0, 0);
+}
+
+// Live validation on setup fields
+document.addEventListener('DOMContentLoaded', () => {
+  ['instName', 'instSize'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => { if (currentStep === 0) updateNextButton(); });
+    if (el) el.addEventListener('change', () => { if (currentStep === 0) updateNextButton(); });
+  });
+});
+</script>
+</body>
+</html>
