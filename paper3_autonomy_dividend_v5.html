@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Autonomy Dividend — BluemeBank Paper 3</title>
+<meta name="theme-color" content="#0A1628">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Raleway:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --navy:#0A1628;
+  --navy-mid:#0f1e38;
+  --navy-card:#111f35;
+  --gold:#C9A84C;
+  --gold-light:#E8C96A;
+  --gold-dim:rgba(201,168,76,0.12);
+  --white:#F4F1EA;
+  --grey:#5a6f88;
+  --grey-light:#8a9db5;
+  --teal:#2E9E8E;
+  --red:#C0392B;
+  --border:rgba(201,168,76,0.12);
+  --ink:#1a1a18;
+  --page-max:740px;
+  color-scheme: dark;
+}
+
+html{
+  background:#0A1628 !important;
+  background-color:#0A1628 !important;
+  scroll-behavior:smooth;
+}
+
+body{
+  background:#0A1628 !important;
+  background-color:#0A1628 !important;
+  color:var(--white);
+  font-family:'Raleway',sans-serif;
+  font-size:16px;
+  line-height:1.75;
+  min-height:100vh;
+  -webkit-text-size-adjust:100%;
+}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 40px;
+  background:rgba(10,22,40,0.97);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.nav-logo{
+  font-family:'Raleway',sans-serif;
+  font-size:18px;font-weight:800;
+  text-decoration:none;
+}
+.nav-logo .b{color:var(--gold)}
+.nav-logo .k{color:var(--white)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{
+  font-family:'DM Mono',monospace;
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--grey-light);text-decoration:none;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a.active{color:var(--gold)}
+.nav-mobile{display:none;gap:12px;align-items:center}
+.nav-mobile a{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--grey-light);text-decoration:none;
+  padding:5px 10px;
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:4px;
+}
+.nav-mobile a.active{color:var(--gold);border-color:rgba(201,168,76,0.4)}
+
+/* ── HERO ── */
+.hero{
+  max-width:var(--page-max);
+  margin:0 auto;
+  padding:120px 40px 60px;
+}
+.series-tag{
+  display:inline-block;
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);
+  border:1px solid rgba(201,168,76,0.3);
+  padding:5px 14px;border-radius:4px;
+  margin-bottom:28px;
+}
+.hero-rule{
+  width:100%;height:1px;
+  background:linear-gradient(90deg,var(--gold) 0%,rgba(201,168,76,0.1) 100%);
+  margin-bottom:36px;
+}
+.hero h1{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  font-size:clamp(2.8rem,6vw,4.2rem);
+  font-weight:300;line-height:1.05;
+  letter-spacing:-0.02em;
+  margin-bottom:16px;
+}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.25rem;font-weight:300;
+  font-style:italic;
+  color:var(--grey-light);
+  max-width:560px;
+  line-height:1.6;
+  margin-bottom:24px;
+}
+.byline{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--grey);
+}
+.byline span{color:var(--gold)}
+
+/* ── ABSTRACT ── */
+.abstract{
+  max-width:var(--page-max);margin:0 auto;
+  padding:0 40px 48px;
+}
+.abstract-inner{
+  background:rgba(201,168,76,0.06);
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:12px;
+  padding:28px 32px;
+}
+.abstract-label{
+  font-family:'DM Mono',monospace;
+  font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;font-weight:500;
+}
+.abstract-inner p{
+  font-size:14px;color:var(--grey-light);
+  line-height:1.8;
+}
+.abstract-inner p strong{color:var(--white)}
+
+/* ── BODY ── */
+.body{max-width:var(--page-max);margin:0 auto;padding:0 40px}
+
+/* ── RULE ── */
+.rule{
+  border:none;
+  border-top:1px solid rgba(255,255,255,0.06);
+  margin:52px 0;
+}
+.rule-gold{
+  border:none;
+  border-top:1px solid rgba(201,168,76,0.2);
+  margin:52px 0;
+}
+
+/* ── SECTION ── */
+.section-kicker{
+  font-family:'DM Mono',monospace;
+  font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:12px;
+  opacity:1;font-weight:500;
+}
+h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.8rem,3.5vw,2.6rem);
+  font-weight:400;line-height:1.12;
+  letter-spacing:-0.01em;
+  margin-bottom:24px;
+  color:var(--white);
+}
+h2 em{font-style:italic;color:var(--gold)}
+h3{
+  font-family:'Raleway',sans-serif;
+  font-size:12px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:#C9A84C;
+  margin:36px 0 14px;
+}
+
+p{
+  font-size:16px;
+  color:rgba(244,241,234,0.92);
+  line-height:1.85;
+  margin-bottom:22px;
+}
+p strong{color:var(--white);font-weight:700}
+p em{font-style:italic;color:#C8DCF0}
+
+/* ── PULL QUOTE ── */
+.pull{
+  border-left:2px solid var(--gold);
+  padding:16px 0 16px 28px;
+  margin:36px 0;
+}
+.pull p{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.25rem;font-style:italic;
+  color:var(--white);line-height:1.55;
+  margin-bottom:0;
+}
+
+/* ── FORMULA ── */
+.formula-wrap{
+  background:var(--navy-card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:36px 40px;
+  margin:36px 0;
+  text-align:center;
+}
+.formula-expr{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.3rem,3vw,1.8rem);
+  font-weight:400;
+  color:var(--gold);
+  letter-spacing:0.02em;
+  margin-bottom:8px;
+}
+.formula-note{
+  font-family:'DM Mono',monospace;
+  font-size:11px;letter-spacing:1.5px;
+  color:#A8C4DC;
+  margin-bottom:28px;
+}
+.formula-parts{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:20px;
+  align-items:center;
+  margin-top:8px;
+}
+.formula-part{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;
+  padding:20px 18px;
+  text-align:center;
+}
+.fp-label{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:#A8C4DC;margin-bottom:8px;font-weight:500;
+}
+.fp-expr{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.15rem;color:var(--gold);
+  margin-bottom:6px;
+}
+.fp-law{
+  font-size:12px;color:#A8C4DC;
+  font-style:italic;line-height:1.5;
+}
+.formula-op{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem;color:var(--gold);
+  font-weight:300;
+}
+
+/* ── FACTORY CARDS ── */
+.factory-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin:28px 0;
+}
+.factory-card{
+  background:var(--navy-card);
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:10px;
+  padding:22px 22px;
+  transition:border-color 0.2s;
+}
+.factory-card:hover{border-color:rgba(201,168,76,0.25)}
+.fc-metric{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px;
+}
+.fc-factory{
+  font-size:13px;font-weight:700;
+  color:var(--white);margin-bottom:8px;
+}
+.fc-question{
+  font-size:13px;color:#C8DCF0;
+  line-height:1.65;font-style:italic;
+}
+.fc-divider{
+  height:1px;background:rgba(255,255,255,0.08);
+  margin:10px 0;
+}
+.fc-reframe{
+  font-size:12.5px;color:#B0C8DC;
+  line-height:1.6;
+}
+.fc-tool{
+  margin-top:10px;
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  text-transform:uppercase;
+  color:var(--gold);
+  opacity:0.7;
+}
+
+/* ── CALLOUT ── */
+.callout{
+  border-radius:0 10px 10px 0;
+  padding:18px 22px;
+  margin:28px 0;
+  font-size:14px;
+  line-height:1.75;
+}
+.callout strong{font-weight:700}
+.callout-gold{
+  background:rgba(201,168,76,0.07);
+  border-left:2px solid var(--gold);
+  color:rgba(244,241,234,0.85);
+}
+.callout-teal{
+  background:rgba(46,158,142,0.07);
+  border-left:2px solid var(--teal);
+  color:rgba(244,241,234,0.85);
+}
+.callout-red{
+  background:rgba(192,57,43,0.07);
+  border-left:2px solid #c0392b;
+  color:rgba(244,241,234,0.85);
+}
+
+/* ── BENCHMARK ── */
+.bench-wrap{margin:28px 0}
+.bench-row{
+  display:flex;align-items:center;
+  gap:16px;margin:10px 0;
+  font-size:13px;
+}
+.bench-label{
+  width:140px;flex-shrink:0;
+  color:var(--grey-light);
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:1px;
+}
+.bench-track{
+  flex:1;height:6px;
+  background:rgba(255,255,255,0.05);
+  border-radius:3px;overflow:hidden;
+}
+.bench-fill{height:100%;border-radius:3px}
+.bench-val{
+  width:60px;text-align:right;
+  font-family:'DM Mono',monospace;
+  font-size:11px;color:var(--white);
+  letter-spacing:0.5px;font-weight:600;
+}
+
+/* ── WORKED EXAMPLE ── */
+.example-table{
+  width:100%;border-collapse:collapse;
+  margin:28px 0;font-size:14px;
+}
+.example-table th{
+  background:rgba(255,255,255,0.06);
+  text-align:left;padding:10px 14px;
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:#8AABC8;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.example-table td{
+  padding:10px 14px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  color:rgba(244,241,234,0.92);
+  vertical-align:top;
+  line-height:1.55;
+}
+.example-table tr:last-child td{border-bottom:none}
+.td-hl{
+  background:rgba(201,168,76,0.06);
+  font-weight:700;color:var(--white);
+}
+.td-low{color:#E06050;font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600}
+.td-high{color:var(--teal);font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600}
+
+/* ── CIQ ── */
+.ciq-row{
+  display:flex;gap:10px;
+  align-items:center;
+  margin:28px 0;
+  flex-wrap:nowrap;
+}
+.ciq-box{
+  flex:1;min-width:0;
+  background:var(--navy-card);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:10px;
+  padding:16px 12px;text-align:center;
+}
+.ciq-box-label{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:#8AABC8;margin-bottom:6px;
+}
+.ciq-box-val{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem;font-weight:400;
+  color:var(--gold);
+}
+.ciq-box-desc{
+  font-size:10px;color:#8AABC8;
+  font-style:italic;margin-top:4px;
+  line-height:1.4;
+}
+.ciq-op{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.6rem;color:#A8C4DC;
+  flex-shrink:0;
+  text-align:center;
+  min-width:28px;
+}
+.ciq-result{
+  flex:1;min-width:0;
+  background:rgba(201,168,76,0.08);
+  border:1px solid rgba(201,168,76,0.25);
+  border-radius:10px;
+  padding:16px 12px;text-align:center;
+}
+.ciq-result-label{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px;
+}
+.ciq-result-val{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem;color:var(--gold-light);
+}
+
+/* ── CLOSER ── */
+.closer{
+  background:rgba(201,168,76,0.06);
+  border:1px solid rgba(201,168,76,0.2);
+  border-radius:14px;
+  padding:40px;
+  margin:52px 0 20px;
+  text-align:center;
+}
+.closer p{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-style:italic;
+  color:var(--white);line-height:1.65;
+  margin-bottom:0;
+}
+.closer p strong{font-style:normal;color:var(--gold)}
+
+/* ── DIAGNOSTIC CTA ── */
+.diagnostic-cta{
+  margin:32px 0 60px;
+  text-align:center;
+}
+.diagnostic-cta-label{
+  font-family:'DM Mono',monospace;
+  font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--grey-light);margin-bottom:16px;font-weight:500;
+}
+.diagnostic-cta-line{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;font-style:italic;
+  color:var(--grey-light);
+  margin-bottom:24px;
+  line-height:1.6;
+}
+.btn-diagnostic{
+  display:inline-flex;align-items:center;gap:12px;
+  background:var(--gold);color:var(--navy);
+  border:none;border-radius:8px;
+  padding:16px 32px;
+  font-family:'Raleway',sans-serif;
+  font-size:11px;font-weight:800;
+  text-transform:uppercase;letter-spacing:2px;
+  text-decoration:none;
+  cursor:pointer;transition:all 0.2s;
+}
+.btn-diagnostic:hover{
+  background:var(--gold-light);
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(201,168,76,0.25);
+}
+
+/* ── FOOTER ── */
+.footer{
+  border-top:1px solid var(--border);
+  padding:36px 40px;
+  max-width:var(--page-max);
+  margin:0 auto;
+}
+.footer-meta{
+  font-family:'DM Mono',monospace;
+  font-size:10px;letter-spacing:1.5px;
+  color:var(--grey);line-height:1.9;
+}
+.footer-meta a{color:var(--gold);text-decoration:none}
+.footer-copy{
+  margin-top:20px;
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:1px;
+  color:rgba(90,111,136,0.5);
+  text-align:center;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(18px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.hero h1,.hero-sub,.byline{
+  animation:fadeUp 0.7s ease both;
+}
+.hero-sub{animation-delay:0.1s}
+.byline{animation-delay:0.2s}
+
+/* ── SERIES CLOSER ── */
+.series-closer{
+  background:var(--navy-card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:36px 40px;
+  margin:52px 0 40px;
+}
+.series-closer-label{
+  font-family:'DM Mono',monospace;
+  font-size:13px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:28px;font-weight:500;
+}
+.series-items{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+.series-item{
+  background:rgba(255,255,255,0.02);
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:10px;
+  padding:20px 22px;
+}
+.series-item-next{
+  border-color:rgba(201,168,76,0.15);
+  background:rgba(201,168,76,0.03);
+}
+.series-item-tag{
+  font-family:'DM Mono',monospace;
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:10px;font-weight:500;
+}
+.series-item-text{
+  font-size:14px;color:var(--grey-light);
+  line-height:1.7;margin-bottom:14px;
+}
+.series-item-link{
+  font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--gold);text-decoration:none;
+  border-bottom:1px solid rgba(201,168,76,0.3);
+  padding-bottom:2px;
+  transition:border-color 0.2s;
+}
+.series-item-link:hover{border-color:var(--gold)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .nav{padding:12px 20px}
+  .nav-links{display:none}
+  .nav-mobile{display:flex}
+  .hero,.abstract,.body,.footer{padding-left:20px;padding-right:20px}
+  .hero{padding-top:100px}
+  .series-items{grid-template-columns:1fr}
+  .factory-grid{grid-template-columns:1fr}
+  .formula-parts{grid-template-columns:1fr;gap:12px}
+  .formula-op{display:none}
+  .ciq-row{flex-direction:column;align-items:stretch;gap:4px}
+  .ciq-op{font-size:1.2rem;padding:2px 0;min-width:unset}
+  .ciq-box,.ciq-result{width:100%;}
+  .example-table{font-size:12px}
+  .example-table th,.example-table td{padding:8px 10px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="https://sasidharbhavaraju.github.io/BluemeBank/">
+    <span class="b">Blueme</span><span class="k">Bank</span>
+  </a>
+  <div class="nav-links">
+    <a href="https://sasidharbhavaraju.github.io/BluemeBank/BluemeBank-An_Architectural_Note_2026_F.pdf">Paper 1</a>
+    <a href="https://sasidharbhavaraju.github.io/BluemeBank/Bridge_to_BluemeBank-Data_and_Infrastructure_Readiness_F.pdf">Paper 2</a>
+    <a href="#" class="active">Paper 3</a>
+    <a href="https://sasidharbhavaraju.github.io/BluemeBank/B_Diagnostics">Diagnostic ◈</a>
+  </div>
+  <div class="nav-mobile">
+    <a href="https://sasidharbhavaraju.github.io/BluemeBank/BluemeBank-An_Architectural_Note_2026_F.pdf">P1</a>
+    <a href="https://sasidharbhavaraju.github.io/BluemeBank/Bridge_to_BluemeBank-Data_and_Infrastructure_Readiness_F.pdf">P2</a>
+    <a href="#" class="active">P3</a>
+    <a href="https://sasidharbhavaraju.github.io/BluemeBank/B_Diagnostics">Diagnostic ◈</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="series-tag">BluemeBank · Paper 3 · June 2026</div>
+  <div class="hero-rule"></div>
+  <h1>The Autonomy<br><em>Dividend</em></h1>
+  <p class="hero-sub">Most banks are running on invisible factories. This is how you measure the cost of running them.</p>
+  <div class="byline">Sasidhar Bhavaraju &nbsp;·&nbsp; <span>BluemeBank</span></div>
+</div>
+
+<!-- ABSTRACT -->
+<div class="abstract">
+  <div class="abstract-inner">
+    <div class="abstract-label">In brief</div>
+    <p>Most banks are running on invisible factories — reconciliation factories, interpretation factories, duplication factories, escalation factories. They have been normalised as the cost of doing business, when in truth they are a cost that grows quietly every year they are left unaddressed. This paper introduces the <strong>Autonomy Dividend</strong> — a single, computable number that measures how much of an institution's autonomous potential is being consumed by those factories. The term Autonomy Dividend is used across the technology industry to describe the general value of moving toward autonomous AI operation. This paper defines the Autonomy Dividend as something more specific: a precise formula with named inputs, defined thresholds, and a diagnostic instrument. The Autonomy Dividend is not a readiness score. It is a measure of how much of the factory model remains. The distinction between aspiration and instrument is precisely the point.</p>
+    <p style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(201,168,76,0.2);font-size:13.5px;color:#C8DCF0;font-style:italic;margin-bottom:0;">A self-serve diagnostic is available at the end of this paper — 24 questions, about ten minutes, and it calculates your Autonomy Dividend automatically. The four cardinal metrics do not require data extraction from systems. They are derived entirely from practitioner knowledge of the institution.</p>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="body">
+
+  <!-- S1 -->
+  <hr class="rule">
+  <div class="section-kicker">01 — The problem with capability scores</div>
+  <h2>Capability is not<br><em>the same as deployability.</em></h2>
+
+  <p>The first BluemeBank paper argued that banks are built like factories and should work like nervous systems — sequential, siloed, reactive versus simultaneous, connected, intelligent. That argument was about architecture. This paper provides the measuring instrument for the journey between the two.</p>
+
+  <p>No one builds a reconciliation factory on purpose. A data pipeline breaks, someone patches it downstream, another pipeline follows, another patch arrives. Over time an institution accumulates entire teams whose function is to reconcile what the architecture should have resolved automatically, and it has been there long enough that it is no longer questioned — it is simply accepted as the cost of doing business in a complex institution.</p>
+
+  <p>The same pattern governs regulatory change. A new requirement lands, the data organisation scrambles, heroic effort closes the gap eventually and expensively, the institution exhales, and then the next requirement arrives. Nothing structural has changed between one scramble and the next. The factory runs again, consuming the same resources, producing the same anxiety, and leaving the same residue of technical debt behind it. What makes this particularly expensive is that it happens in parallel with significant AI investment — in models, in governance frameworks, in cloud migration — and the factories quietly absorb much of the value that investment was supposed to generate.</p>
+
+  <p>Capability describes what an institution has built, not what it can actually deploy at scale. The gap between the two is where the factories live, and closing it is the most consequential data infrastructure challenge in banking today.</p>
+
+  <div class="pull">
+    <p>The Autonomy Dividend measures the gap between what an institution has invested in and what it can actually run autonomously. Most institutions have no idea how wide it is.</p>
+  </div>
+
+  <p>The Autonomy Dividend is not a maturity score in the tradition of frameworks that assess capability — whether the right processes, roles, and governance structures have been built. Those are useful instruments for a particular question. The Autonomy Dividend asks a different question: given everything that has been built, how much of it actually clears the operational, regulatory, and data infrastructure tests required for genuine autonomous operation? The remainder — the percentage that does not clear — is not waiting for better models or faster infrastructure. It is sitting in factories, waiting for a human to reconcile, interpret, deduplicate, or escalate it into something the system can act on.</p>
+
+  <p>Importantly, the four cardinal metrics that feed the Autonomy Dividend formula are not extracted from systems or data warehouses. They are derived from a 24-question diagnostic that any senior practitioner who knows their institution can complete in about ten minutes. No data project required. The diagnostic is at the end of this paper.</p>
+
+  <hr class="rule">
+
+  <!-- S2 -->
+  <div class="section-kicker">02 — The four factories</div>
+  <h2>Every bank contains<br><em>invisible factories.</em></h2>
+
+  <p>The framework rests on four metrics, and before introducing the formula it is worth establishing why four and not twenty — because this is the foundational argument of this paper.</p>
+
+  <p>Every autonomous institution ultimately fails for one of four reasons — it cannot <em style="color:#E8C96A;font-style:italic;">identify</em>, <em style="color:#E8C96A;font-style:italic;">adapt</em>, <em style="color:#E8C96A;font-style:italic;">reuse</em>, or <em style="color:#E8C96A;font-style:italic;">repair</em> its data reliably enough to act on it autonomously. These are not technology failures in isolation but the result of workflows and organisational choices set up years before AI arrived, and each one produces a factory that substitutes human effort for what the architecture should provide automatically.</p>
+
+  <div class="factory-grid">
+    <div class="factory-card">
+      <div class="fc-metric">DCI · Data Convergence Index</div>
+      <div class="fc-factory">The Reconciliation Factory</div>
+      <div class="fc-question">Can I resolve the same customer across more than two systems and trust the answer?</div>
+      <div class="fc-divider"></div>
+      <div class="fc-reframe">If you cannot resolve a customer confidently across more than two systems, you cannot trust the output of your data when it matters most. The reconciliation factory is the most visible and most accepted of the four. It has been normalised as operational overhead, when in truth it is the cost of an identity problem that the architecture was never designed to solve automatically.</div>
+      <div class="fc-tool">Measured in the diagnostic ↓</div>
+    </div>
+    <div class="factory-card">
+      <div class="fc-metric">RRV · Regulatory Response Velocity</div>
+      <div class="fc-factory">The Interpretation Factory</div>
+      <div class="fc-question">When a regulator changes a rule, how long before my systems reflect it?</div>
+      <div class="fc-divider"></div>
+      <div class="fc-reframe">Regulation is merely the most visible external stimulus. If your organisation cannot absorb regulatory change without heroic effort, it cannot absorb any external change without heroic effort. The interpretation factory is not a compliance function. It is a proxy for whether your technology infrastructure is designed to adapt — or designed to be rebuilt, repeatedly, by hand.</div>
+      <div class="fc-tool">Measured in the diagnostic ↓</div>
+    </div>
+    <div class="factory-card">
+      <div class="fc-metric">DARR · Data Asset Reuse Ratio</div>
+      <div class="fc-factory">The Duplication Factory</div>
+      <div class="fc-question">When we need data for a new use case, do we reuse what exists or build it again?</div>
+      <div class="fc-divider"></div>
+      <div class="fc-reframe">Every time a team builds a bespoke data asset for a defensible, logical reason, they are creating future dependency, future cost, and future coordination overhead. The duplication factory is the most insidious because it is always individually rational and collectively catastrophic. Each fiefdom makes sense to the person who built it. Together, they make the institution impossible to automate.</div>
+      <div class="fc-tool">Measured in the diagnostic ↓</div>
+    </div>
+    <div class="factory-card">
+      <div class="fc-metric">DQIRR · DQ Issue Resolution Rate</div>
+      <div class="fc-factory">The Escalation Factory</div>
+      <div class="fc-question">When something goes wrong with our data, do we fix the issue or fix the blame?</div>
+      <div class="fc-divider"></div>
+      <div class="fc-reframe">This is not purely a data quality metric. It measures the pace at which an institution can identify a data problem, trace it to its source, and resolve it permanently — the organisational metabolism that either enables frictionless data flow or quietly throttles it. The escalation factory is the hardest to see from the outside and the most revealing indicator of whether an institution is genuinely prepared to run AI at scale.</div>
+      <div class="fc-tool">Measured in the diagnostic ↓</div>
+    </div>
+  </div>
+
+  <div class="callout callout-gold">
+    <strong>Why four and not twenty?</strong> Because every autonomous banking failure traces back to one of these four structural conditions — not to a missing feature, not to insufficient investment, not to inadequate talent, but to a factory that was never named and therefore never eliminated. Name the factory, measure it, address it, and the path to autonomous operation becomes visible. Leave it unnamed and it will quietly consume every AI investment the institution makes.
+  </div>
+
+  <hr class="rule">
+
+  <!-- S3 -->
+  <div class="section-kicker">03 — The formula</div>
+  <h2>A number that is<br><em>intentionally directional.</em></h2>
+
+  <p>The Autonomy Dividend is defined as:</p>
+
+  <div class="formula-wrap">
+    <div class="formula-expr">AD &nbsp;=&nbsp; min(DCI, RRV) &nbsp;×&nbsp; <span style="white-space:nowrap;">[(DARR × DQIRR) ÷ 100]</span></div>
+    <div class="formula-note">expressed as a percentage · 0 – 100</div>
+    <div class="formula-parts">
+      <div class="formula-part">
+        <div class="fp-label">Technical Autonomy Ceiling</div>
+        <div class="fp-expr">min(DCI, RRV)</div>
+        <div class="fp-law">Liebig's Law of the Minimum — a system's output is constrained by its scarcest resource, not its average</div>
+      </div>
+      <div class="formula-op">×</div>
+      <div class="formula-part">
+        <div class="fp-label">Operational Clearance Factor</div>
+        <div class="fp-expr">(DARR × DQIRR) ÷ 100</div>
+        <div class="fp-law">Reliability theory — independent failure modes compound rather than average</div>
+      </div>
+    </div>
+  </div>
+
+  <p>The Autonomy Dividend is intentionally directional rather than mathematically exhaustive. Like NPS — Fred Reichheld's Net Promoter Score — its value lies not in theoretical precision but in consistent application over time. The institution that calculates its Autonomy Dividend quarterly and watches the trend will learn more from that trend than from any static maturity assessment. The number forces a conversation, and the conversation is the point.</p>
+
+  <h3>Why the minimum — not the average — for DCI and RRV</h3>
+
+  <p>Justus von Liebig established in the nineteenth century that the growth of a plant is determined not by the total nutrients available but by the scarcest one. It does not matter how rich the soil is in nitrogen and potassium if phosphorus is at three percent, because the ceiling is always set by the minimum resource, not the average.</p>
+
+  <p>The same logic governs autonomous banking. Data pipelines can be excellent and engineers exceptional, but if regulatory response takes ninety days — if the interpretation factory is running at full capacity every time a rule changes — then the technical autonomy ceiling is set by that constraint rather than by the average of all inputs. Averaging DCI and RRV allows a strong score on one dimension to mask a catastrophic gap in the other, and the minimum formula does not permit that. This is not pessimistic, but meant to be viewed as pragmatic.</p>
+
+  <h3>Why the product — not the average — for DARR and DQIRR</h3>
+
+  <p>When two independent systems must both function for an outcome to occur, their probabilities multiply rather than average. If a car engine works ninety percent of the time and the gearbox works ninety percent of the time, the driver arrives at their destination not ninety percent of the time but eighty-one percent of the time, because independent failure modes compound. DARR and DQIRR are independent operational dimensions — one measures the efficiency of data architecture, the other the responsiveness of operational processes — and a failure in either will prevent a decision from completing correctly.</p>
+
+  <div class="callout callout-red">
+    <strong>The number that surprises most observers:</strong> A DARR of 70% and a DQIRR of 70% feels like a reasonably strong operational position. The Operational Clearance Factor is 49%. Before even considering input quality or regulatory readiness, nearly half the intended autonomous throughput is exposed to operational failure. The multiplication is not punitive. It is the honest arithmetic of independent risk.
+  </div>
+
+  <hr class="rule">
+
+  <!-- S4 -->
+  <div class="section-kicker">04 — The readiness score</div>
+  <h2>CIQ — a managerial instrument<br><em>where one gap cannot hide.</em></h2>
+
+  <p>The Autonomy Dividend is the outcome metric — the number a CEO, CFO, or board tracks to understand how much autonomous potential the institution is actually capturing. But AD is multiplicative, which means it compresses the signal efficiently into one number while losing some of the diagnostic shape in the process. A low AD could mean a catastrophic ceiling problem, a catastrophic clearance problem, or a combination of both — and the formula alone does not easily distinguish between them.</p>
+
+  <p>That is what the Continuous Intelligence Quotient does. CIQ preserves the shape of the problem at the summary level. Because it is a weighted blend of average and minimum across all four metrics, it shows you not just the size of the gap but where it is concentrated. A CIQ of 45% with a minimum metric of 20% tells you immediately that one dimension is severely dragging everything else. A CIQ of 45% with a minimum of 38% tells you the institution is broadly weak across the board rather than catastrophically broken in one place. Those two situations require completely different responses — and CIQ makes the difference visible without having to read four separate numbers. It is the progress metric the COO uses to hold the CDAO and CTO accountable, showing whether the factory-elimination work is advancing evenly or whether one area is being neglected while others improve.</p>
+
+  <p>AD tells you how much dividend you are collecting. CIQ tells you why you are not collecting more. They are designed to be read together.</p>
+
+
+  <div class="ciq-row">
+    <div class="ciq-box">
+      <div class="ciq-box-label">50% weight</div>
+      <div class="ciq-box-val">Avg</div>
+      <div class="ciq-box-desc">Average of all four metrics</div>
+    </div>
+    <div class="ciq-op ciq-op-plus">+</div>
+    <div class="ciq-box">
+      <div class="ciq-box-label">50% weight</div>
+      <div class="ciq-box-val">Min</div>
+      <div class="ciq-box-desc">Minimum of all four metrics</div>
+    </div>
+    <div class="ciq-op ciq-op-div">÷ 2</div>
+    <div class="ciq-result">
+      <div class="ciq-result-label">CIQ</div>
+      <div class="ciq-result-val">0 – 100%</div>
+    </div>
+  </div>
+
+
+  <p>This structure sits inside the Ordered Weighted Averaging family — neither purely optimistic (arithmetic mean) nor purely pessimistic (minimum). The 50/50 split is deliberate. It gives credit for overall strength while ensuring that a single catastrophic weakness drags the headline number visibly.</p>
+
+  <p>A bank with three metrics at ninety percent and one at ten percent has an arithmetic average of seventy percent, which sounds respectable. Under CIQ, the score is forty percent. The weak dimension is visible in the headline number rather than averaged away — which means the COO looking at a CIQ of forty percent is looking at a genuine operational picture, not a statistical comfort.</p>
+
+  <hr class="rule">
+
+  <!-- S5 -->
+  <div class="section-kicker">05 — The worked example</div>
+  <h2>Same average score.<br><em>Very different factories.</em></h2>
+
+  <p>Consider two mid-sized banks. Both have an arithmetic average of their four cardinal metrics of sixty-five percent. On a standard maturity dashboard, they are identical. Their AD scores tell a different story.</p>
+
+  <table class="example-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Bank Alpha</th>
+        <th>Bank Beta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>DCI</td><td>80%</td><td>55%</td></tr>
+      <tr><td>RRV</td><td>75%</td><td>85%</td></tr>
+      <tr><td>DARR</td><td>65%</td><td>70%</td></tr>
+      <tr><td>DQIRR</td><td>40%</td><td>70%</td></tr>
+      <tr><td class="td-hl">Simple average</td><td class="td-hl">65%</td><td class="td-hl">65%</td></tr>
+      <tr><td class="td-hl">Technical Autonomy Ceiling</td><td class="td-hl">min(80,75) = 75%</td><td class="td-hl">min(55,85) = 55%</td></tr>
+      <tr><td class="td-hl">Operational Clearance Factor</td><td class="td-hl">(65×40)÷100 = 26%</td><td class="td-hl">(70×70)÷100 = 49%</td></tr>
+      <tr>
+        <td class="td-hl">Autonomy Dividend</td>
+        <td class="td-low">75% × 26% = <strong>19.5%</strong></td>
+        <td class="td-high">55% × 49% = <strong>26.9%</strong></td>
+      </tr>
+      <tr><td class="td-hl">CIQ</td><td class="td-hl">(65+40)÷2 = 52.5%</td><td class="td-hl">(65+55)÷2 = 60%</td></tr>
+    </tbody>
+  </table>
+
+  <p>Bank Alpha has strong data infrastructure but its escalation factory is running hard — fewer than half its data quality issues are resolved within SLA. That single number collapses the operational clearance to twenty-six percent and brings the AD under twenty, despite its relatively strong technical ceiling.</p>
+
+  <p>Bank Beta has a data convergence problem — possibly a legacy architecture issue, possibly an under-invested identity resolution programme. But its operational metabolism is solid. The factories are smaller. Its AD of twenty-seven percent is not strong, but it is a more balanced starting point and the path to forty percent is clearer.</p>
+
+  <p>If you were the board deciding where to invest, these two institutions require completely different conversations. The Autonomy Dividend makes that visible, but the average would not.</p>
+
+  <hr class="rule">
+
+  <!-- S6 -->
+  <div class="section-kicker">06 — Benchmarking — hypothesis only</div>
+  <h2>Where does your institution<br><em>sit in the range?</em></h2>
+
+  <p>The ranges below are a hypothesis, not a finding. They are offered as a starting point for calibrated debate, and should be challenged with real institutional numbers — that challenge is precisely how they improve. No institution has formally adopted this framework yet, and these figures should not be cited as survey data.</p>
+
+  <div class="bench-wrap">
+    <div class="bench-row">
+      <div class="bench-label">Global average</div>
+      <div class="bench-track"><div class="bench-fill" style="width:15%;background:#185FA5"></div></div>
+      <div class="bench-val">12 – 18%</div>
+    </div>
+    <div class="bench-row">
+      <div class="bench-label">Tier-1 leaders</div>
+      <div class="bench-track"><div class="bench-fill" style="width:30%;background:#2E9E8E"></div></div>
+      <div class="bench-val">25 – 35%</div>
+    </div>
+    <div class="bench-row">
+      <div class="bench-label">Best-in-class</div>
+      <div class="bench-track"><div class="bench-fill" style="width:45%;background:#2E8B5A"></div></div>
+      <div class="bench-val">40 – 55%</div>
+    </div>
+    <div class="bench-row">
+      <div class="bench-label">Frontier</div>
+      <div class="bench-track"><div class="bench-fill" style="width:62%;background:#085041"></div></div>
+      <div class="bench-val">60%+</div>
+    </div>
+  </div>
+
+  <p>The forty percent threshold is a hypothesis, and it is offered as one deliberately. The logic behind it is structural rather than empirical: below forty percent, the formula itself suggests that factory overhead is consuming more than half the potential autonomous throughput, making the economics of AI deployment difficult to justify on efficiency grounds alone. Above forty percent, the same structural investments that moved the needle on the cardinal metrics begin to reduce the marginal cost of new autonomous use cases — the foundation work and the acceleration work turn out to be the same work. This is the hypothesis. The institutions that calculate their Autonomy Dividend and track it over time will be the ones who can confirm or correct it.</p>
+
+  <p>The move from fifteen to forty is likely to be expensive and slow. The move from forty to sixty will likely be faster, because the structural investments required to clear forty percent are the same ones that build momentum into the next phase. Institutions that understand this invest earlier and more deliberately in foundational dimensions rather than optimising individual metrics in isolation — patient, persistent execution is what turns the Autonomy Dividend from a concept into a return.</p>
+
+  <div class="callout callout-teal">
+    <strong>A standing invitation:</strong> Calculate your Autonomy Dividend. Use the diagnostic at the end of this paper. If your number differs from these ranges, the hypothesis improves through that challenge — and that is the only way it becomes real.
+  </div>
+
+  <hr class="rule">
+
+  <!-- S7 — was S7, now correctly 07 as benchmark is 06 -->
+  <div class="section-kicker">07 — The diagnostic</div>
+  <h2>Your number.<br><em>In about ten minutes.</em></h2>
+
+  <p>The most common question when this framework is introduced is: how does a senior banking leader get their number without commissioning a data extraction project? The answer is simpler than most expect.</p>
+
+  <p>Production metrics are not required to start. The diagnostic is twenty-four questions — six per metric — that ask about observable operational realities, not system outputs. <em>When two systems disagree about the same customer, what typically happens?</em> A COO or CDAO who has lived inside the institution knows the answer immediately. The diagnostic translates that institutional knowledge into an Autonomy Dividend estimate — rough, honest, and useful as a starting point for the right conversation.</p>
+
+  <p>Most senior leaders who complete it find their number is lower than expected. That is not a shortcoming of the diagnostic. That is the diagnostic working as intended. The factories were always there, running quietly in the background. Now they have a number attached to them.</p>
+
+  <hr class="rule-gold">
+
+  <!-- CLOSER -->
+  <div class="closer">
+    <p>Most banks do not know their Autonomy Dividend. The ones that find out first — and act on what they learn — will not simply be ahead on a metric. They will be running fewer factories, making better autonomous decisions, with less regulatory exposure and at lower marginal cost per decision. <strong>That is the Autonomy Dividend. It pays back now, and it continues to pay as the factories reduce.</strong></p>
+  </div>
+
+  <!-- SERIES -->
+  <div class="series-closer">
+    <div class="series-closer-label">About this series</div>
+    <div class="series-items">
+      <div class="series-item">
+        <div class="series-item-tag">Paper 1 — The Architecture</div>
+        <div class="series-item-text">Banks are built like factories. They should work like a nervous system. Paper 1 laid out what that nervous system looks like — five interoperable decision planes coordinated by a Nerve Core, making simultaneous rather than sequential decisions, in real time rather than in batch.</div>
+        <a class="series-item-link" href="https://sasidharbhavaraju.github.io/BluemeBank/BluemeBank-An_Architectural_Note_2026_F.pdf">Read Paper 1 →</a>
+      </div>
+      <div class="series-item">
+        <div class="series-item-tag">Paper 2 — The Bridge</div>
+        <div class="series-item-text">Knowing the destination is not enough. Paper 2 gave practitioners a sequencing logic for the journey — four cardinal metrics, a four-move playbook, and a way to build momentum without waiting for a full transformation programme to complete.</div>
+        <a class="series-item-link" href="https://sasidharbhavaraju.github.io/BluemeBank/Bridge_to_BluemeBank-Data_and_Infrastructure_Readiness_F.pdf">Read Paper 2 →</a>
+      </div>
+      <div class="series-item">
+        <div class="series-item-tag">Paper 3 — The Autonomy Dividend</div>
+        <div class="series-item-text">This paper. The instrument that tells you where you stand — how much of the factory remains, how much autonomous capacity you have actually built, and what the gap is costing you every quarter you leave it in place.</div>
+      </div>
+      <div class="series-item series-item-next">
+        <div class="series-item-tag">Paper 4 — Coming</div>
+        <div class="series-item-text">A high Autonomy Dividend changes what is possible. Paper 4 will address what those possibilities look like for institutions that have done the foundational work.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIAGNOSTIC CTA -->
+  <div class="diagnostic-cta">
+    <div class="diagnostic-cta-label">The Bridge Diagnostic</div>
+    <div class="diagnostic-cta-line">No consultants. No data extraction. No workshop.<br>Just you, twenty-four questions, and your number.</div>
+    <a class="btn-diagnostic" href="https://sasidharbhavaraju.github.io/BluemeBank/B_Diagnostics">
+      Calculate your Autonomy Dividend ◈
+    </a>
+  </div>
+
+</div><!-- /body -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-meta">
+    <strong style="color:var(--white)">Sasidhar Bhavaraju</strong> · Practitioner · Former Managing Director, HSBC<br>
+    Paper 1 — <a href="https://sasidharbhavaraju.github.io/BluemeBank/BluemeBank-An_Architectural_Note_2026_F.pdf">The Architecture</a> &nbsp;·&nbsp;
+    Paper 2 — <a href="https://sasidharbhavaraju.github.io/BluemeBank/Bridge_to_BluemeBank-Data_and_Infrastructure_Readiness_F.pdf">The Bridge</a> &nbsp;·&nbsp;
+    Paper 3 — The Autonomy Dividend<br>
+    Contact: <a href="mailto:sasidhar.bhavaraju@gmail.com">sasidhar.bhavaraju@gmail.com</a>
+  </div>
+  <div class="footer-copy">© 2026 Sasidhar Bhavaraju · BluemeBank · All rights reserved</div>
+</div>
+
+</body>
+</html>
