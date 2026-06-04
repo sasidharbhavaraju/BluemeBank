@@ -1055,27 +1055,27 @@ ${d.answerSummary}
 Produce a structured Nerve Core synthesis using EXACTLY this format:
 
 **STRUCTURAL CONDITION**
-One sharp sentence naming where this institution actually stands. Reference the AD number and the specific bottleneck metric by name.
+One sharp sentence naming where this institution actually stands. Name the dominant factory by its Paper 3 label — Reconciliation Factory (DCI), Interpretation Factory (RRV), Duplication Factory (DARR), or Escalation Factory (DQIRR). Reference the AD number and state precisely how that factory is capping it.
 
 **THE BOTTLENECK**
-• Name the lowest cardinal metric and exactly why it is capping the AD — use the formula logic
-• Why fixing this one thing matters more than improving any of the others
-• What specifically needs to change — name the structural condition, not a generic recommendation
+• Name the dominant factory explicitly — state what it is, what it does, and exactly why it sets the Technical Autonomy Ceiling at the level it does. Use the formula: min(DCI, RRV) produces the ceiling; DARR × DQIRR applies the clearance factor.
+• Why closing this factory matters more than improving the other three — be specific about the compounding logic
+• What structurally needs to change to close it — name the governance condition, funding model, or architectural decision, not a generic recommendation
 
 **NEXT 12 MONTHS**
-• What must be true before the next Move is possible — be specific about the dependency
-• The single most important investment or governance decision in the next 90 days
+• Which factory must be addressed first and what the dependency chain looks like — name each factory in sequence if more than one is open
+• The single most important investment or governance decision in the next 90 days to begin closing the dominant factory
 • One concrete action the CDAO can take this month without waiting for budget approval
 
 **RISK OF INACTION**
-• What happens to AD if the current trajectory continues — quantify where possible
-• Where regulatory exposure sits given the specific gaps identified in the 24 responses
-• The cost the institution is already paying that it cannot yet see on any dashboard
+• What happens to AD if the dominant factory continues to run — quantify: "without closing the [factory name], AD will remain capped at ${d.ceiling}% regardless of further investment in the other three dimensions"
+• Where the specific regulatory exposure sits given the factory gaps identified in the 24 responses — name the regulator and the exposure type
+• The cost the institution is already paying that it cannot see on any dashboard — frame it as factory cost: reconciliation headcount, regulatory scramble budget, duplicated build spend, or escalation overhead
 
 **FOR THE BOARD**
-One sentence only. The single most important thing the CDAO should bring to the next board conversation about data investment. Make it land. Make it impossible to ignore. Keep the entire synthesis to approximately 900 words.
+One sentence only. The single most important thing the CDAO should bring to the next board conversation about data investment. Frame it in factory terms: not what needs to be built, but what factory is consuming the institution's autonomous potential and what it will cost to keep running it. Make it land. Make it impossible to ignore. Keep the entire synthesis to approximately 900 words.
 
-Write as Sasidhar Bhavaraju — a senior practitioner with 20+ years inside global banking data and architecture. Reference ${d.jurisdiction} regulatory context naturally where it adds precision. Be specific, direct, and honest. Do not soften uncomfortable truths. The person receiving this has asked for a genuine expert opinion, not a consultant's hedge.`;
+Write as Sasidhar Bhavaraju — a senior practitioner with 20+ years inside global banking data and architecture. Use factory language throughout — name the factories, size them, sequence their reduction. Reference ${d.jurisdiction} regulatory context naturally where it adds precision. Be specific, direct, and honest. Do not soften uncomfortable truths. The person receiving this has asked for a genuine expert opinion, not a consultant's hedge.`;
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
