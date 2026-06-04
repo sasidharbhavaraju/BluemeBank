@@ -271,6 +271,16 @@ body {
   color:var(--white); line-height:1.6;
 }
 
+.synth-disclosure {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(201,168,76,0.12);
+  font-size: 10px;
+  color: var(--grey);
+  font-style: italic;
+  line-height: 1.7;
+}
+
 /* Action buttons */
 .action-row {
   display:flex; gap:10px; flex-wrap:wrap;
@@ -1162,6 +1172,8 @@ function renderSynthesis(text) {
 
   if (currentSection) html += '</div></div>';
 
+  html += `<div class="synth-disclosure">This synthesis was produced by the BluemeBank Nerve Core based on the diagnostic responses provided. It reflects the institution's own assessment of its operational reality — not an external audit. Conclusions should be validated against live data before use in board or regulatory submissions.</div>`;
+
   document.getElementById('synthBody').innerHTML = html;
 
   // Store plain text for copy
@@ -1177,7 +1189,7 @@ function copyOutput() {
   if (!window._synthesisText) return;
 
   const header = `BluemeBank Bridge Diagnostic — Nerve Core Synthesis\n${window._synthesisInstitution} · ${new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'})}\n${'═'.repeat(60)}\n\n`;
-  const footer = `\n\n${'═'.repeat(60)}\nBluemeBank Bridge Diagnostic · bluemebank.com\nSasidhar Bhavaraju · sasidhar.bhavaraju@bluemebank.com\n\nThis synthesis was produced by the Nerve Core based on 24 diagnostic responses. It represents a practitioner-grade assessment, not a regulatory audit. Conclusions should be validated against institutional data before use in board or regulatory submissions.`;
+  const footer = `\n\n${'═'.repeat(60)}\nBluemeBank Bridge Diagnostic · bluemebank.com\nSasidhar Bhavaraju · sasidhar.bhavaraju@bluemebank.com\n\nThis synthesis was produced by the BluemeBank Nerve Core based on the diagnostic responses provided. It reflects the institution's own assessment of its operational reality — not an external audit. Conclusions should be validated against live data before use in board or regulatory submissions.`;
 
   const fullText = header + window._synthesisText + footer;
 
@@ -1608,7 +1620,7 @@ function printReport() {
       </div>
 
       <div style="margin-top:12px;padding:10px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:6px;font-size:9.5px;color:#5a6f88;line-height:1.6;font-style:italic;">
-        AI-generated synthesis based on 24 diagnostic responses, interpreted through the BluemeBank framework (Bhavaraju, 2026). Not an independent audit or regulatory opinion. Validate against institutional data before board or regulatory use. Metric scores are projected diagnostic values, not live operational data.
+        This synthesis was produced by the BluemeBank Nerve Core based on the diagnostic responses provided. It reflects the institution's own assessment of its operational reality — not an external audit. Conclusions should be validated against live data before use in board or regulatory submissions. Metric scores are projected diagnostic values, not live operational data.
       </div>
     </div>
   </div>
