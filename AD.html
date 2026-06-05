@@ -40,8 +40,8 @@ body{
   background-color:#0A1628 !important;
   color:var(--white);
   font-family:'Raleway',sans-serif;
-  font-size:16px;
-  line-height:1.75;
+  font-size:17.5px;
+  line-height:1.88;
   min-height:100vh;
   -webkit-text-size-adjust:100%;
 }
@@ -188,10 +188,10 @@ h3{
 }
 
 p{
-  font-size:16px;
+  font-size:17.5px;
   color:rgba(244,241,234,0.92);
-  line-height:1.85;
-  margin-bottom:22px;
+  line-height:1.88;
+  margin-bottom:24px;
 }
 p strong{color:var(--white);font-weight:700}
 p em{font-style:italic;color:#C8DCF0}
@@ -243,27 +243,29 @@ p em{font-style:italic;color:#C8DCF0}
   background:rgba(255,255,255,0.04);
   border:1px solid rgba(255,255,255,0.1);
   border-radius:10px;
-  padding:20px 18px;
+  padding:22px 20px;
   text-align:center;
 }
 .fp-label{
   font-family:'DM Mono',monospace;
-  font-size:10px;letter-spacing:2px;text-transform:uppercase;
-  color:#A8C4DC;margin-bottom:8px;font-weight:500;
+  font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+  color:#C8DCF0;margin-bottom:10px;font-weight:600;
 }
 .fp-expr{
   font-family:'Cormorant Garamond',serif;
-  font-size:1.15rem;color:var(--gold);
-  margin-bottom:6px;
+  font-size:1.3rem;color:var(--gold);
+  margin-bottom:8px;
 }
 .fp-law{
-  font-size:12px;color:#A8C4DC;
-  font-style:italic;line-height:1.5;
+  font-size:13px;color:#A8C4DC;
+  font-style:italic;line-height:1.6;
 }
 .formula-op{
   font-family:'Cormorant Garamond',serif;
   font-size:2rem;color:var(--gold);
   font-weight:300;
+  text-align:center;
+  min-width:30px;
 }
 
 /* ── FACTORY CARDS ── */
@@ -494,21 +496,83 @@ p em{font-style:italic;color:#C8DCF0}
   box-shadow:0 8px 28px rgba(201,168,76,0.25);
 }
 
-/* ── FOOTER ── */
+/* ── FACTORY CTA ── */
+.factory-cta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  background:rgba(201,168,76,0.05);
+  border:1px solid rgba(201,168,76,0.25);
+  border-radius:10px;
+  padding:18px 24px;
+  margin:28px 0;
+  flex-wrap:wrap;
+}
+.factory-cta-text{
+  font-size:14px;
+  color:#C8DCF0;
+  line-height:1.65;
+  flex:1;min-width:200px;
+}
+.factory-cta-link{
+  font-family:'DM Mono',monospace;
+  font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--navy);
+  background:var(--gold);
+  padding:10px 20px;
+  border-radius:6px;
+  text-decoration:none;
+  white-space:nowrap;
+  font-weight:600;
+  transition:background 0.2s;
+  flex-shrink:0;
+}
+.factory-cta-link:hover{background:var(--gold-light)}
+
+/* ── AUTHOR BAND ── */
+.author-band{
+  background:var(--navy-card);
+  border-top:1px solid var(--border);
+  padding:52px 40px;
+  text-align:center;
+  margin-top:0;
+}
+.author-name{
+  font-family:'Raleway',sans-serif;
+  font-size:22px;font-weight:800;
+  color:var(--white);
+  letter-spacing:0.5px;
+  margin-bottom:10px;
+}
+.author-detail{
+  font-family:'DM Mono',monospace;
+  font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--grey-light);
+  line-height:2;
+  margin-bottom:20px;
+}
+.author-gf{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-style:italic;
+  color:var(--gold);
+  letter-spacing:0.01em;
+}
 .footer{
   border-top:1px solid var(--border);
-  padding:36px 40px;
+  padding:24px 40px 36px;
   max-width:var(--page-max);
   margin:0 auto;
+  text-align:center;
 }
-.footer-meta{
+.footer-links{
   font-family:'DM Mono',monospace;
-  font-size:10px;letter-spacing:1.5px;
-  color:var(--grey);line-height:1.9;
+  font-size:10px;letter-spacing:1px;
+  color:var(--grey);line-height:2;
 }
-.footer-meta a{color:var(--gold);text-decoration:none}
+.footer-links a{color:var(--gold);text-decoration:none}
 .footer-copy{
-  margin-top:20px;
+  margin-top:12px;
   font-family:'DM Mono',monospace;
   font-size:9px;letter-spacing:1px;
   color:rgba(90,111,136,0.5);
@@ -582,13 +646,15 @@ p em{font-style:italic;color:#C8DCF0}
   .hero{padding-top:100px}
   .series-items{grid-template-columns:1fr}
   .factory-grid{grid-template-columns:1fr}
-  .formula-parts{grid-template-columns:1fr;gap:12px}
-  .formula-op{display:none}
+  .formula-parts{grid-template-columns:1fr;gap:8px}
+  .formula-op{font-size:1.4rem;padding:4px 0;text-align:center;display:block}
   .ciq-row{flex-direction:column;align-items:stretch;gap:4px}
   .ciq-op{font-size:1.2rem;padding:2px 0;min-width:unset}
   .ciq-box,.ciq-result{width:100%;}
   .example-table{font-size:12px}
   .example-table th,.example-table td{padding:8px 10px}
+  .author-band{padding:36px 20px}
+  .factory-cta{flex-direction:column;gap:14px}
 }
 </style>
 </head>
@@ -626,7 +692,7 @@ p em{font-style:italic;color:#C8DCF0}
 <div class="abstract">
   <div class="abstract-inner">
     <div class="abstract-label">In brief</div>
-    <p>Most banks are running on invisible factories — reconciliation factories, interpretation factories, duplication factories, escalation factories. They have been normalised as the cost of doing business, when in truth they are a cost that grows every year they are left unaddressed. This paper introduces the <strong>Autonomy Dividend</strong> — a single, computable number that measures how much of an institution's autonomous potential is being consumed by those factories. The term Autonomy Dividend is used across the technology industry to describe the general value of moving toward autonomous AI operation. This paper defines the Autonomy Dividend as something more specific: a precise formula with clearly identified inputs, defined thresholds, and a diagnostic instrument that will generate a scorecard. The Autonomy Dividend is not a readiness score. It is a measure of how much of the factory model remains.</p>
+    <p>Most banks are running on invisible factories — reconciliation factories, interpretation factories, duplication factories, escalation factories. They have been normalised as the cost of doing business, when in truth they are a cost that grows quietly every year they are left unaddressed. This paper introduces the <strong>Autonomy Dividend</strong> — a single, computable number that measures how much of an institution's autonomous potential is being consumed by those factories. The term Autonomy Dividend is used across the technology industry to describe the general value of moving toward autonomous AI operation. This paper defines the Autonomy Dividend as something more specific: a precise formula with named inputs, defined thresholds, and a diagnostic instrument. The Autonomy Dividend is not a readiness score. It is a measure of how much of the factory model remains. The distinction between aspiration and instrument is precisely the point.</p>
     <p style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(201,168,76,0.2);font-size:13.5px;color:#C8DCF0;font-style:italic;margin-bottom:0;">A self-serve diagnostic is available at the end of this paper — 24 questions, about ten minutes, and it calculates your Autonomy Dividend automatically. The four cardinal metrics do not require data extraction from systems. They are derived entirely from practitioner knowledge of the institution.</p>
   </div>
 </div>
@@ -643,7 +709,7 @@ p em{font-style:italic;color:#C8DCF0}
 
   <p>No one builds a reconciliation factory on purpose. A data pipeline breaks, someone patches it downstream, another pipeline follows, another patch arrives. Over time an institution accumulates entire teams whose function is to reconcile what the architecture should have resolved automatically, and it has been there long enough that it is no longer questioned — it is simply accepted as the cost of doing business in a complex institution.</p>
 
-  <p>The same pattern governs regulatory change. A new requirement lands, the data organisation scrambles, heroic effort closes the gap eventually and expensively, the institution exhales, and then the next requirement arrives. Nothing structural has changed between one scramble and the next. The factory runs again, consuming the same resources, producing the same anxiety, and leaving the same residue of technical debt behind it. What makes this particularly expensive is that it happens in parallel with significant AI investment — in models, in governance frameworks, in cloud migration — and the factories absorb much of the value that investment was supposed to generate.</p>
+  <p>The same pattern governs regulatory change. A new requirement lands, the data organisation scrambles, heroic effort closes the gap eventually and expensively, the institution exhales, and then the next requirement arrives. Nothing structural has changed between one scramble and the next. The factory runs again, consuming the same resources, producing the same anxiety, and leaving the same residue of technical debt behind it. What makes this particularly expensive is that it happens in parallel with significant AI investment — in models, in governance frameworks, in cloud migration — and the factories quietly absorb much of the value that investment was supposed to generate.</p>
 
   <p>Capability describes what an institution has built, not what it can actually deploy at scale. The gap between the two is where the factories live, and closing it is the most consequential data infrastructure challenge in banking today.</p>
 
@@ -695,13 +761,18 @@ p em{font-style:italic;color:#C8DCF0}
       <div class="fc-factory">The Escalation Factory</div>
       <div class="fc-question">When something goes wrong with our data, do we fix the issue or fix the blame?</div>
       <div class="fc-divider"></div>
-      <div class="fc-reframe">This is not purely a data quality metric. It measures the pace at which an institution can identify a data problem, trace it to its source, and resolve it permanently — the organisational metabolism that either enables frictionless data flow or simply throttles it. The escalation factory is the hardest to see from the outside and the most revealing indicator of whether an institution is genuinely prepared to run AI at scale.</div>
+      <div class="fc-reframe">This is not purely a data quality metric. It measures the pace at which an institution can identify a data problem, trace it to its source, and resolve it permanently — the organisational metabolism that either enables frictionless data flow or quietly throttles it. The escalation factory is the hardest to see from the outside and the most revealing indicator of whether an institution is genuinely prepared to run AI at scale.</div>
       <div class="fc-tool">Measured in the diagnostic ↓</div>
     </div>
   </div>
 
   <div class="callout callout-gold">
-    <strong>Why four and not twenty?</strong> Because every autonomous banking failure traces back to one of these four structural and foundational conditions — not to a missing feature, not to insufficient investment, not to inadequate talent, but to a factory that was hidden and therefore never eliminated. Identify the factory, measure it, address it, and the path to autonomous operation becomes visible and the ROI gets delivered over time.
+    <strong>Why four and not twenty?</strong> Because every autonomous banking failure traces back to one of these four structural conditions — not to a missing feature, not to insufficient investment, not to inadequate talent, but to a factory that was never named and therefore never eliminated. Name the factory, measure it, address it, and the path to autonomous operation becomes visible. Leave it unnamed and it will quietly consume every AI investment the institution makes.
+  </div>
+
+  <div class="factory-cta">
+    <div class="factory-cta-text">Recognise any of these? The self-serve diagnostic at the end of this paper will tell you which factories are running hardest in your institution — and give you your Autonomy Dividend in about ten minutes.</div>
+    <a class="factory-cta-link" href="https://sasidharbhavaraju.github.io/BluemeBank/B_Diagnostics">Measure your factories ↓</a>
   </div>
 
   <hr class="rule">
@@ -871,7 +942,7 @@ p em{font-style:italic;color:#C8DCF0}
 
   <p>Production metrics are not required to start. The diagnostic is twenty-four questions — six per metric — that ask about observable operational realities, not system outputs. <em>When two systems disagree about the same customer, what typically happens?</em> A COO or CDAO who has lived inside the institution knows the answer immediately. The diagnostic translates that institutional knowledge into an Autonomy Dividend estimate — rough, honest, and useful as a starting point for the right conversation.</p>
 
-  <p>Most senior leaders who complete it find their number is lower than expected. That is not a shortcoming of the diagnostic. That is the diagnostic working as intended. The factories were always there, running in the background. Now they have a number attached to them.</p>
+  <p>Most senior leaders who complete it find their number is lower than expected. That is not a shortcoming of the diagnostic. That is the diagnostic working as intended. The factories were always there, running quietly in the background. Now they have a number attached to them.</p>
 
   <hr class="rule-gold">
 
@@ -906,7 +977,7 @@ p em{font-style:italic;color:#C8DCF0}
   </div>
 
   <!-- DIAGNOSTIC CTA -->
-  <div class="diagnostic-cta">
+  <div class="diagnostic-cta" id="diagnostic-cta">
     <div class="diagnostic-cta-label">The Bridge Diagnostic</div>
     <div class="diagnostic-cta-line">No consultants. No data extraction. No workshop.<br>Just you, twenty-four questions, and your number.</div>
     <a class="btn-diagnostic" href="https://sasidharbhavaraju.github.io/BluemeBank/B_Diagnostics">
@@ -916,14 +987,23 @@ p em{font-style:italic;color:#C8DCF0}
 
 </div><!-- /body -->
 
+<!-- AUTHOR BAND -->
+<div class="author-band">
+  <div class="author-name">Sasidhar Bhavaraju</div>
+  <div class="author-detail">
+    Practitioner &nbsp;·&nbsp; Former Managing Director, HSBC<br>
+    Twenty years inside the foundations this architecture describes.
+  </div>
+  <div class="author-gf">Grounded futurism.</div>
+</div>
+
 <!-- FOOTER -->
 <div class="footer">
-  <div class="footer-meta">
-    <strong style="color:var(--white)">Sasidhar Bhavaraju</strong> · Practitioner · Former Managing Director, HSBC<br>
+  <div class="footer-links">
     Paper 1 — <a href="https://sasidharbhavaraju.github.io/BluemeBank/BluemeBank-An_Architectural_Note_2026_F.pdf">The Architecture</a> &nbsp;·&nbsp;
     Paper 2 — <a href="https://sasidharbhavaraju.github.io/BluemeBank/Bridge_to_BluemeBank-Data_and_Infrastructure_Readiness_F.pdf">The Bridge</a> &nbsp;·&nbsp;
-    Paper 3 — The Autonomy Dividend<br>
-    Contact: <a href="mailto:sasidhar.bhavaraju@gmail.com">sasidhar.bhavaraju@gmail.com</a>
+    Paper 3 — The Autonomy Dividend &nbsp;·&nbsp;
+    <a href="mailto:sasidhar.bhavaraju@gmail.com">sasidhar.bhavaraju@gmail.com</a>
   </div>
   <div class="footer-copy">© 2026 Sasidhar Bhavaraju · BluemeBank · All rights reserved</div>
 </div>
