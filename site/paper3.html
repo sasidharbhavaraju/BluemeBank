@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Autonomy Dividend — BluemeBank Paper 3</title>
+<meta name="theme-color" content="#0A1628">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Mono:wght@300;400;500&family=Raleway:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/css/main.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="./index.html">
+    <span class="b">Blueme</span><span class="k">Bank</span>
+  </a>
+  <div class="nav-links">
+    <a href="./paper1.html">Paper 1</a>
+    <a href="./paper2.html">Paper 2</a>
+    <a href="./paper3.html" class="active">Paper 3</a>
+    <a href="./diagnostics.html">Diagnostic ◈</a>
+  </div>
+  <div class="nav-mobile">
+    <a href="./paper1.html">P1</a>
+    <a href="./paper2.html">P2</a>
+    <a href="./paper3.html" class="active">P3</a>
+    <a href="./diagnostics.html">Diagnostic ◈</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="series-tag">BluemeBank · Paper 3 · June 2026</div>
+  <div class="hero-rule"></div>
+  <h1>The Autonomy<br><em>Dividend</em></h1>
+  <p class="hero-sub">Most banks are running on invisible factories. This is how you measure the cost of running them.</p>
+  <div class="byline">Sasidhar Bhavaraju &nbsp;·&nbsp; <span>BluemeBank</span></div>
+</div>
+
+<!-- ABSTRACT -->
+<div class="abstract">
+  <div class="abstract-inner">
+    <div class="abstract-label">In brief</div>
+    <p>Most banks are running on invisible factories — reconciliation factories, interpretation factories, duplication factories, escalation factories. They have been normalised as the cost of doing business, when in truth they are a cost that grows steadily every year they are left unaddressed. This paper introduces the <strong>Autonomy Dividend</strong> — a single, computable number that measures how much of an institution's autonomous potential is being consumed by those factories. The term Autonomy Dividend is used across the technology industry to describe the general value of moving toward autonomous AI operation. This paper defines the Autonomy Dividend as something more specific: a precise formula with clearly identified input metrics, defined thresholds, and a diagnostic instrument that will help build your scorecard. The Autonomy Dividend is not a readiness score but is a measure of how much of the factory model remains.</p>
+    <p style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(201,168,76,0.2);font-size:13.5px;color:#C8DCF0;font-style:italic;margin-bottom:0;">A self-serve diagnostic is available at the end of this paper — 24 questions, about ten minutes, and it calculates your Autonomy Dividend automatically. The four cardinal metrics do not require data extraction from systems. They are derived entirely from practitioner knowledge of the institution.</p>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="body">
+
+  <!-- S1 -->
+  <hr class="rule">
+  <div class="section-kicker">01 — The problem with capability scores</div>
+  <h2>Capability is not<br><em>the same as deployability.</em></h2>
+
+  <p>The first BluemeBank paper argued that banks are built like factories and should work like nervous systems — sequential, siloed, reactive versus simultaneous, connected, intelligent. That argument was about architecture. This paper provides the measuring instrument for the journey between the two.</p>
+
+  <p>No one builds a reconciliation factory on purpose. A data pipeline breaks, someone patches it downstream, another pipeline follows, another patch arrives. Over time an institution accumulates entire teams whose function is to reconcile what the architecture should have resolved automatically, and it has been there long enough that it is no longer questioned — it is simply accepted as the cost of doing business in a complex institution.</p>
+
+  <p>The same pattern governs regulatory change. A new requirement lands, the data organisation scrambles, heroic effort closes the gap eventually and expensively, the institution exhales, and then the next requirement arrives. Nothing foundational has changed between one scramble and the next. The factory runs again, consuming the same resources, producing the same anxiety, and leaving the same residue of technical debt behind it. What makes this particularly expensive is that it happens in parallel with significant AI investment — in models, in governance frameworks, in cloud migration — and the factories absorb much of the value that investment was supposed to generate.</p>
+
+  <p>Capability describes what an institution has built, not what it can actually deploy at scale. The gap between the two is where the factories live, and closing it is the most consequential data infrastructure challenge in banking today.</p>
+
+  <div class="pull">
+    <p>The Autonomy Dividend measures the gap between what an institution has invested in and what it can actually run autonomously. Most institutions have no idea how wide it is.</p>
+  </div>
+
+  <p>The Autonomy Dividend is not a maturity score. Traditional maturity frameworks assess capability — whether the right processes, roles, and governance structures are in place. They answer a useful question. The Autonomy Dividend asks a different one: given everything that has been built, how much of it actually works autonomously in practice? The remainder is not waiting for better models or faster infrastructure. It is sitting in factories.</p>
+
+  <p>Importantly, the four cardinal metrics that feed the Autonomy Dividend formula are not extracted from systems or data warehouses. They are derived from a 24-question diagnostic that any senior practitioner who knows their institution can complete in about ten minutes. No data project required. The diagnostic is at the end of this paper.</p>
+
+  <hr class="rule">
+
+  <!-- S2 -->
+  <div class="section-kicker">02 — The four factories</div>
+  <h2>Most banks are running<br><em>invisible factories.</em></h2>
+
+  <p>The framework rests on four metrics, and before introducing the formula it is worth establishing why four and not twenty — because this is the foundational argument of this paper.</p>
+
+  <p>Every autonomous institution ultimately fails for one of four reasons — it cannot <em style="color:#E8C96A;font-style:italic;">identify</em>, <em style="color:#E8C96A;font-style:italic;">adapt</em>, <em style="color:#E8C96A;font-style:italic;">reuse</em>, or <em style="color:#E8C96A;font-style:italic;">repair</em> its data reliably enough to act on it autonomously. These are not technology failures in isolation but the result of workflows and organisational choices set up years before AI arrived, and each one produces a factory that substitutes human effort for what the architecture should provide automatically.</p>
+
+  <div class="factory-grid">
+    <div class="factory-card">
+      <div class="fc-metric">DCI · Data Convergence Index</div>
+      <div class="fc-factory">The Reconciliation Factory</div>
+      <div class="fc-question">Can I resolve the same customer across more than two systems and trust the answer?</div>
+      <div class="fc-divider"></div>
+      <div class="fc-reframe">If you cannot resolve a customer confidently across more than two systems, you cannot trust the output of your data when it matters most. The reconciliation factory is the most visible and most accepted of the four. It has been normalised as operational overhead, when in truth it is the cost of an identity problem that the architecture was never designed to solve automatically.</div>
+      <div class="fc-tool">Measured in the diagnostic ↓</div>
+    </div>
+    <div class="factory-card">
+      <div class="fc-metric">RRV · Regulatory Response Velocity</div>
+      <div class="fc-factory">The Interpretation Factory</div>
+      <div class="fc-question">When a regulator changes a rule, how long before my systems reflect it?</div>
+      <div class="fc-divider"></div>
+      <div class="fc-reframe">Regulation is merely the most visible external stimulus. If your organisation cannot absorb regulatory change without heroic effort, it cannot absorb any external change without heroic effort. The interpretation factory is not a compliance function. It is a proxy for whether your technology infrastructure is designed to adapt — or designed to be rebuilt, repeatedly, by hand.</div>
+      <div class="fc-tool">Measured in the diagnostic ↓</div>
+    </div>
+    <div class="factory-card">
+      <div class="fc-metric">DARR · Data Asset Reuse Ratio</div>
+      <div class="fc-factory">The Duplication Factory</div>
+      <div class="fc-question">When we need data for a new use case, do we reuse what exists or build it again?</div>
+      <div class="fc-divider"></div>
+      <div class="fc-reframe">Every time a team builds a bespoke data asset for a defensible, logical reason, they are creating future dependency, future cost, and future coordination overhead. The duplication factory is the most insidious because it is always individually rational and collectively catastrophic. Each fiefdom makes sense to the person who built it. Together, they make the institution impossible to automate.</div>
+      <div class="fc-tool">Measured in the diagnostic ↓</div>
+    </div>
+    <div class="factory-card">
+      <div class="fc-metric">DQIRR · DQ Issue Resolution Rate</div>
+      <div class="fc-factory">The Escalation Factory</div>
+      <div class="fc-question">When something goes wrong with our data, do we fix the issue or fix the blame?</div>
+      <div class="fc-divider"></div>
+      <div class="fc-reframe">This is not purely a data quality metric. It measures the pace at which an institution can identify a data problem, trace it to its source, and resolve it permanently — the organisational metabolism that either enables frictionless data flow or throttles it. The escalation factory is the hardest to see from the outside and the most revealing indicator of whether an institution is genuinely prepared to run AI at scale.</div>
+      <div class="fc-tool">Measured in the diagnostic ↓</div>
+    </div>
+  </div>
+
+  <div class="callout callout-gold">
+    <strong>Why four and not twenty?</strong> Because every autonomous banking failure traces back to one of these four conditions — not to a missing feature, not to insufficient investment, not to inadequate talent, but to a factory that was never named and therefore never eliminated. Name the factory, measure it, address it, and the path to autonomous operation becomes visible. Leave it unnamed and it will consume every AI investment the institution makes.
+  </div>
+<!-- CARDINAL METRICS BRIDGE -->
+<div style="margin:36px 0;">
+  <h3 style="margin-bottom:16px;">Each factory has a metric.</h3>
+  <p>The four cardinal metrics below are what the diagnostic measures — one instrument per factory, precise enough to calculate but simple enough to answer from practitioner knowledge alone. Cardinal means irreducible: no strength in one compensates for weakness in another, which is why the formula uses a minimum rather than an average, and a product rather than a sum.</p>
+
+  <p><strong>DCI — Data Convergence Index.</strong> The proportion of critical data entities — customer, account, counterparty, product — that share a common identity key resolvable across three or more core systems. Three is the threshold: two systems sharing a key is often a point-to-point integration. Three signals that the entity is being treated as an institutional asset rather than a departmental one. A low DCI is what keeps the Reconciliation Factory running.</p>
+
+  <p><strong>RRV — Regulatory Response Velocity.</strong> The average elapsed time between a new regulatory requirement being published and the institution having certified, lineage-traced data available to meet it. A proxy for infrastructure maturity — whether the data fabric can be adapted when requirements change, or must be rebuilt each time. A slow RRV is what keeps the Interpretation Factory running.</p>
+
+  <p><strong>DARR — Data Asset Reuse Ratio.</strong> The proportion of new use case data requirements met by reusing or extending existing certified data assets. Measures whether the programme builds shared institutional capability or repeatedly builds the same data under different project names. A low DARR is what keeps the Duplication Factory running.</p>
+
+  <p><strong>DQIRR — DQ Issue Resolution Rate.</strong> The proportion of data quality issues that receive a complete, traceable resolution — root cause identified, upstream owner confirmed, fix committed — within a defined service level. Not just whether issues are found, but whether they are actually closed. A low DQIRR is what keeps the Escalation Factory running.</p>
+</div>
+  <div class="factory-cta">
+    <div class="factory-cta-text">Recognise any of these? The self-serve diagnostic at the end of this paper will tell you which factories are running hardest in your institution — and give you your Autonomy Dividend in about ten minutes.</div>
+    <a class="factory-cta-link" href="./diagnostics.html">Measure your factories ↓</a>
+  </div>
+
+  <hr class="rule">
+
+  <!-- S3 -->
+  <div class="section-kicker">03 — The formula</div>
+  <h2>A number that is<br><em>intentionally directional.</em></h2>
+
+  <p>The Autonomy Dividend is defined as:</p>
+
+  <div class="formula-wrap">
+    <div class="formula-expr">AD &nbsp;=&nbsp; min(DCI, RRV) &nbsp;×&nbsp; <span style="white-space:nowrap;">[(DARR × DQIRR) ÷ 100]</span></div>
+    <div class="formula-note">expressed as a percentage · 0 – 100</div>
+    <div class="formula-parts">
+      <div class="formula-part">
+        <div class="fp-label">Technical Autonomy Ceiling</div>
+        <div class="fp-expr">min(DCI, RRV)</div>
+        <div class="fp-law">Liebig's Law of the Minimum — a system's output is constrained by its scarcest resource, not its average</div>
+      </div>
+      <div class="formula-op">×</div>
+      <div class="formula-part">
+        <div class="fp-label">Operational Clearance Factor</div>
+        <div class="fp-expr">(DARR × DQIRR) ÷ 100</div>
+        <div class="fp-law">Reliability theory — independent failure modes compound rather than average</div>
+      </div>
+    </div>
+  </div>
+
+  <p>The Autonomy Dividend is intentionally directional rather than mathematically exhaustive. Like NPS — Fred Reichheld's Net Promoter Score — its value lies not in theoretical precision but in consistent application over time. The institution that calculates its Autonomy Dividend quarterly and watches the trend will learn more from that trend than from any static maturity assessment. The number forces a conversation, and the conversation is the point.</p>
+
+  <h3>Why the minimum — not the average — for DCI and RRV</h3>
+
+  <p>Justus von Liebig established in the nineteenth century that the growth of a plant is determined not by the total nutrients available but by the scarcest one. It does not matter how rich the soil is in nitrogen and potassium if phosphorus is at three percent, because the ceiling is always set by the minimum resource, not the average.</p>
+
+  <p>The same logic governs autonomous banking. Data pipelines can be excellent and engineers exceptional, but if regulatory response takes ninety days — if the interpretation factory is running at full capacity every time a rule changes — then the technical autonomy ceiling is set by that constraint rather than by the average of all inputs. Averaging DCI and RRV allows a strong score on one dimension to mask a catastrophic gap in the other, and the minimum formula does not permit that. This is not pessimistic, but meant to be viewed as pragmatic.</p>
+
+  <h3>Why the product — not the average — for DARR and DQIRR</h3>
+
+  <p>When two independent systems must both function for an outcome to occur, their probabilities multiply rather than average. If a car engine works ninety percent of the time and the gearbox works ninety percent of the time, the driver arrives at their destination not ninety percent of the time but eighty-one percent of the time, because independent failure modes compound. DARR and DQIRR are independent operational dimensions — one measures the efficiency of data architecture, the other the responsiveness of operational processes — and a failure in either will prevent a decision from completing correctly.</p>
+
+  <div class="callout callout-red">
+    <strong>The number that surprises most observers:</strong> A DARR of 70% and a DQIRR of 70% feels like a reasonably strong operational position. The Operational Clearance Factor is 49%. Before even considering input quality or regulatory readiness, nearly half the intended autonomous throughput is exposed to operational failure. The multiplication is not punitive. It is the honest arithmetic of independent risk.
+  </div>
+
+  <hr class="rule">
+
+  <!-- S4 -->
+  <div class="section-kicker">04 — The readiness score</div>
+  <h2>CIQ — a managerial instrument<br><em>where one gap cannot hide.</em></h2>
+
+  <p>The Autonomy Dividend is the outcome metric — the number a CEO, CFO, or board tracks to understand how much autonomous potential the institution is actually capturing. But AD is multiplicative, which means it compresses the signal efficiently into one number while losing some of the diagnostic shape in the process. A low AD could mean a catastrophic ceiling problem, a catastrophic clearance problem, or a combination of both — and the formula alone does not easily distinguish between them.</p>
+
+  <p>That is what the Continuous Intelligence Quotient does. CIQ preserves the shape of the problem at the summary level. Because it is a weighted blend of average and minimum across all four metrics, it shows you not just the size of the gap but where it is concentrated. A CIQ of 45% with a minimum metric of 20% tells you immediately that one dimension is severely dragging everything else. A CIQ of 45% with a minimum of 38% tells you the institution is broadly weak across the board rather than catastrophically broken in one place. Those two situations require completely different responses — and CIQ makes the difference visible without having to read four separate numbers. It is the progress metric the COO uses to hold the CDAO and CTO accountable, showing whether the factory-elimination work is advancing evenly or whether one area is being neglected while others improve.</p>
+
+  <p>AD tells you how much dividend you are collecting. CIQ tells you why you are not collecting more. They are designed to be read together.</p>
+
+
+  <div class="ciq-row">
+    <div class="ciq-box">
+      <div class="ciq-box-label">50% weight</div>
+      <div class="ciq-box-val">Avg</div>
+      <div class="ciq-box-desc">Average of all four metrics</div>
+    </div>
+    <div class="ciq-op ciq-op-plus">+</div>
+    <div class="ciq-box">
+      <div class="ciq-box-label">50% weight</div>
+      <div class="ciq-box-val">Min</div>
+      <div class="ciq-box-desc">Minimum of all four metrics</div>
+    </div>
+    <div class="ciq-op ciq-op-div">÷ 2</div>
+    <div class="ciq-result">
+      <div class="ciq-result-label">CIQ</div>
+      <div class="ciq-result-val">0 – 100%</div>
+    </div>
+  </div>
+
+
+  <p>The 50/50 split between average and minimum is deliberate. It gives credit for overall strength while ensuring that a single weak dimension pulls the headline number down visibly — rather than being averaged away.</p>
+
+  <p>A bank with three metrics at ninety percent and one at ten percent has an arithmetic average of seventy percent, which sounds respectable. Under CIQ, the score is forty percent. The weak dimension is visible in the headline number rather than averaged away — which means the COO looking at a CIQ of forty percent is looking at a genuine operational picture, not a statistical comfort.</p>
+
+  <hr class="rule">
+
+  <!-- S5 -->
+  <div class="section-kicker">05 — The worked example</div>
+  <h2>Same average score.<br><em>Very different factories.</em></h2>
+
+  <p>Consider two mid-sized banks. Both have an arithmetic average of their four cardinal metrics of sixty-five percent. On a standard maturity dashboard, they are identical. Their AD scores tell a different story.</p>
+
+  <table class="example-table">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th>Bank Alpha</th>
+        <th>Bank Beta</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>DCI</td><td>80%</td><td>55%</td></tr>
+      <tr><td>RRV</td><td>75%</td><td>85%</td></tr>
+      <tr><td>DARR</td><td>65%</td><td>70%</td></tr>
+      <tr><td>DQIRR</td><td>40%</td><td>70%</td></tr>
+      <tr><td class="td-hl">Simple average</td><td class="td-hl">65%</td><td class="td-hl">65%</td></tr>
+      <tr><td class="td-hl">Technical Autonomy Ceiling</td><td class="td-hl">min(80,75) = 75%</td><td class="td-hl">min(55,85) = 55%</td></tr>
+      <tr><td class="td-hl">Operational Clearance Factor</td><td class="td-hl">(65×40)÷100 = 26%</td><td class="td-hl">(70×70)÷100 = 49%</td></tr>
+      <tr>
+        <td class="td-hl">Autonomy Dividend</td>
+        <td class="td-low">75% × 26% = <strong>19.5%</strong></td>
+        <td class="td-high">55% × 49% = <strong>26.9%</strong></td>
+      </tr>
+      <tr><td class="td-hl">CIQ</td><td class="td-hl">(65+40)÷2 = 52.5%</td><td class="td-hl">(65+55)÷2 = 60%</td></tr>
+    </tbody>
+  </table>
+
+  <p>Bank Alpha has strong data infrastructure but its escalation factory is running hard — fewer than half its data quality issues are resolved within SLA. That single number collapses the operational clearance to twenty-six percent and brings the AD under twenty, despite its relatively strong technical ceiling.</p>
+
+  <p>Bank Beta has a data convergence problem — possibly a legacy architecture issue, possibly an under-invested identity resolution programme. But its operational metabolism is solid. The factories are smaller. Its AD of twenty-seven percent is not strong, but it is a more balanced starting point and the path to forty percent is clearer.</p>
+
+  <p>If you were the board deciding where to invest, these two institutions require completely different conversations. The Autonomy Dividend makes that visible, but the average would not.</p>
+
+  <hr class="rule">
+
+  <!-- S6 -->
+  <div class="section-kicker">06 — Benchmarking — hypothesis only</div>
+  <h2>Where does your institution<br><em>sit in the range?</em></h2>
+
+  <p>The ranges below are a hypothesis, not a finding. They are offered as a starting point for calibrated debate, and should be challenged with real institutional numbers — that challenge is precisely how they improve. No institution has formally adopted this framework yet, and these figures should not be cited as survey data.</p>
+
+  <div class="bench-wrap">
+    <div class="bench-row">
+      <div class="bench-label">Global average</div>
+      <div class="bench-track"><div class="bench-fill" style="width:15%;background:#185FA5"></div></div>
+      <div class="bench-val">12 – 18%</div>
+    </div>
+    <div class="bench-row">
+      <div class="bench-label">Tier-1 leaders</div>
+      <div class="bench-track"><div class="bench-fill" style="width:30%;background:#2E9E8E"></div></div>
+      <div class="bench-val">25 – 35%</div>
+    </div>
+    <div class="bench-row">
+      <div class="bench-label">Best-in-class</div>
+      <div class="bench-track"><div class="bench-fill" style="width:45%;background:#2E8B5A"></div></div>
+      <div class="bench-val">40 – 55%</div>
+    </div>
+    <div class="bench-row">
+      <div class="bench-label">Frontier</div>
+      <div class="bench-track"><div class="bench-fill" style="width:62%;background:#085041"></div></div>
+      <div class="bench-val">60%+</div>
+    </div>
+  </div>
+
+  <p>The forty percent threshold is a hypothesis, and it is offered as one deliberately. The logic behind it is based on how the formula works rather than on empirical data: below forty percent, factory overhead is likely consuming more than half the potential autonomous throughput, making the economics of AI deployment difficult to justify on efficiency grounds alone. Above forty percent, the same foundational investments that moved the needle on the cardinal metrics begin to reduce the marginal cost of new autonomous use cases — the foundation work and the acceleration work turn out to be the same work. The institutions that calculate their Autonomy Dividend and track it over time will be the ones who can confirm or correct this.</p>
+
+  <p>The move from fifteen to forty is likely to be expensive and slow. The move from forty to sixty will likely be faster, because the foundational investments required to clear forty percent are the same ones that build momentum into the next phase. Institutions that understand this invest earlier and more deliberately rather than optimising individual metrics in isolation — patient, persistent execution is what turns the Autonomy Dividend from a concept into a return.</p>
+
+  <div class="callout callout-teal">
+    <strong>A standing invitation:</strong> Calculate your Autonomy Dividend. Use the diagnostic at the end of this paper. If your number differs from these ranges, the hypothesis improves through that challenge — and that is the only way it becomes real.
+  </div>
+
+  <hr class="rule">
+
+  <!-- S7 — was S7, now correctly 07 as benchmark is 06 -->
+  <div class="section-kicker">07 — The diagnostic</div>
+  <h2>Your number.<br><em>In about ten minutes.</em></h2>
+
+  <p>The most common question when this framework is introduced is: how does a senior banking leader get their number without commissioning a data extraction project? The answer is simpler than most expect.</p>
+
+  <p>Production metrics are not required to start. The diagnostic is twenty-four questions — six per metric — that ask about observable operational realities, not system outputs. <em>When two systems disagree about the same customer, what typically happens?</em> A COO or CDAO who has lived inside the institution knows the answer immediately. The diagnostic translates that institutional knowledge into an Autonomy Dividend estimate — rough, honest, and useful as a starting point for the right conversation.</p>
+
+  <p>Most senior leaders who complete it find their number is lower than expected. That is the diagnostic working as intended. The factories were always there. Now they have a number.</p>
+
+  <hr class="rule-gold">
+
+  <!-- CLOSER -->
+  <div class="closer">
+    <p>Most banks do not know their Autonomy Dividend. The ones that find out first — and act on what they learn — will not simply be ahead on a metric. They will be running fewer factories, making better autonomous decisions, with less regulatory exposure and at lower marginal cost per decision. <strong>That is the Autonomy Dividend. It pays back now, and it continues to pay as the factories reduce.</strong></p>
+  </div>
+
+  <!-- SERIES -->
+  <div class="series-closer">
+    <div class="series-closer-label">About this series</div>
+    <div class="series-items">
+      <div class="series-item">
+        <div class="series-item-tag">Paper 1 — The Architecture</div>
+        <div class="series-item-text">Banks are built like factories. They should work like a nervous system. Paper 1 laid out what that nervous system looks like — five interoperable decision planes coordinated by a Nerve Core, making simultaneous rather than sequential decisions, in real time rather than in batch.</div>
+        <a class="series-item-link" href="./paper1.html">Read Paper 1 →</a>
+      </div>
+      <div class="series-item">
+        <div class="series-item-tag">Paper 2 — The Bridge</div>
+        <div class="series-item-text">Knowing the destination is not enough. Paper 2 gave practitioners a sequencing logic for the journey — four cardinal metrics, a four-move playbook, and a way to build momentum without waiting for a full transformation programme to complete.</div>
+        <a class="series-item-link" href="./paper2.html">Read Paper 2 →</a>
+      </div>
+      <div class="series-item">
+        <div class="series-item-tag">Paper 3 — The Autonomy Dividend</div>
+        <div class="series-item-text">This paper. The instrument that tells you where you stand — how much of the factory remains, how much autonomous capacity you have actually built, and what the gap is costing you every quarter you leave it in place.</div>
+      </div>
+      <div class="series-item series-item-next">
+        <div class="series-item-tag">Paper 4 — Coming</div>
+        <div class="series-item-text">A high Autonomy Dividend changes what is possible. Paper 4 will address what those possibilities look like for institutions that have done the foundational work.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DIAGNOSTIC CTA -->
+  <div class="diagnostic-cta" id="diagnostic-cta">
+    <div class="diagnostic-cta-label">The Bridge Diagnostic</div>
+    <div class="diagnostic-cta-line">No consultants. No data extraction. No workshop.<br>Just you, twenty-four questions, and your number.</div>
+    <a class="btn-diagnostic" href="./diagnostics.html">
+      Calculate your Autonomy Dividend ◈
+    </a>
+  </div>
+
+</div><!-- /body -->
+
+<!-- AUTHOR BAND -->
+<div class="author-band">
+  <div class="author-name">Sasidhar Bhavaraju</div>
+  <div class="author-detail">
+    Practitioner &nbsp;·&nbsp; Former Managing Director, HSBC<br>
+    Twenty years inside the foundations this architecture describes.
+  </div>
+  <div class="author-gf">Grounded futurism.</div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-links">
+    Paper 1 — <a href="./paper1.html">The Architecture</a> &nbsp;·&nbsp;
+    Paper 2 — <a href="./paper2.html">The Bridge</a> &nbsp;·&nbsp;
+    Paper 3 — The Autonomy Dividend &nbsp;·&nbsp;
+    <a href="mailto:sasidhar.bhavaraju@gmail.com">sasidhar.bhavaraju@gmail.com</a>
+  </div>
+  <div class="footer-copy">© 2026 Sasidhar Bhavaraju · BluemeBank · All rights reserved</div>
+</div>
+
+</body>
+</html>

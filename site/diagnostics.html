@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BluemeBank · The Bridge Diagnostic</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Raleway:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/css/main.css">
+<link rel="stylesheet" href="./assets/css/diagnostics.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="nav">
+  <a class="nav-logo" href="./index.html">
+    <span class="b">Bleume</span><span class="k">Bank</span>
+  </a>
+  <div class="nav-links">
+    <a href="./paper1.html">Paper 1</a>
+    <a href="./paper2.html">Paper 2</a>
+    <a href="./paper3.html">Paper 3</a>
+    <a href="./diagnostics.html" class="active">Diagnostic ◈</a>
+  </div>
+  <div class="nav-mobile">
+    <a href="./paper1.html">P1</a>
+    <a href="./paper2.html">P2</a>
+    <a href="./paper3.html">P3</a>
+    <a href="./diagnostics.html" class="active">Diagnostic ◈</a>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap" id="progressWrap">
+  <div class="progress-steps">
+    <div class="progress-step" id="pstep-0" onclick="jumpToStep(0)"><div class="step-dot">1</div><div class="step-label">Institution</div></div>
+    <div class="progress-step" id="pstep-1" onclick="jumpToStep(1)"><div class="step-dot">2</div><div class="step-label">DCI</div></div>
+    <div class="progress-step" id="pstep-2" onclick="jumpToStep(2)"><div class="step-dot">3</div><div class="step-label">RRV</div></div>
+    <div class="progress-step" id="pstep-3" onclick="jumpToStep(3)"><div class="step-dot">4</div><div class="step-label">DARR</div></div>
+    <div class="progress-step" id="pstep-4" onclick="jumpToStep(4)"><div class="step-dot">5</div><div class="step-label">DQIRR</div></div>
+    <div class="progress-step" id="pstep-5" onclick="jumpToStep(5)"><div class="step-dot">6</div><div class="step-label">Results</div></div>
+  </div>
+</div>
+
+<!-- NAV BAR -->
+<div class="nav-bar" id="navBar">
+  <div class="nav-left">
+    <div>
+      <div class="nav-section-label" id="navSectionLabel">Section</div>
+      <div class="nav-section-name" id="navSectionName">—</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:20px">
+    <div class="nav-progress" id="navProgress"></div>
+    <div class="nav-right">
+      <button class="btn-back" id="btnBack" onclick="goBack()">← Back</button>
+      <button class="btn-next" id="btnNext" onclick="goNext()">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-ring"></div>
+  <div class="loading-text">Nerve Core Synthesising</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- HERO -->
+  <div id="heroSection">
+    <div class="hero">
+      <div class="hero-left">
+        <div class="hero-eyebrow">Module 01 · The Autonomy Dividend Diagnostic</div>
+        <h1 class="hero-title">The Bridge<br><em>Diagnostic</em></h1>
+        <div class="hero-rule"></div>
+        <p class="hero-desc">Most Institutions are running invisible factories — reconciliation factories, interpretation factories, duplication factories, escalation factories. They have been normalised as the cost of doing business. This diagnostic names which factories yours is running — and calculates your <strong style="color:var(--gold)">Autonomy Dividend</strong>, a board-ready measure of how much autonomous capacity those factories are consuming today.</p>
+        <button class="hero-start-btn" onclick="startDiagnostic()">Begin Assessment ◈</button>
+      </div>
+      <div class="hero-right">
+        <div class="metric-pill"><div class="metric-icon">⬡</div><div class="metric-info"><div class="metric-name">DCI</div><div class="metric-desc">Data Convergence Index · Reconciliation Factory — can you resolve the same customer and trust the answer?</div></div></div>
+        <div class="metric-pill"><div class="metric-icon">⟳</div><div class="metric-info"><div class="metric-name">RRV</div><div class="metric-desc">Regulatory Response Velocity · Interpretation Factory — when a rule changes, how long before your systems reflect it?</div></div></div>
+        <div class="metric-pill"><div class="metric-icon">◫</div><div class="metric-info"><div class="metric-name">DARR</div><div class="metric-desc">Data Asset Reuse Ratio · Duplication Factory — when you need data, are you building it again or reusing what you built?</div></div></div>
+        <div class="metric-pill"><div class="metric-icon">◉</div><div class="metric-info"><div class="metric-name">DQIRR</div><div class="metric-desc">DQ Issue Resolution Rate · Escalation Factory — when data is wrong, does it actually get fixed?</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 0: Institution Setup -->
+  <div id="section-0" class="setup-section hidden">
+    <div class="section-header">
+      <div class="section-number">Step 01 / 05</div>
+      <h2 class="section-title">Your <em>Institution</em></h2>
+      <p class="section-sub">Basic context to calibrate the assessment. This information shapes how results are framed and is not stored or transmitted.</p>
+    </div>
+    <div class="setup-grid">
+      <div class="setup-field">
+        <label class="field-label">Institution Name</label>
+        <input class="field-input" id="instName" type="text" placeholder="e.g. Northern Regional Bank" />
+      </div>
+
+      <div class="setup-field">
+        <label class="field-label">Institution Size</label>
+        <select class="field-select" id="instSize">
+          <option value="">Select size...</option>
+          <option value="tier1">Tier 1 Global — Assets > USD 500bn</option>
+          <option value="tier2">Tier 2 Regional — Assets USD 50–500bn</option>
+          <option value="tier3">Mid-Size — Assets USD 5–50bn</option>
+          <option value="tier4">Community / Challenger — Assets < USD 5bn</option>
+        </select>
+      </div>
+      <div class="setup-field">
+        <label class="field-label">Primary Jurisdiction</label>
+        <select class="field-select" id="instJurisdiction">
+          <option value="">Select jurisdiction...</option>
+          <option value="uk">United Kingdom (PRA / FCA)</option>
+          <option value="au">Australia (APRA / ASIC)</option>
+          <option value="in">India (RBI / SEBI)</option>
+          <option value="sg">Singapore (MAS)</option>
+          <option value="us">United States (Fed / OCC / FDIC)</option>
+          <option value="eu">European Union (ECB / EBA)</option>
+          <option value="hk">Hong Kong (HKMA)</option>
+          <option value="asia">Asia-Pacific (Multi-regulator)</option>
+          <option value="other">Other / Global</option>
+        </select>
+      </div>
+      <div class="setup-field full">
+        <label class="field-label">Current Transformation State (optional)</label>
+        <input class="field-input" id="instContext" type="text" placeholder="e.g. Cloud migration underway, CDAO appointed 18 months ago, 3 AI pilots in progress" />
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTIONS 1–4: Questions -->
+  <div id="section-1" class="q-section hidden">
+    <div class="q-section-header">
+      <div class="q-section-icon">⬡</div>
+      <div class="q-section-info">
+        <div class="q-section-tag">Section A · 6 Questions · DCI · Reconciliation Factory</div>
+<div class="q-section-name">Data Convergence Index</div>
+<div class="q-section-desc">The Reconciliation Factory runs wherever systems disagree about the same customer and a human is required to decide which version is true. These six questions measure how large yours is — and whether the identity problem it represents is structural or solvable.</div>
+      </div>
+      <div class="q-section-metric">DCI</div>
+    </div>
+    <div id="questions-1"></div>
+  </div>
+
+  <div id="section-2" class="q-section hidden">
+    <div class="q-section-header">
+      <div class="q-section-icon">⟳</div>
+      <div class="q-section-info">
+        <div class="q-section-tag">Section B · 6 Questions · RRV · Interpretation Factory</div>
+<div class="q-section-name">Regulatory Response Velocity</div>
+<div class="q-section-desc">The Interpretation Factory runs every time a rule changes and heroic effort closes the gap instead of the architecture. These six questions measure whether regulatory agility is a foundational property of your institution — or a cost that accumulates with every change cycle.</div>
+      </div>
+      <div class="q-section-metric">RRV</div>
+    </div>
+    <div id="questions-2"></div>
+  </div>
+
+  <div id="section-3" class="q-section hidden">
+    <div class="q-section-header">
+      <div class="q-section-icon">◫</div>
+      <div class="q-section-info">
+        <div class="q-section-tag">Section C · 6 Questions · DARR · Duplication Factory</div>
+<div class="q-section-name">Data Asset Reuse Ratio</div>
+<div class="q-section-desc">The Duplication Factory runs every time a new use case rebuilds data that already exists somewhere in the institution. These six questions measure whether your funding model, ownership, and governance produce shared capability — or keep building the same thing under different project names.</div>      </div>
+      <div class="q-section-metric">DARR</div>
+    </div>
+    <div id="questions-3"></div>
+  </div>
+
+  <div id="section-4" class="q-section hidden">
+    <div class="q-section-header">
+      <div class="q-section-icon">◉</div>
+      <div class="q-section-info">
+        <div class="q-section-tag">Section D · 6 Questions · DQIRR · Escalation Factory</div>
+<div class="q-section-name">DQ Issue Resolution Rate</div>
+<div class="q-section-desc">The Escalation Factory runs every time a data quality issue cannot be resolved at the point it is found and must be routed to a human for judgement. These six questions measure whether accountability for fixes is real — or whether data quality is still a technical obligation that the business can ignore.</div>      </div>
+      <div class="q-section-metric">DQIRR</div>
+    </div>
+    <div id="questions-4"></div>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results-section" class="results-section hidden">
+    <div class="results-header">
+      <div class="results-institution" id="resultInstitution">— Assessment Complete —</div>
+      <h2 class="results-title">Autonomy <em>Dividend</em> Report</h2>
+      <div class="results-date" id="resultsDate"></div>
+    </div>
+
+    <!-- AY HEADLINE -->
+    <div class="ay-headline" id="ayHeadline">
+      <div class="ay-label">Autonomy Dividend</div>
+      <div class="ay-number-row">
+        <div class="ay-number" id="adNumber">—</div>
+        <div class="ay-unit">%</div>
+      </div>
+      <div class="ay-classification" id="ayClassification">—</div>
+      <div class="ay-strap" id="ayStrap">—</div>
+      <div class="stage-scale" style="margin-top:24px;">
+        <div class="scale-track">
+          <div class="scale-segment s1-seg" id="scaleS1">
+            <div class="scale-seg-label">Foundation Constrained</div>
+            <div class="scale-seg-sub">AD below 15%</div>
+          </div>
+          <div class="scale-segment s2-seg" id="scaleS2">
+            <div class="scale-seg-label">Operational Translation</div>
+            <div class="scale-seg-sub">AD 15–35%</div>
+          </div>
+          <div class="scale-segment s3-seg" id="scaleS3">
+            <div class="scale-seg-label">Bridge-Ready</div>
+            <div class="scale-seg-sub">AD above 35%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AY MATHS -->
+    <div class="ay-maths" id="ayMaths">
+      <div class="ay-maths-label">How it is calculated</div>
+      <div class="ay-formula-row">
+        <div class="ay-formula-block">
+          <div class="ay-formula-tag">Technical Autonomy Ceiling</div>
+          <div class="ay-formula-text">min ( DCI , RRV )</div>
+          <div class="ay-formula-value" id="ceilingValue">—</div>
+          <div class="ay-formula-note">You cannot outrun your bottleneck.</div>
+        </div>
+        <div class="ay-formula-op">×</div>
+        <div class="ay-formula-block">
+          <div class="ay-formula-tag">Operational Clearance Factor</div>
+          <div class="ay-formula-text">DARR × DQIRR / 100</div>
+          <div class="ay-formula-value" id="clearanceValue">—</div>
+          <div class="ay-formula-note">Independent failures compound, not average.</div>
+        </div>
+        <div class="ay-formula-op">=</div>
+        <div class="ay-formula-block ay-formula-final">
+          <div class="ay-formula-tag">Autonomy Dividend</div>
+          <div class="ay-formula-text">AD</div>
+          <div class="ay-formula-value" id="adValueMaths">—</div>
+          <div class="ay-formula-note">The boardroom number.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARDINAL METRICS -->
+    <div class="cardinal-header">
+      <div class="cardinal-tag">The Four Cardinal Metrics</div>
+      <div class="cardinal-title">Where the Score Comes From</div>
+    </div>
+    <div class="metrics-grid" id="metricsGrid">
+      <!-- populated by JS -->
+    </div>
+
+    <!-- BRIDGE SCORE CONTEXT -->
+    <div class="stage-banner" id="stageBanner">
+      <div>
+        <div class="stage-label">CIQ · Continuous Intelligence Quotient</div>
+        <div class="stage-name" id="stageName">—</div>
+        <div class="stage-desc" id="stageDesc">—</div>
+        <div class="signal-row" id="signalRow"></div>
+      </div>
+      <div class="stage-score-wrap">
+        <div class="stage-score" id="stageScore">—</div>
+        <div class="stage-score-sub">CIQ Score</div>
+      </div>
+    </div>
+
+
+
+    <!-- DON'T KNOW FLAGS -->
+    <div class="dontknow-card hidden" id="dontknowCard">
+      <div class="dontknow-header">
+        <div class="dontknow-tag">◈ Visibility Gaps Identified</div>
+        <div class="dontknow-desc">The following questions were answered as unknown. These are themselves diagnostic signals — a CDAO who cannot answer these questions has identified an accountability or transparency gap worth investigating.</div>
+      </div>
+      <div id="dontknowList"></div>
+    </div>
+
+    <!-- METHODOLOGY NOTE -->
+    <div class="methodology-note">
+      <div class="methodology-tag">◈ How this is calculated</div>
+      <div class="meth-cards">
+        <div class="meth-card">
+          <div class="meth-card-icon">①</div>
+          <div class="meth-card-name">Section Scores</div>
+          <div class="meth-card-formula">6 questions × score 1–4</div>
+          <div class="meth-card-note">Raw ÷ 24 × 100 = %. Unknown answers score 1.</div>
+        </div>
+        <div class="meth-card">
+          <div class="meth-card-icon">②</div>
+          <div class="meth-card-name">CIQ Score</div>
+          <div class="meth-card-formula">50% avg + 50% min</div>
+          <div class="meth-card-note">Weighted to the weakest dimension. 90/90/90/20 ≠ 72%.</div>
+        </div>
+        <div class="meth-card meth-card-highlight">
+          <div class="meth-card-icon">③</div>
+          <div class="meth-card-name">Autonomy Dividend</div>
+          <div class="meth-card-formula">min(DCI,RRV) × (DARR×DQIRR÷100)</div>
+          <div class="meth-card-note">Failures compound. Ceiling × Clearance.</div>
+        </div>
+        <div class="meth-card">
+          <div class="meth-card-icon">◈</div>
+          <div class="meth-card-name">Projected values</div>
+          <div class="meth-card-formula">24 responses, not live data</div>
+          <div class="meth-card-note">Diagnostic estimate. Accurate to the honesty of responses given.</div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- GLOSSARY -->
+    <div class="glossary-section">
+      <div class="glossary-tag">◈ Key Terms</div>
+      <div class="glossary-grid">
+        <div class="glossary-item">
+          <div class="glossary-term">AD</div>
+          <div class="glossary-full">Autonomy Dividend</div>
+          <div class="glossary-def">The headline metric. The percentage of an institution's consequential decisions that could safely operate autonomously today — given its actual data foundation, infrastructure, governance, and organisational readiness. Calculated as: min(DCI, RRV) × (DARR × DQIRR ÷ 100).</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">CIQ</div>
+          <div class="glossary-full">Continuous Intelligence Quotient</div>
+          <div class="glossary-def">The overall readiness score. Weighted toward the weakest dimension: 50% average of the four cardinal metrics plus 50% minimum score. A bank scoring 90/90/90/20 is not 72% ready — it is constrained by its weakest pillar.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Technical Autonomy Ceiling</div>
+          <div class="glossary-full">min ( DCI , RRV )</div>
+          <div class="glossary-def">The maximum AD an institution can achieve given its data and infrastructure constraints. Derived from the minimum of DCI and RRV — because you cannot outrun your bottleneck. Grounded in Liebig's Law of the Minimum: a system's output is constrained by its scarcest resource, not its average.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">Operational Clearance Factor</div>
+          <div class="glossary-full">DARR × DQIRR ÷ 100</div>
+          <div class="glossary-def">The fraction of technically capable decisions that actually make it to autonomous execution without being blocked by governance or quality failure. Derived from reliability theory: independent failure modes compound rather than average. A 70% DARR and 60% DQIRR does not give 65% clearance — it gives 42%.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">DCI</div>
+          <div class="glossary-full">Data Convergence Index</div>
+          <div class="glossary-def">The proportion of critical data entities — customer, account, counterparty, product — that share a common identity key resolvable across three or more core systems, with documented lineage. Three systems is the threshold: two sharing a key is often a point-to-point integration. Three signals genuine institutional coherence.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">RRV</div>
+          <div class="glossary-full">Regulatory Response Velocity</div>
+          <div class="glossary-def">The average elapsed time between a new regulatory requirement being published and the institution having certified, lineage-traced data available to meet it. A proxy for technology infrastructure maturity — whether the data fabric can be adapted rather than rebuilt when requirements change.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">DARR</div>
+          <div class="glossary-full">Data Asset Reuse Ratio</div>
+          <div class="glossary-def">The proportion of new use case data requirements met by reusing or extending existing certified data assets — rather than commissioning new ones. Measures whether the data programme is building shared institutional capability or repeatedly building the same data for different use cases.</div>
+        </div>
+        <div class="glossary-item">
+          <div class="glossary-term">DQIRR</div>
+          <div class="glossary-full">Data Quality Issue Resolution Rate</div>
+          <div class="glossary-def">The proportion of data quality issues raised by downstream consumers that receive a complete, traceable resolution response — root cause identified, upstream owner confirmed, fix timeline committed — within a defined service level. Measures whether accountability for data quality fixes is real or nominal.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="move-card" id="moveCard">
+      <div class="move-header">
+        <div class="move-num" id="moveNum">—</div>
+        <div class="move-info">
+          <div class="move-tag">Current Sequencing Position</div>
+          <div class="move-name" id="moveName">—</div>
+        </div>
+      </div>
+      <div class="move-roadmap">
+        <div class="move-road-item" id="mroad-1"><div class="mroad-num">1</div><div class="mroad-label">Assess Before<br>You Activate</div></div>
+        <div class="mroad-arrow">→</div>
+        <div class="move-road-item" id="mroad-2"><div class="mroad-num">2</div><div class="mroad-label">Choose the<br>Right Wedge</div></div>
+        <div class="mroad-arrow">→</div>
+        <div class="move-road-item" id="mroad-3"><div class="mroad-num">3</div><div class="mroad-label">Build the Sequence,<br>Not the Plan</div></div>
+        <div class="mroad-arrow">→</div>
+        <div class="move-road-item" id="mroad-4"><div class="mroad-num">4</div><div class="mroad-label">Measure Progress,<br>Not Activity</div></div>
+      </div>
+      <div class="move-desc" id="moveDesc">—</div>
+      <div class="priorities-title">Priority Actions Before Moving Forward</div>
+      <div id="priorityList">—</div>
+    </div>
+
+    <!-- DATA DISCLOSURE -->
+    <div class="data-disclosure">
+      <div class="disclosure-icon">◈</div>
+      <div class="disclosure-text">Your responses are saved to a secure database visible to the BluemeBank team. They are used solely to improve the diagnostic framework and to prepare your synthesis. They are not shared with any third party.</div>
+    </div>
+
+    <!-- NO API KEY OPTIONS -->
+    <div class="no-key-options">
+      <div class="no-key-label">Save your results or request a synthesis</div>
+      <div class="no-key-desc">Enter your email to save your results. You will receive a copy of your scores and — if requested — Sasidhar will return a personalised Nerve Core narrative within 48 hours.</div>
+      <div style="display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap;">
+        <input type="email" id="userEmail" placeholder="your@email.com" style="flex:1;min-width:220px;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.25);border-radius:7px;padding:10px 16px;color:var(--white);font-family:'Raleway',sans-serif;font-size:13px;outline:none;" />
+        <button class="btn-next" id="btnRequestSynthesis" onclick="requestSynthesisEmail()" style="font-size:10px;padding:10px 22px;white-space:nowrap;">✉ Request Synthesis</button>
+        <button class="btn-export" id="btnSaveResults" onclick="saveResultsManually()" style="white-space:nowrap;">⊕ Save Only</button>
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--grey);font-style:italic;">Your results will be emailed to you as a reference. Sasidhar will also receive your scores to prepare the synthesis.</div>
+      <div id="synthesisRequestConfirm" style="display:none;margin-top:14px;padding:12px 16px;background:rgba(46,158,142,0.08);border:1px solid rgba(46,158,142,0.25);border-radius:8px;font-size:12px;color:var(--teal);line-height:1.7;">
+        ✓ Your results have been saved and emailed to you. Sasidhar will return your personalised Nerve Core synthesis within 48 hours.
+      </div>
+    </div>
+
+    <div class="export-row">
+      <button class="btn-export" onclick="window.print()">⊕ Print / Save PDF</button>
+      <button class="btn-restart" onclick="restart()">↺ New Assessment</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script src="./assets/js/diagnostics.js" defer></script>
+</body>
+</html>

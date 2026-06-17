@@ -1,0 +1,1066 @@
+// ═══════════════════════════════════════════════════════════════
+// CONFIGURATION — Replace with your deployed Apps Script URL
+// ═══════════════════════════════════════════════════════════════
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbybL2KmHzB7FUfZ5aEWRd3bi8pBRjpmVEGHMhPxfIlbv2i4ZINzN9C4VPx-vJH37NTWLA/exec'; // paste your deployed web app URL here
+
+// ═══════════════════════════════════════════════════════════════
+// DATA — Questions, Options, Scores
+// ═══════════════════════════════════════════════════════════════
+
+const sections = [
+  { id: 1, key: 'dci',   name: 'Data Convergence',     metric: 'DCI',   question: 'Can you find the same customer across your systems?' },
+  { id: 2, key: 'rrv',   name: 'Regulatory Velocity',  metric: 'RRV',   question: 'When a new rule lands, how fast can you respond?' },
+  { id: 3, key: 'darr',  name: 'Asset Reuse',          metric: 'DARR',  question: 'Are you building shared capability or repeating yourself?' },
+  { id: 4, key: 'dqirr', name: 'Quality Resolution',   metric: 'DQIRR', question: 'When something is wrong, does it get fixed?' }
+];
+
+const questions = {
+  // ═══════════════════════════════════════════════════════════════
+  // SECTION 1 — DCI (Data Convergence Index)
+  // Question: Can you find the same customer across your systems and trust the answer?
+  // ═══════════════════════════════════════════════════════════════
+  1: [
+    {
+      id: 'D1',
+      text: 'How is the same customer identified across your core systems?',
+      hint: 'Think about how a customer ID in your retail core relates to one in wholesale, KYC, or risk.',
+      options: [
+        { text: 'Each system uses its own customer ID. Matching is manual or batch-reconciled.', hover: 'Two systems can be holding records for the same customer with no automated way to know it.', score: 1 },
+        { text: 'A common ID exists for some domains but not consistently applied across the institution.', hover: 'Retail and digital are usually aligned. Wholesale, treasury, and risk often sit outside.', score: 2 },
+        { text: 'A master customer ID is used by most systems with some manual reconciliation still required.', hover: 'The strategic ID exists but legacy systems lag, often needing batch matching to stay current.', score: 3 },
+        { text: 'A single resolved customer identity is available in real time across all core systems.', hover: 'A change in one system propagates to all consumers with documented lineage.', score: 4 }
+      ]
+    },
+    {
+      id: 'D2',
+      text: 'For critical data entities (customer, account, counterparty, product), how many share an identity key across three or more systems?',
+      hint: 'Three is the threshold — two systems sharing a key is often just a point-to-point integration.',
+      options: [
+        { text: 'Under 20% of critical entities resolve cleanly across three or more systems.', hover: 'Most entities are siloed or require expensive matching exercises to bring together.', score: 1 },
+        { text: 'Roughly 20-40%. Customer and counterparty partially resolve; product and transaction lag.', hover: 'Identity has been solved for the highest-priority entities but not systematically.', score: 2 },
+        { text: 'Roughly 40-70%. Several entity types resolve coherently; some domains remain fragmented.', hover: 'Strong convergence in core domains, weaker in product taxonomies and transactional data.', score: 3 },
+        { text: 'Over 70% of critical entities share resolvable identity across three or more systems.', hover: 'The institutional data fabric is genuinely coherent and supports cross-domain queries natively.', score: 4 }
+      ]
+    },
+    {
+      id: 'D3',
+      text: 'Is data lineage traceable from source system to point of use?',
+      hint: 'If a regulator asked where a number on a report came from, how hard would the trace be?',
+      options: [
+        { text: 'Lineage is not systematically maintained. Tracing requires manual investigation.', hover: 'Each trace becomes a project, often involving multiple teams across business and IT.', score: 1 },
+        { text: 'Lineage exists for regulatory reporting but is not consistently maintained elsewhere.', hover: 'BCBS 239 or equivalent has forced lineage in specific flows but not as a default.', score: 2 },
+        { text: 'Automated lineage tools are deployed across major data domains but coverage is partial.', hover: 'A lineage platform exists; coverage of legacy and operational systems remains incomplete.', score: 3 },
+        { text: 'End-to-end lineage is automated and current across critical data flows.', hover: 'Lineage is a property of the system, not a periodic documentation exercise.', score: 4 }
+      ]
+    },
+    {
+      id: 'D4',
+      text: 'Is data validated at the point it enters the institution, or reconciled later by downstream consumers?',
+      hint: 'When something is wrong, does the source fix it or does each consumer fix it for themselves?',
+      options: [
+        { text: 'Downstream functions independently validate and reconcile to use the data.', hover: 'Risk, Finance, and Operations each have their own reconciliation teams doing similar work.', score: 1 },
+        { text: 'Some upstream validation exists but downstream reconciliation estate remains substantial.', hover: 'Upstream improvements have not yet reduced the size of the reconciliation function.', score: 2 },
+        { text: 'Validation is increasingly embedded upstream; reconciliation estate is being deliberately reduced.', hover: 'The institution has committed to shifting validation to source and is measuring the shift.', score: 3 },
+        { text: 'Upstream validation is the default. Reconciliation is the exception, not the rule.', hover: 'The reconciliation estate has shrunk visibly; trust in source data is genuine.', score: 4 }
+      ]
+    },
+    {
+      id: 'D5',
+      text: 'When two systems disagree about the same customer or transaction, what typically happens?',
+      hint: 'This is a quick gut-check on real coherence vs documented coherence.',
+      options: [
+        { text: 'It is discovered downstream during reporting or reconciliation. Resolution is manual and slow.', hover: 'Different parts of the bank operate with subtly different versions of the truth.', score: 1 },
+        { text: 'A defined system of record exists but exceptions are common and require manual intervention.', hover: 'The rule exists on paper; in practice, conflicts surface regularly and need human judgment.', score: 2 },
+        { text: 'Automated reconciliation surfaces conflicts quickly and most resolve through established rules.', hover: 'Conflicts are visible early and resolved through defined precedence, with few escalations.', score: 3 },
+        { text: 'Conflicts are rare. When they occur, automated rules resolve them and source systems update consistently.', hover: 'The data fabric is coherent enough that conflicts are noteworthy events, not daily occurrences.', score: 4 }
+      ]
+    },
+    {
+      id: 'D6',
+      text: 'Forward view: Is your data foundation ready to feed multiple AI decision functions reasoning simultaneously*?',
+      hint: 'Could Risk, Compliance, and Operations all reason on the same customer in real time, with the same understanding of who that customer is?',
+      options: [
+        { text: 'No. Each function would need to assemble its own view of the customer from fragmented sources.', hover: 'A multi-plane architecture would surface the fragmentation immediately as inconsistent recommendations.', score: 1 },
+        { text: 'Partially. Some domains could feed two or three planes; others would require significant work.', hover: 'A wedge use case is feasible. Bank-wide multi-AI decision layer operation* is not yet supportable.', score: 2 },
+        { text: 'Mostly. A coordinated view exists for major customer and counterparty domains; some gaps remain.', hover: 'initial AI decision layer activation* is feasible across multiple domains with manageable remediation.', score: 3 },
+        { text: 'Yes. A coherent, real-time view of customers and entities exists that multiple planes can reason on simultaneously.', hover: 'The data foundation is genuinely plane-ready. The constraint sits elsewhere.', score: 4 }
+      ]
+    }
+  ],
+
+  // ═══════════════════════════════════════════════════════════════
+  // SECTION 2 — RRV (Regulatory Response Velocity)
+  // Question: When a new rule lands, how fast can you produce certified data for it?
+  // ═══════════════════════════════════════════════════════════════
+  2: [
+    {
+      id: 'T1',
+      text: 'How does data move from core systems to downstream consumers today?',
+      hint: 'Is it batch overnight, hourly, near-real-time, or streaming?',
+      options: [
+        { text: 'Primarily overnight batch across most critical domains.', hover: 'Decisions made today are based on yesterday’s closed positions.', score: 1 },
+        { text: 'Intraday batch for some domains, overnight for others.', hover: 'Hourly or every-few-hours refreshes exist for payments and some customer flows.', score: 2 },
+        { text: 'Near-real-time (minutes) for several core domains; some streaming in production.', hover: 'CDC or message-based flows exist for key domains; full streaming is partial.', score: 3 },
+        { text: 'Event-streaming is the default. Batch is the exception, used only where genuinely needed.', hover: 'Kafka or equivalent is in production across most critical data domains.', score: 4 }
+      ]
+    },
+    {
+      id: 'T2',
+      text: 'Does Change Data Capture (CDC) exist from your core banking systems?',
+      hint: 'CDC — Change Data Capture — streams real-time updates from core systems to modern infrastructure without replacing legacy. It is the bridge between batch-era core banking and event-driven architecture.',
+      options: [
+        { text: 'No. Data extraction from core systems is batch-file based.', hover: 'Modernisation requires building this from scratch or replacing core systems first.', score: 1 },
+        { text: 'CDC exists in production for one or two systems, typically built for a specific use case.', hover: 'Proof of concept exists; not yet a systematic capability across the estate.', score: 2 },
+        { text: 'CDC covers most core systems with documented patterns but quality varies by domain.', hover: 'The capability is real but legacy-era systems often need bespoke handling.', score: 3 },
+        { text: 'CDC is in production across all critical core systems with consistent quality and monitoring.', hover: 'Streaming is the operating model, not a project. Modern infrastructure operates on top of legacy reliably.', score: 4 }
+      ]
+    },
+    {
+      id: 'T3',
+      text: 'Where is your current technology modernisation programme primarily pointed?',
+      hint: 'The destination architecture determines whether the journey takes you somewhere useful. If no active programme exists, select the first option.',
+      options: [
+        { text: 'No active modernisation programme. Core systems are in maintenance mode with no planned infrastructure investment.', hover: 'More common than acknowledged. The modernisation case has not been made or funded.', score: 1 },
+        { text: 'Cost reduction only — offloading mainframe workloads, consolidating data centres.', hover: 'Legitimate objectives. But cost-led infrastructure may not support AI decision layer activation.', score: 2 },
+        
+        { text: 'Both cost and capability — event-driven architecture is explicit in current investment.', hover: 'Some balance has been struck. Real-time appears in current-year deliverables.', score: 3 },
+        { text: 'Building toward continuous, event-driven operation. Cost reduction is a by-product, not the goal.', hover: 'The destination is stated and investment is calibrated to it. The CDAO and CTO are aligned.', score: 4 }
+      ]
+    },
+    {
+      id: 'T4',
+      text: 'Does your institution have a governed API layer exposing core data to internal consumers?',
+      hint: 'This is the interface layer between your data fabric and the people, applications, and AI agents that need to use it.',
+      options: [
+        { text: 'No systematic API layer. Data access is file-based or direct database connections.', hover: 'Every new consumer requires bespoke pipeline work and bilateral negotiation.', score: 1 },
+        { text: 'APIs exist for customer-facing channels but internal consumption is still file-based.', hover: 'Open Banking compliance has built API capability outward; internal layer remains weak.', score: 2 },
+        { text: 'An internal API layer covers some domains with informal governance.', hover: 'APIs exist for major domains; standards, versioning, and access controls are inconsistent.', score: 3 },
+        { text: 'A governed API layer with documented standards covers most core data domains.', hover: 'Consuming data is a self-service activity within governance, not a project.', score: 4 }
+      ]
+    },
+    {
+      id: 'T5',
+      text: 'When a new regulatory requirement arrives, how long does it typically take to deliver certified, lineage-traced data for it?',
+      hint: 'Think of the last few real examples — DORA, CPS 230, Operational Resilience, IRRBB updates, climate disclosures.',
+      options: [
+        { text: 'Over 180 days. New requirements typically need a new programme with its own funding case.', hover: 'Each requirement is essentially rebuilt because existing assets cannot be adapted.', score: 1 },
+        { text: '90-180 days. The institution can meet most requirements with significant effort and lead time.', hover: 'Lineage documentation often lags the data delivery itself.', score: 2 },
+        { text: '30-90 days. Existing assets are adapted; lineage and certification work runs in parallel.', hover: 'The data fabric is coherent enough that adaptation rather than rebuild is the default.', score: 3 },
+        { text: 'Under 30 days for most requirements. The fabric is adapted, not rebuilt.', hover: 'Regulatory agility is a structural property, not the result of heroic effort.', score: 4 }
+      ]
+    },
+    {
+      id: 'T6',
+      text: 'Forward view: Is your infrastructure ready to support latency-sensitive AI decisioning across multiple domains?',
+      hint: 'A risk plane making a real-time exposure decision needs data delivered in sub-seconds — across several domains at once.',
+      options: [
+        { text: 'No. Most data is not available within the latency window an AI decisioning layer would require.', hover: 'AI use cases would be limited to non-time-sensitive decisions on enriched batch data.', score: 1 },
+        { text: 'Possible for low-volume, low-latency use cases on specific domains. Not scalable.', hover: 'A specific wedge can be activated but the wider architecture is not yet supportable.', score: 2 },
+        { text: 'Several domains are latency-ready. Multi-domain coordination in real time is achievable with engineering effort.', hover: 'The Compliance and Identity AI functions are feasible*; Risk plane requires further investment.', score: 3 },
+        { text: 'Yes. Infrastructure is engineered for sub-second multi-domain decisioning across the priority planes.', hover: 'The architecture would not be the constraint on Stage Two AI decision layer activation*.', score: 4 }
+      ]
+    }
+  ],
+
+  // ═══════════════════════════════════════════════════════════════
+  // SECTION 3 — DARR (Data Asset Reuse Ratio)
+  // Question: When you need new data, are you building it again or reusing what you already built?
+  // ═══════════════════════════════════════════════════════════════
+  3: [
+    {
+      id: 'G1',
+      text: 'How is data investment funded?',
+      hint: 'The funding model determines whether you build shared capability or repeat yourself.',
+      options: [
+        { text: 'Entirely use-case led. Each business unit funds its own data needs.', hover: 'The same data gets built multiple times because each requester pays for their own version.', score: 1 },
+        { text: 'Mostly use-case led, with some shared platform costs absorbed centrally.', hover: 'Shared infrastructure exists but is perpetually under-funded and contested.', score: 2 },
+        { text: 'A shared capability fund exists but is renegotiated or raided each budget cycle.', hover: 'The intent is there but the fund is not structurally protected from short-term priorities.', score: 3 },
+        { text: 'A ring-fenced bank-wide capability fund, agreed at board level, separate from use-case investment.', hover: 'Shared foundations are funded as institutional capability, not as overhead.', score: 4 }
+      ]
+    },
+    {
+      id: 'G2',
+      text: 'When a new use case needs data, what is the team’s first instinct?',
+      hint: 'Genuine reuse shows up in instinct, not in policy.',
+      options: [
+        { text: 'Build new — easier and faster than navigating what already exists.', hover: 'Existing assets are unknown, unreliable, or too painful to consume.', score: 1 },
+        { text: 'Build new, but check whether something similar exists in the same business area.', hover: 'Reuse happens within silos but not across them.', score: 2 },
+        { text: 'Check the data catalogue first, build new where existing assets do not fit.', hover: 'A catalogue exists and is used; existing assets are often not quite right for the new use.', score: 3 },
+        { text: 'Default is reuse. Building new requires a justification that existing assets cannot serve.', hover: 'The capability fund and asset library have made reuse genuinely easier than building new.', score: 4 }
+      ]
+    },
+    {
+      id: 'G3',
+      text: 'Who has the authority to compel data standards across organisational boundaries?',
+      hint: 'Ownership without authority is the most common failure mode in bank data governance.',
+      options: [
+        { text: 'No one. Standards are negotiated and contested across business lines.', hover: 'The CDAO is accountable for outcomes but cannot compel the changes that produce them.', score: 1 },
+        { text: 'The CDAO has influence and persuasion but not formal authority.', hover: 'Progress depends on relationships and goodwill, not structural power.', score: 2 },
+        { text: 'A governance forum has authority but enforcement is inconsistent.', hover: 'Decisions are made; execution depends on whether the mandated team has bandwidth.', score: 3 },
+        { text: 'A cross-boundary Data Design Authority has genuine, exercised authority over standards.', hover: 'Standards are set, enforced, and embedded in systems — not negotiated case by case.', score: 4 }
+      ]
+    },
+    {
+      id: 'G4',
+      text: 'How is the CDAO’s authority calibrated against their accountability?',
+      hint: 'Most CDAOs are accountable for things they do not control.',
+      options: [
+        { text: 'Accountable for outcomes across domains they do not own and cannot compel.', hover: 'A structurally impossible role. Success depends on individual heroics or political capital.', score: 1 },
+        { text: 'Significant influence; meaningful gaps between accountability and authority remain.', hover: 'The CDAO can push hard but cannot ultimately force decisions across business boundaries.', score: 2 },
+        { text: 'Clear authority within their direct function; meaningful influence outside it.', hover: 'The right structural starting point but cross-boundary disputes still escalate to ExCo.', score: 3 },
+        { text: 'Authority and accountability are matched. The CDAO has the structural power to deliver what they own.', hover: 'Decisions can be made and enforced; the role is set up to succeed.', score: 4 }
+      ]
+    },
+    {
+      id: 'G5',
+      text: 'What is the tenure of your current data governance mandate?',
+      hint: 'Long-horizon capability cannot be built under short-horizon governance.',
+      options: [
+        { text: 'No formal mandate, or one that expires annually with budget cycles.', hover: 'The programme starts from scratch each year, defending its existence rather than delivering.', score: 1 },
+        { text: 'Multi-year mandate framed around short-horizon deliverables and milestones.', hover: 'The mandate exists but governance still consumes most of the programme’s energy.', score: 2 },
+        { text: 'Multi-year board-visible mandate, but feature-based rather than foundation-based.', hover: 'The board cares about outputs; foundational work is hard to defend in steering committees.', score: 3 },
+        { text: 'A 5-8 year governance contract covers foundational milestones, agreed by board and ExCo.', hover: 'The programme is structurally protected from short-horizon pressure to declare victory early.', score: 4 }
+      ]
+    },
+    {
+      id: 'G6',
+      text: 'Forward view: Are governance and funding structures positioned to support coordinated multi-AI decision layer operation*?',
+      hint: 'Decision planes do not respect business-unit boundaries. Funding and governance must not either.',
+      options: [
+        { text: 'No. Plane-style operation would constantly run into ownership disputes and funding deadlocks.', hover: 'The structure that funded today’s capability cannot fund tomorrow’s.', score: 1 },
+        { text: 'A wedge use case is supportable. Wider AI decision layer activation* would require governance redesign first.', hover: 'One pilot is feasible. Scaling would expose structural unreadiness.', score: 2 },
+        { text: 'Cross-boundary governance and shared funding exist for major domains; gaps remain at the edges.', hover: 'The path to AI decision layer operation* is visible; remediation is identifiable rather than fundamental.', score: 3 },
+        { text: 'Governance and funding are designed for cross-boundary, continuous capability — not for use-case delivery.', hover: 'The institutional plumbing matches what continuous intelligence requires.', score: 4 }
+      ]
+    }
+  ],
+
+  // ═══════════════════════════════════════════════════════════════
+  // SECTION 4 — DQIRR (Data Quality Issue Resolution Rate)
+  // Question: When something is wrong with your data, does it actually get fixed?
+  // ═══════════════════════════════════════════════════════════════
+  4: [
+    {
+      id: 'O1',
+      text: 'When a data quality issue is identified, what typically happens next?',
+      hint: 'The path from finding to fix is where most data programmes stall.',
+      options: [
+        { text: 'A ticket is raised. Resolution depends on whether the upstream team has bandwidth.', hover: 'Issues accumulate. The same problems resurface across reports and use cases.', score: 1 },
+        { text: 'Issues are logged with ownership but resolution timelines are inconsistent.', hover: 'The system records what needs to be fixed; closing the loop is the weak link.', score: 2 },
+        { text: 'A formal issue management process with SLAs exists; business funding for fixes is contested.', hover: 'The process is there but funding for upstream remediation often is not.', score: 3 },
+        { text: 'End-to-end accountability is clear — upstream business owners are accountable, with funding mechanisms in place.', hover: 'Finding and fixing are owned together; resolution within SLA is the norm.', score: 4 }
+      ]
+    },
+    {
+      id: 'O2',
+      text: 'Who owns the fix when an upstream data issue blocks a downstream business outcome?',
+      hint: 'Owning the finding is easy. Owning the fix is where most institutions fail.',
+      options: [
+        { text: 'No one clearly. Negotiation determines who acts and when.', hover: 'The data team is asked to fix what only the upstream business can actually change.', score: 1 },
+        { text: 'The data team owns identification; the business owns the decision to fund a fix.', hover: 'The split creates a structural delay between knowing and acting.', score: 2 },
+        { text: 'The upstream business owns the fix in principle; in practice ExCo escalation is often needed.', hover: 'Accountability is clear on paper, contested when funding is required.', score: 3 },
+        { text: 'The upstream business is accountable as a business outcome, with funding attached.', hover: 'Data quality is a business KPI, not a technical obligation.', score: 4 }
+      ]
+    },
+    {
+      id: 'O3',
+      text: 'How are roles structured relative to the data and decisions they handle?',
+      hint: 'Role design determines who owns data quality fixes. Periodic roles produce periodic accountability. Continuous roles produce continuous resolution — which is what DQIRR measures.',
+      options: [
+        { text: 'Roles are built around periodic cycles — quarterly limits, annual KYC, monthly reconciliation.', hover: 'The job description is shaped by batch rhythm, not real-time response.', score: 1 },
+        { text: 'Some functions have adapted to faster signals (fraud, payments); core roles remain cycle-based.', hover: 'Pockets of continuous operation exist; the institutional rhythm is still periodic.', score: 2 },
+        { text: 'Role redesign for continuous operation is underway in several functions.', hover: 'The organisation is consciously preparing for AI-assisted continuous decisioning.', score: 3 },
+        { text: 'Roles are designed around continuous signal interpretation and AI-assisted decisioning.', hover: 'The human-AI division of labour is explicit and the workforce is shaped for it.', score: 4 }
+      ]
+    },
+    {
+      id: 'O4',
+      text: 'How does your institution govern the line between automated decisioning and human review?',
+      hint: 'The Translation Layer — making probabilistic AI defensible — needs explicit governance, not policy by accident.',
+      options: [
+        { text: 'No formal framework. Humans always decide; AI is informally advisory.', hover: 'There is no operating model for letting AI act, even where it could safely.', score: 1 },
+        { text: 'AI is used for low-stakes decisions; consequential decisions remain fully human.', hover: 'The boundary is implicit, not governed. The same case might be treated differently by different teams.', score: 2 },
+        { text: 'Confidence thresholds and override processes are being defined for some decision types.', hover: 'The framework is emerging; some decisions execute automatically within bounded parameters.', score: 3 },
+        { text: 'A structured framework defines automation vs review by confidence, impact and decision type.', hover: 'The boundary is governed, documented, and recalibrated as the evidence base develops.', score: 4 }
+      ]
+    },
+    {
+      id: 'O5',
+      text: 'How explicitly is the cultural and role transition being managed alongside the technology programme?',
+      hint: 'Cultural readiness directly drives resolution rates. Teams unprepared to work alongside AI accumulate quality issues rather than resolving them. Human readiness is an operational DQIRR enabler, not a soft consideration.',
+      options: [
+        { text: 'Not explicitly. The assumption is the workforce will adapt as tools are deployed.', hover: 'Adoption problems will surface after the technology lands, when fixing them is hardest.', score: 1 },
+        { text: 'Adoption is managed at the programme level; deeper role redesign is not yet addressed.', hover: 'Training and change communications exist; the job itself is not being redesigned.', score: 2 },
+        { text: 'Role redesign is acknowledged and piloted in some functions.', hover: 'The conversation has started; some teams are working in genuinely new ways.', score: 3 },
+        { text: 'The role transition is a named workstream with dedicated resources, running in parallel with technology.', hover: 'The human transition is treated with the same seriousness as the technology build.', score: 4 }
+      ]
+    },
+    {
+      id: 'O6',
+      text: 'Forward view: When an AI decision function* produces a weak or contested recommendation, can your institution trace it back to the data that caused it and fix it?',
+      hint: 'This is the operational test of whether the architecture is honest about its own limits.',
+      options: [
+        { text: 'No. A weak recommendation would create confusion, not traceable remediation.', hover: 'The institution would lose trust quickly because it cannot diagnose its own AI behaviour.', score: 1 },
+        { text: 'Partially. Trace is possible for some flows but requires significant manual effort.', hover: 'A wedge use case is supportable; failure mode response is slow and case-specific.', score: 2 },
+        { text: 'Yes for most cases. Lineage and DQ ownership combine to make resolution traceable and routine.', hover: 'The plane’s honesty about its inputs becomes a feature, not a vulnerability.', score: 3 },
+        { text: 'Yes. Weak recommendations route automatically with traceable resolution paths, owned and time-bound.', hover: 'The architecture is self-correcting at the institutional level, not just the technical one.', score: 4 }
+      ]
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════
+
+let currentStep = -1; // -1 = hero, 0 = setup, 1-4 = sections, 5 = results
+let answers = {};     // { 'D1': { score: 2, text: '...' }, ... }
+let institutionData = {};
+
+// ═══════════════════════════════════════════════════════════════
+// RENDER QUESTIONS
+// ═══════════════════════════════════════════════════════════════
+
+function renderQuestions() {
+  sections.forEach(sec => {
+    const container = document.getElementById(`questions-${sec.id}`);
+    container.innerHTML = '';
+    questions[sec.id].forEach((q, qi) => {
+      const isForward = qi === 5;
+      const card = document.createElement('div');
+      card.className = 'question-card';
+      card.id = `qcard-${q.id}`;
+
+      // Build options HTML without nested template literals
+      let optsHtml = q.options.map((opt, oi) => {
+        const safeText = opt.text.replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        const safeHover = (opt.hover || '').replace(/"/g, '&quot;');
+        return `<div class="option" id="opt-${q.id}-${oi}" data-qid="${q.id}" data-oi="${oi}" data-score="${opt.score}" data-dk="false">
+              <div class="option-dot"></div>
+              <div class="option-body">
+                <div class="option-text">${opt.text}</div>
+                <div class="option-hover">${opt.hover || ''}</div>
+              </div>
+              <div class="option-info" title="${safeHover}">?</div>
+            </div>`;
+      }).join('');
+
+      optsHtml += `<div class="option option-dontknow" id="opt-${q.id}-dk" data-qid="${q.id}" data-oi="dk" data-score="1" data-dk="true">
+            <div class="option-dot"></div>
+            <div class="option-body">
+              <div class="option-text" style="color:var(--grey)">I don't have visibility of this — or this doesn't apply to us.</div>
+              <div class="option-hover">Scored conservatively. Flagged in your results as an area to investigate — visibility gaps are themselves diagnostic signals.</div>
+            </div>
+            <div class="option-info" title="Unknown answers are scored conservatively and flagged in your results.">?</div>
+          </div>`;
+
+      card.innerHTML = `
+        <div class="q-number">Q${qi + 1} of 6 · ${sec.name.toUpperCase()}${isForward ? ' · FORWARD VIEW' : ''}</div>
+        <div class="q-text">${q.text}</div>
+        <div class="q-hint">${q.hint || ''}</div>
+        <div class="options" id="opts-${q.id}">${optsHtml}</div>`;
+
+      container.appendChild(card);
+
+      // Attach click handlers after appending (avoids inline handler issues)
+      card.querySelectorAll('.option').forEach(optEl => {
+        optEl.addEventListener('click', () => {
+          const qid = optEl.dataset.qid;
+          const oi = optEl.dataset.oi;
+          const score = parseInt(optEl.dataset.score);
+          const dk = optEl.dataset.dk === 'true';
+          const q2 = findQuestion(qid);
+          const optIdx = dk ? 'dk' : parseInt(oi);
+          const text = dk ? 'Not known at this time' : (q2 ? q2.options[optIdx].text : '');
+          selectOption(qid, optIdx, score, text, dk);
+        });
+      });
+    });
+  });
+}
+
+function escText(t) { return t.replace(/`/g, "'").replace(/\$/g, '').replace(/\\/g, ''); }
+
+function selectOption(qId, optIdx, score, text, isDontKnow) {
+  answers[qId] = { score, text, optIdx, isDontKnow: !!isDontKnow };
+  const opts = document.querySelectorAll(`#opts-${qId} .option`);
+  opts.forEach((o, i) => {
+    const isMatch = optIdx === 'dk' ? o.id === `opt-${qId}-dk` : i === optIdx;
+    o.classList.toggle('selected', isMatch);
+  });
+  document.getElementById(`qcard-${qId}`).classList.add('answered');
+  updateNextButton();
+}
+
+function findQuestion(qId) {
+  for (const sec of sections) {
+    const q = questions[sec.id].find(q => q.id === qId);
+    if (q) return q;
+  }
+  return null;
+}
+
+function updateNextButton() {
+  const btn = document.getElementById('btnNext');
+  if (currentStep === 0) {
+    btn.disabled = !document.getElementById('instName').value.trim() ||
+                   !document.getElementById('instSize').value;
+    return;
+  }
+  if (currentStep >= 1 && currentStep <= 4) {
+    const sec = sections[currentStep - 1];
+    const qs = questions[sec.id];
+    btn.disabled = qs.some(q => !answers[q.id]);
+    return;
+  }
+  btn.disabled = false;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════════
+
+function startDiagnostic() {
+  document.getElementById('heroSection').classList.add('hidden');
+  document.getElementById('progressWrap').classList.add('visible');
+  document.getElementById('navBar').classList.add('visible');
+  renderQuestions();
+  goToStep(0);
+}
+
+function goToStep(step) {
+  // hide all
+  document.getElementById('heroSection').classList.add('hidden');
+  document.querySelectorAll('.setup-section, .q-section, .results-section').forEach(el => {
+    el.classList.add('hidden');
+    el.classList.remove('visible');
+  });
+
+  currentStep = step;
+
+  if (step === 0) {
+    document.getElementById('section-0').classList.remove('hidden');
+    window.scrollTo(0, 0);
+  } else if (step >= 1 && step <= 4) {
+    const el = document.getElementById(`section-${step}`);
+    el.classList.remove('hidden');
+    el.classList.add('visible');
+    window.scrollTo(0, 0);
+  } else if (step === 5) {
+    document.getElementById('results-section').classList.remove('hidden');
+    document.getElementById('results-section').classList.add('visible');
+    window.scrollTo(0, 0);
+    buildResults();
+  }
+
+  updateProgress();
+  updateNavBar();
+  updateNextButton();
+}
+
+function goNext() {
+  if (currentStep === 0) {
+    institutionData = {
+      name: document.getElementById('instName').value.trim() || 'Your Institution',
+      role: 'Senior Practitioner',
+      size: document.getElementById('instSize').value,
+      sizeLabel: document.getElementById('instSize').options[document.getElementById('instSize').selectedIndex].text,
+      jurisdiction: document.getElementById('instJurisdiction').value,
+      jurisdictionLabel: document.getElementById('instJurisdiction').options[document.getElementById('instJurisdiction').selectedIndex].text,
+      context: document.getElementById('instContext').value.trim()
+    };
+  }
+  if (currentStep < 5) goToStep(currentStep + 1);
+}
+
+function goBack() {
+  if (currentStep > 0) goToStep(currentStep - 1);
+}
+
+function jumpToStep(target) {
+  // Can always go back to completed steps
+  // Can go forward only to completed steps or current+1
+  if (target === currentStep) return;
+  
+  // Allow jumping to any step that's been completed (done) or is current
+  const stepEl = document.getElementById(`pstep-${target}`);
+  if (!stepEl) return;
+  
+  // Don't allow jumping forward past unanswered sections
+  if (target > currentStep) {
+    // Check all sections between current and target are complete
+    for (let s = currentStep; s < target; s++) {
+      if (s >= 1 && s <= 4) {
+        const sec = sections[s - 1];
+        const qs = questions[sec.id];
+        const incomplete = qs.some(q => !answers[q.id]);
+        if (incomplete) {
+          // Flash the current step to indicate it needs completing
+          const dot = document.querySelector(`#pstep-${s} .step-dot`);
+          if (dot) {
+            dot.style.borderColor = 'var(--amber)';
+            dot.style.color = 'var(--amber)';
+            setTimeout(() => {
+              dot.style.borderColor = '';
+              dot.style.color = '';
+            }, 800);
+          }
+          return;
+        }
+      }
+      if (s === 0) {
+        if (!institutionData.name) return;
+      }
+    }
+  }
+  
+  goToStep(target);
+}
+
+function updateProgress() {
+  for (let i = 0; i <= 5; i++) {
+    const el = document.getElementById(`pstep-${i}`);
+    if (!el) continue;
+    el.classList.remove('active', 'done');
+    if (i < currentStep) el.classList.add('done');
+    else if (i === currentStep) el.classList.add('active');
+  }
+}
+
+function updateNavBar() {
+  const labels = ['Institution Setup', 'Data Convergence Index (DCI)', 'Regulatory Response Velocity (RRV)', 'Data Asset Reuse Ratio (DARR)', 'DQ Issue Resolution Rate (DQIRR)', 'Your Autonomy Dividend Report'];
+  document.getElementById('navSectionLabel').textContent = `Step ${currentStep + 1} of 6`;
+  document.getElementById('navSectionName').textContent = labels[currentStep] || '';
+
+  if (currentStep >= 1 && currentStep <= 4) {
+    const sec = sections[currentStep - 1];
+    const qs = questions[sec.id];
+    const answered = qs.filter(q => answers[q.id]).length;
+    document.getElementById('navProgress').textContent = `${answered} / ${qs.length} answered`;
+  } else {
+    document.getElementById('navProgress').textContent = '';
+  }
+
+  document.getElementById('btnBack').style.display = currentStep === 0 ? 'none' : 'block';
+  document.getElementById('btnNext').style.display = currentStep === 5 ? 'none' : 'block';
+
+  if (currentStep === 4) {
+    document.getElementById('btnNext').textContent = 'View Results →';
+  } else if (currentStep < 4) {
+    document.getElementById('btnNext').textContent = 'Continue →';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// SCORING & RESULTS
+// ═══════════════════════════════════════════════════════════════
+
+function scoreSection(sectionId) {
+  const qs = questions[sectionId];
+  const total = qs.reduce((sum, q) => sum + (answers[q.id]?.score || 0), 0);
+  const max = qs.length * 4;
+  return Math.round((total / max) * 100);
+}
+
+function overallScore() {
+  const scores = sections.map(s => scoreSection(s.id));
+  return Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+}
+
+function getStage(score) {
+  if (score < 40) return 1;
+  if (score < 68) return 2;
+  return 3;
+}
+
+function getMoveForStage(stage, scores) {
+  const minScore = Math.min(...scores);
+  if (minScore < 35) return 1;
+  if (minScore < 55) return 2;
+  if (stage >= 2) return 3;
+  return 4;
+}
+
+function buildResults() {
+  // scores indexed: [0]=DCI, [1]=RRV, [2]=DARR, [3]=DQIRR
+  const scores = sections.map(s => scoreSection(s.id));
+  const dci = scores[0], rrv = scores[1], darr = scores[2], dqirr = scores[3];
+
+  // ── AUTONOMY YIELD CALCULATION ──
+  const ceiling = Math.min(dci, rrv);                      // Technical Autonomy Ceiling
+  const clearance = (darr * dqirr) / 10000;                // Operational Clearance Factor (0–1)
+  const ay = Math.round(ceiling * clearance); // Autonomy Dividend (AD)              // AY %
+
+  // CIQ = weighted toward the lowest (weakest-link aware)
+  const minScore = Math.min(...scores);
+  const avgScore = scores.reduce((a,b) => a+b, 0) / scores.length;
+  const overall = Math.round((minScore * 0.5) + (avgScore * 0.5));   // half weighted to bottleneck
+
+  const stage = getStage(overall);
+  const move = getMoveForStage(stage, scores);
+
+  // Header
+  document.getElementById('resultInstitution').textContent = institutionData.name.toUpperCase() + ' · ' + (institutionData.sizeLabel || '');
+  document.getElementById('resultsDate').textContent = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  // ── AY HEADLINE ──
+  document.getElementById('adNumber').textContent = ay;
+  const ayCls = ay < 15 ? 'low' : ay < 35 ? 'mid' : 'high';
+  const ayLabels = { low: 'Foundation Constrained — structural barriers limiting autonomy', mid: 'Operational Translation — capability exists, clearance is the constraint', high: 'Bridge-Ready — structural foundations in place' };
+  document.getElementById('ayClassification').textContent = ayLabels[ayCls];
+  document.getElementById('ayClassification').className = 'ay-classification ' + ayCls;
+
+  // AY strap - the single sentence that lands
+  const minMetric = ['DCI', 'RRV', 'DARR', 'DQIRR'][scores.indexOf(minScore)];
+  const metricLongName = {
+    'DCI': 'data convergence',
+    'RRV': 'regulatory response velocity',
+    'DARR': 'data asset reuse',
+    'DQIRR': 'data quality issue resolution'
+  }[minMetric];
+
+  let strap = '';
+  if (ay < 15) {
+    strap = `An Autonomy Dividend of ${ay}% means the factories are still running at full capacity. The ${metricLongName} factory is the dominant constraint — and until that structural condition changes, additional investment in the other dimensions will not move the number.`;
+  } else if (ay < 35) {
+    strap = `An Autonomy Dividend of ${ay}% means factory reduction is underway but not yet at the threshold where the institution can safely activate a bank-wide AI decision layer. The ${metricLongName} factory remains the binding constraint. A wedge use case is supportable — scaling requires this factory to close.`;
+  } else {
+    strap = `An Autonomy Dividend of ${ay}% means your institution has materially reduced its factory footprint. The four cardinal metrics are aligned. The competitive question now is how fast you can scale what you have built — and whether governance keeps pace with capability.`;
+  }
+  document.getElementById('ayStrap').textContent = strap;
+
+  // ── AY MATHS ──
+  document.getElementById('ceilingValue').textContent = ceiling + '% = min(' + dci + ', ' + rrv + ')';
+  document.getElementById('clearanceValue').textContent = (clearance * 100).toFixed(1) + '% = ' + darr + '% × ' + dqirr + '%';
+  document.getElementById('adValueMaths').textContent = ay + '%';
+
+  // Stage banner
+  const stageClass = `s${stage}`;
+  const stageNames = ['', 'Pre-Foundation', 'Foundation in Progress', 'Bridge-Ready'];
+  const stageDescs = [
+    '',
+    'The factories are running at full capacity. The foundational conditions for reducing them — shared identity, adaptive infrastructure, reuse-oriented funding, and accountable fix ownership — are not yet structurally in place. The gap is not primarily technical. It is governance, funding model, and ownership design. These are solvable without replacing core systems.',
+    'Meaningful foundations are being built, but critical structural conditions remain unresolved. The risk at this stage is not capability — it is sequencing. Programmes at this stage often attempt AI decision layer activation* before the data foundations are ready, producing confident-sounding outputs on incomplete information.',
+    'Your institution has the structural foundations to sequence the transition. The infrastructure constraint is understood and being addressed, data governance is coherent, and the sequencing logic can be followed. The focus now is on wedge selection, Move Two execution, and building the confidence threshold frameworks that Stage Two requires.'
+  ];
+
+  document.getElementById('stageName').textContent = stageNames[stage];
+  document.getElementById('stageName').className = `stage-name ${stageClass}`;
+  document.getElementById('stageDesc').textContent = stageDescs[stage];
+  document.getElementById('stageScore').textContent = overall + '%';
+  document.getElementById('stageScore').className = `stage-score ${stageClass}`;
+
+  // Signal chips
+  const signalRow = document.getElementById('signalRow');
+  signalRow.innerHTML = '';
+  const chipDefs = [
+    { label: 'DCI', score: scores[0] },
+    { label: 'RRV', score: scores[1] },
+    { label: 'DARR', score: scores[2] },
+    { label: 'DQIRR', score: scores[3] }
+  ];
+  chipDefs.forEach(c => {
+    const chip = document.createElement('div');
+    chip.className = `signal-chip ${c.score < 40 ? 'gap' : c.score < 68 ? 'partial' : 'ready'}`;
+    chip.textContent = `${c.label} ${c.score}%`;
+    signalRow.appendChild(chip);
+  });
+
+  // Activate stage scale
+  ['scaleS1','scaleS2','scaleS3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active-stage');
+  });
+  const activeScale = ay < 15 ? 'scaleS1' : ay < 35 ? 'scaleS2' : 'scaleS3';
+  const activeEl = document.getElementById(activeScale);
+  if (activeEl) activeEl.classList.add('active-stage');
+
+  // Metrics grid
+  const metricDefs = [
+    { name: 'DCI',   full: 'Data Convergence Index',     score: scores[0], desc: 'Shared identity across systems' },
+    { name: 'RRV',   full: 'Regulatory Response Velocity', score: scores[1], desc: 'Infrastructure agility for new requirements' },
+    { name: 'DARR',  full: 'Data Asset Reuse Ratio',     score: scores[2], desc: 'Shared capability vs repeated build' },
+    { name: 'DQIRR', full: 'DQ Issue Resolution Rate',   score: scores[3], desc: 'Traceable fix accountability' }
+  ];
+  const grid = document.getElementById('metricsGrid');
+  grid.innerHTML = '';
+  metricDefs.forEach((m, i) => {
+    const cls = m.score < 40 ? 'low' : m.score < 68 ? 'mid' : 'high';
+    const stageTag = m.score < 40 ? 'Bottleneck' : m.score < 68 ? 'In Progress' : 'Ready';
+    const card = document.createElement('div');
+    card.className = 'metric-card';
+    card.innerHTML = `
+      <div class="metric-card-name">${m.name}</div>
+      <div class="metric-card-full">${m.full}</div>
+      <div class="metric-bar-wrap"><div class="metric-bar ${cls}" id="mbar-${i}"></div></div>
+      <div class="metric-pct ${cls}">${m.score}%</div>
+      <div class="metric-stage-tag">${stageTag}</div>`;
+    grid.appendChild(card);
+    setTimeout(() => { document.getElementById(`mbar-${i}`).style.width = m.score + '%'; }, 200 + i * 100);
+  });
+
+  // Move card
+  const moveNames = ['', 'Assess Before You Activate', 'Choose the Right Wedge', 'Build the Sequence, Not the Plan', 'Measure Progress, Not Activity'];
+  const moveDescs = [
+    '',
+    'Before any plane is activated, before any use case is selected, and before any investment case is made — your institution needs an honest picture of where it actually stands across all four dimensions. Your assessment indicates this diagnostic work is incomplete. The constraints it will surface are real, and discovering them mid-delivery is significantly more expensive than discovering them now.',
+    'Your foundational assessment is substantially complete. The next decision — which use case to activate first — is disproportionately consequential. A wedge that fails does not just fail; it sets the programme back by years and gives every sceptic the evidence they need. Selection must be equal parts commercial (does senior leadership care about this outcome?) and operational (is the data for this domain the most complete in the institution?).',
+    'The wedge is selected and the first AI decision layer activation* is underway. The sequencing logic for the full programme must now be built around three dependency principles: data before planes, infrastructure before latency-sensitive planes, and governance before autonomy. A fixed timeline is a mistake at this stage — the sequence must emerge from what the wedge reveals about your actual data and infrastructure constraints.',
+    'The hardest and most important discipline in a programme of this nature is measuring the right things. The problems that stop appearing — reconciliation breaks, regulatory findings, erroneous customer charges — are the outcomes that matter. They are also the hardest to attribute. The metrics framework is the instrument that makes the case for continued investment when the early outputs are infrastructure rather than features.'
+  ];
+
+  document.getElementById('moveNum').textContent = move;
+  document.getElementById('moveName').textContent = moveNames[move];
+  document.getElementById('moveDesc').textContent = moveDescs[move];
+
+  // Activate move roadmap
+  for (let m = 1; m <= 4; m++) {
+    const el = document.getElementById('mroad-' + m);
+    if (el) el.classList.toggle('active-move', m === move);
+  }
+
+  // Priorities
+  const priorities = buildPriorities(stage, move, scores);
+  const list = document.getElementById('priorityList');
+  list.innerHTML = '';
+  priorities.forEach((p, i) => {
+    const item = document.createElement('div');
+    item.className = 'priority-item';
+    item.innerHTML = `<div class="priority-num">${i + 1}</div><div class="priority-text">${p}</div>`;
+    list.appendChild(item);
+  });
+
+  // Flag don't-know answers
+  const dontKnows = [];
+  const metricLabels = ['DCI', 'RRV', 'DARR', 'DQIRR'];
+  sections.forEach((sec, si) => {
+    questions[sec.id].forEach(q => {
+      if (answers[q.id] && answers[q.id].isDontKnow) {
+        dontKnows.push({ metric: metricLabels[si], question: q.text });
+      }
+    });
+  });
+  const dkCard = document.getElementById('dontknowCard');
+  const dkList = document.getElementById('dontknowList');
+  if (dontKnows.length > 0 && dkCard && dkList) {
+    dkCard.classList.remove('hidden');
+    dkList.innerHTML = '';
+    dontKnows.forEach(dk => {
+      const item = document.createElement('div');
+      item.className = 'dontknow-item';
+      item.innerHTML = `<div class="dontknow-metric">${dk.metric}</div><div>${dk.question}</div>`;
+      dkList.appendChild(item);
+    });
+  } else if (dkCard) {
+    dkCard.classList.add('hidden');
+  }
+
+  // Store for synthesis - now includes AY
+  window._assessmentData = { scores, overall, ay, ceiling, clearance, stage, move, stageNames, moveNames, institutionData, answers, dontKnows };
+
+  // Auto-save to Sheets (silent)
+  setTimeout(() => saveToSheets('auto'), 1000);
+}
+
+function buildPriorities(stage, move, scores) {
+  const priorities = [];
+  const minIdx = scores.indexOf(Math.min(...scores));
+  const sectionNames = ['Data programme funding and ownership', 'Technology infrastructure', 'Governance and accountability', 'Operating model and skills'];
+
+  // Always lead with the lowest scoring dimension
+  const lowName = sectionNames[minIdx];
+  if (scores[minIdx] < 40) {
+    priorities.push(`<strong>Address the foundational gap in ${lowName} first.</strong> At your current score (${scores[minIdx]}%), this dimension will surface as the constraint that limits every downstream step. Attempting to sequence forward before this gap is addressed produces programmes that discover their real constraints mid-delivery.`);
+  }
+
+  // Governance-specific
+  if (scores[2] < 50) {
+    priorities.push(`<strong>Establish the governance contract before the programme scales.</strong> The board conversation about long-horizon programme oversight is uncomfortable — but it is significantly more expensive to have after the first difficult steering committee. The governance contract must come before scaling, not be negotiated once the programme is under pressure.`);
+  }
+
+  // Data funding model
+  if (scores[0] < 50 && scores[2] < 60) {
+    priorities.push(`<strong>Reorient data investment from use-case led to shared capability.</strong> The most consequential structural change in your readiness assessment is the funding model. A bank-wide data capability fund — ring-fenced, board-agreed, separate from use-case investment — is the prerequisite for a data fabric that serves multiple planes simultaneously. Without it, the same data will be built multiple times for different purposes.`);
+  }
+
+  // Tech infrastructure
+  if (scores[1] < 55) {
+    priorities.push(`<strong>Identify and protect the minimum viable technology foundation for initial AI decision layer activation*.</strong> You do not need to replace your core systems before the first plane activates. You need: a Change Data Capture pipeline from core systems to a modern data platform, basic event streaming for the highest-priority data domains, and an API layer capable of exposing plane outputs. Identify which of these you already have, which are underway, and which require deliberate investment.`);
+  }
+
+  // Move 1 specific
+  if (move === 1) {
+    priorities.push(`<strong>Complete the domain-by-domain data maturity assessment before committing to a use case.</strong> An overall data quality score is not useful for sequencing decisions. What you need is a domain-by-domain assessment: which data entities are real-time capable today, which are near-real-time with known quality issues, which are batch-only. This tells you which planes can activate on current infrastructure and which require data readiness work first.`);
+  }
+
+  // Human transition
+  if (scores[3] < 50) {
+    priorities.push(`<strong>Begin the operating model and role redesign workstream in parallel, not after.</strong> Technology programmes consistently underestimate the human transition and consistently pay for it later. The people who will work alongside AI-assisted planes need to be prepared for a fundamentally different job. Starting this conversation after the technology is built produces adoption problems that cannot be solved by better change management.`);
+  }
+
+  // Cap at 4
+  return priorities.slice(0, 4);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NERVE CORE SYNTHESIS
+// ═══════════════════════════════════════════════════════════════
+
+async function runSynthesis() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (apiKey.length < 20) {
+    alert('Please enter a valid Nerve Core key in the header to activate the synthesis.');
+    return;
+  }
+
+  const d = window._assessmentData;
+  if (!d) return;
+
+  document.getElementById('synthesisStatus').textContent = 'Synthesising';
+  document.getElementById('synthesisStatus').className = 'synthesis-status generating';
+  document.getElementById('noApiNote').style.display = 'none';
+  document.getElementById('synthesisOutput').textContent = '';
+  document.getElementById('synthesisOutput').classList.add('streaming');
+  document.getElementById('btnSynthesize').disabled = true;
+  document.getElementById('loadingOverlay').classList.add('visible');
+
+  // Build answer summary
+  const answerSummary = sections.map(sec => {
+    const qs = questions[sec.id];
+    return `${sec.name.toUpperCase()} (${d.scores[sec.id - 1]}%)\n` +
+      qs.map(q => `  ${q.id}: ${d.answers[q.id]?.text || 'Not answered'}`).join('\n');
+  }).join('\n\n');
+
+  const prompt = `You are the Nerve Core of BluemeBank — an AI orchestrator that synthesises institutional readiness assessments and produces practitioner-grade advisory output for CDAOs and COOs.
+
+You have completed a Bridge Diagnostic assessment for the following institution:
+
+INSTITUTION: ${d.institutionData.name}
+SIZE: ${d.institutionData.sizeLabel || 'Not specified'}
+IMPORTANT CALIBRATION: ${d.institutionData.size === 'tier3' || d.institutionData.size === 'tier4' ? 
+'This is a mid-size or community/challenger institution. Calibrate your synthesis accordingly — the path for smaller institutions is often cleaner. The legacy estate is less complex, the board is closer to delivery reality, and modern cloud-native core banking platforms are more immediately viable. Do not apply Tier 1 global bank constraints to this institution.' : 
+'This is a Tier 1 or Tier 2 institution. The structural conditions of large banks — fragmented legacy estates, complex ownership structures, layered governance — fully apply.'}
+JURISDICTION: ${d.institutionData.jurisdictionLabel || 'Not specified'}
+ADDITIONAL CONTEXT: ${d.institutionData.context || 'None provided'}
+COMPLETING ROLE: ${d.institutionData.role || 'Senior practitioner'}
+
+ASSESSMENT SCORES:
+- Data Convergence Index (DCI): ${d.scores[0]}%
+- Regulatory Response Velocity (RRV): ${d.scores[1]}%
+- Data Asset Reuse Ratio (DARR): ${d.scores[2]}%
+- DQ Issue Resolution Rate (DQIRR): ${d.scores[3]}%
+- CIQ — Continuous Intelligence Quotient: ${d.overall}%
+- Stage: ${d.stage} (${d.stageNames[d.stage]})
+- Current Sequencing Position: Move ${d.move} — ${d.moveNames[d.move]}
+
+AUTONOMY YIELD CALCULATION:
+- Technical Autonomy Ceiling = min(DCI, RRV) = ${d.ceiling}%
+- Operational Clearance Factor = (DARR × DQIRR) / 10000 = ${(d.clearance*100).toFixed(1)}%
+- AUTONOMY DIVIDEND (AD) = ${d.ay}%
+
+AY interpretation: AD (Autonomy Dividend) represents the proportion of consequential institutional decisions that could safely operate autonomously today given the four cardinal metrics. It is the boardroom metric — derived transparently from the four pillars, designed to make the bottleneck visible at the institutional level.
+
+DETAILED RESPONSES:
+${answerSummary}
+
+Write a practitioner-grade synthesis of 4–5 paragraphs for a CDAO or COO.
+
+Paragraph 1: Open with the Autonomy Dividend number and name the specific factory that is the binding constraint. Use the factory language from Paper 3: Reconciliation Factory (DCI), Interpretation Factory (RRV), Duplication Factory (DARR), Escalation Factory (DQIRR). Be precise about why min(DCI, RRV) produces the ceiling it does, and how DARR × DQIRR is constraining clearance.
+
+Paragraph 2: What would it take to close the dominant factory? Not a budget estimate — a structural description of what has to change: ownership, governance, funding model, or architecture. Name the factory by name. Explain why closing it moves the AD ceiling more than improving anything else.
+
+Paragraph 3: What sequencing logic should govern the next 12 months? Which factory must be addressed before the others, and why? What must be true before the institution can safely activate the first AI decision plane? Name specific dependencies in plain language.
+
+Paragraph 4: What is the cost of leaving the factories running? Quantify in AD terms where possible — for example, "without closing the [factory name], the AD will remain capped at [ceiling]% regardless of further investment in the other three dimensions." Name the compounding risk: capability investment that cannot convert to operational autonomy because the factory absorbs it.
+
+Paragraph 5: One sentence — the most important thing the CDAO should bring to the board in their next conversation about data investment. Frame it in factory terms: not what needs to be built, but what needs to stop consuming the institution's autonomous potential.
+
+Write as a senior practitioner with 20+ years inside banking data and architecture. Use factory language consistently: name the factories, size them, sequence their reduction. Reference the local regulator (${d.institutionData.jurisdictionLabel || 'the primary supervisor'}) naturally where it adds credibility. Be direct, specific, and honest. Do not use bullet points. Do not use headings. Write in continuous prose.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1200,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    document.getElementById('loadingOverlay').classList.remove('visible');
+
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      const msg = e.error?.message || e.message || JSON.stringify(e) || 'Unknown API error (status ' + res.status + ')';
+      throw new Error(msg);
+    }
+    const data = await res.json();
+    const text = data.content.map(b => b.text || '').join('\n');
+
+    document.getElementById('synthesisOutput').classList.remove('streaming');
+    // Render structured output with section headers highlighted
+    // Format structured output - handles ** headers and • or - bullets
+    const formatted = text
+      .split('\n')
+      .map(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return '<div style="height:6px"></div>';
+        // Bold section header
+        if (/^\*\*(.+)\*\*$/.test(trimmed)) {
+          const label = trimmed.replace(/\*\*/g, '');
+          return '<div style="color:var(--gold);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-family:DM Mono,monospace;margin-top:18px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid rgba(201,168,76,0.2);">' + label + '</div>';
+        }
+        // Bullet point (• or -)
+        if (/^[•\-] (.+)/.test(trimmed)) {
+          const content = trimmed.replace(/^[•\-] /, '');
+          return '<div style="display:flex;gap:10px;margin-bottom:7px;font-size:12.5px;line-height:1.7;align-items:flex-start"><span style="color:var(--gold);flex-shrink:0;margin-top:2px">◦</span><span style="color:var(--grey-light)">' + content + '</span></div>';
+        }
+        // Regular paragraph text
+        return '<div style="font-size:13px;line-height:1.8;color:var(--grey-light);margin-bottom:6px">' + trimmed + '</div>';
+      })
+      .join('');
+    document.getElementById('synthesisOutput').innerHTML = formatted;
+
+    document.getElementById('synthesisStatus').textContent = 'Complete';
+    document.getElementById('synthesisStatus').className = 'synthesis-status done';
+    const disc = document.getElementById('synthesisDisclosure');
+    if (disc) disc.style.display = 'block';
+  } catch(err) {
+    document.getElementById('loadingOverlay').classList.remove('visible');
+    document.getElementById('synthesisOutput').classList.remove('streaming');
+    document.getElementById('synthesisOutput').textContent = `Synthesis error: ${err.message}`;
+    document.getElementById('synthesisStatus').textContent = 'Error';
+    document.getElementById('synthesisStatus').className = 'synthesis-status waiting';
+  }
+
+  document.getElementById('btnSynthesize').disabled = false;
+}
+
+async function streamText(elId, text, delay = 6) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.textContent = '';
+  for (let i = 0; i < text.length; i++) {
+    el.textContent += text[i];
+    if (i % 4 === 0) await new Promise(r => setTimeout(r, delay));
+  }
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// DATA PERSISTENCE — Google Sheets
+// ═══════════════════════════════════════════════════════════════
+
+async function saveToSheets(requestType) {
+  if (!SHEETS_URL || SHEETS_URL === 'YOUR_APPS_SCRIPT_URL') return;
+  const d = window._assessmentData;
+  if (!d) return;
+
+const emailEl = document.getElementById('userEmail');
+const userEmail = (emailEl ? emailEl.value.trim() : '') || '';
+
+const payload = {
+    requestType: requestType,
+    userEmail: userEmail,
+    institution: d.institutionData,
+    scores: {
+      ad: d.ay,
+      ciq: d.overall,
+      dci: d.scores[0],
+      rrv: d.scores[1],
+      darr: d.scores[2],
+      dqirr: d.scores[3],
+      ceiling: d.ceiling,
+      clearance: d.clearance,
+      stage: d.stage,
+      move: d.move
+    },
+    answers: d.answers
+  };
+
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      mode: 'no-cors' // Apps Script requires no-cors
+    });
+  } catch(err) {
+    console.log('Save to Sheets:', err.message);
+  }
+}
+
+async function requestSynthesisEmail() {
+  const saveBtn = document.getElementById('btnRequestSynthesis');
+  if (saveBtn) {
+    saveBtn.disabled = true;
+    saveBtn.textContent = 'Sending...';
+  }
+
+  await saveToSheets('synthesis');
+
+  if (saveBtn) {
+    saveBtn.textContent = '✓ Sent';
+    saveBtn.style.background = 'var(--teal)';
+  }
+
+  // Show confirmation
+  const conf = document.getElementById('synthesisRequestConfirm');
+  if (conf) conf.style.display = 'block';
+}
+
+async function saveResultsManually() {
+  const btn = document.getElementById('btnSaveResults');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+  }
+
+  await saveToSheets('save');
+
+  if (btn) {
+    btn.textContent = '✓ Saved';
+    btn.style.borderColor = 'var(--teal)';
+    btn.style.color = 'var(--teal)';
+  }
+}
+
+
+function restart() {
+  answers = {};
+  institutionData = {};
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.question-card').forEach(c => c.classList.remove('answered'));
+  document.getElementById('instName').value = '';
+  
+  document.getElementById('instSize').value = '';
+  document.getElementById('instJurisdiction').value = '';
+  document.getElementById('instContext').value = '';
+  const dkCard = document.getElementById('dontknowCard');
+  if (dkCard) dkCard.classList.add('hidden');
+
+  document.getElementById('progressWrap').classList.remove('visible');
+  document.getElementById('navBar').classList.remove('visible');
+  document.querySelectorAll('.setup-section, .q-section, .results-section').forEach(el => {
+    el.classList.add('hidden');
+    el.classList.remove('visible');
+  });
+  document.getElementById('heroSection').classList.remove('hidden');
+  currentStep = -1;
+  window.scrollTo(0, 0);
+}
+
+// Live validation on setup fields
+document.addEventListener('DOMContentLoaded', () => {
+  ['instName', 'instSize'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', () => { if (currentStep === 0) updateNextButton(); });
+    if (el) el.addEventListener('change', () => { if (currentStep === 0) updateNextButton(); });
+  });
+});

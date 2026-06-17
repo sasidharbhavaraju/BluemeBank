@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BluemeBank · Nerve Core — Synthesis Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400;500&family=Raleway:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/css/main.css">
+<link rel="stylesheet" href="./assets/css/synthesis.css">
+</head>
+<body>
+
+<div class="nav">
+  <a class="nav-logo" href="./index.html">
+    <span class="b">Bleume</span><span class="k">Bank</span>
+  </a>
+  <div class="nav-links">
+    <a href="./paper1.html">Paper 1</a>
+    <a href="./paper2.html">Paper 2</a>
+    <a href="./paper3.html">Paper 3</a>
+    <a href="./diagnostics.html">Diagnostic ◈</a>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- LEFT: INPUT PANEL -->
+  <div class="left-panel">
+
+    <!-- API Key -->
+    <div>
+      <div class="panel-title">Nerve Core Key</div>
+      <div class="panel-sub" style="margin-bottom:10px;">Your Anthropic API key. Never stored or transmitted.</div>
+      <input class="api-input" type="password" id="apiKey" placeholder="sk-ant-api..." />
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Paste email -->
+    <div>
+      <div class="panel-title">Synthesis Request Email</div>
+      <div class="panel-sub" style="margin-bottom:12px;">Paste the full synthesis request email you received. The Nerve Core will parse the institution, scores, and all 24 responses automatically.</div>
+      <div class="paste-area">
+        <div class="paste-label">Paste Email Content</div>
+        <textarea class="paste-textarea" id="emailPaste" placeholder="Paste the BluemeBank Synthesis Request email here...
+
+The tool will automatically extract:
+· Institution name, size, jurisdiction
+· All four cardinal metric scores
+· AD and CIQ scores
+· All 24 question responses"></textarea>
+        <button class="btn-parse" onclick="parseEmail()">◈ Parse Email</button>
+      </div>
+      <div class="parse-status" id="parseStatus"></div>
+    </div>
+
+    <!-- Parsed scores -->
+    <div class="scores-display" id="scoresDisplay">
+      <div class="panel-title">Parsed Results</div>
+      <div class="institution-display" id="instDisplay">
+        <div class="inst-name" id="parsedInst">—</div>
+        <div class="inst-meta" id="parsedMeta">—</div>
+      </div>
+      <div class="scores-grid" id="scoresGrid"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Generate -->
+    <button class="btn-generate" id="btnGenerate" onclick="generateSynthesis()" disabled>
+      <span id="btnGenerateIcon">◈</span>
+      <span id="btnGenerateText">Generate Nerve Core Synthesis</span>
+    </button>
+
+    <div style="font-size:10px;color:var(--grey);font-style:italic;line-height:1.6;">
+      The synthesis is generated using the BluemeBank framework. Review before sending. This tool is for your personal use only — never share it or the API key.
+    </div>
+
+  </div>
+
+  <!-- RIGHT: OUTPUT PANEL -->
+  <div class="right-panel">
+
+    <div class="output-header">
+      <div>
+        <div class="panel-title">Nerve Core Output</div>
+        <div class="panel-sub">Board-ready synthesis, specific to the institution</div>
+      </div>
+      <div class="output-status waiting" id="outputStatus">Waiting</div>
+    </div>
+
+    <div class="output-card" id="outputCard">
+      <div class="output-empty" id="outputEmpty">
+        <div class="output-empty-icon">◈</div>
+        <div class="output-empty-text">Paste email and generate to activate</div>
+      </div>
+      <div class="synthesis-content" id="synthesisContent">
+        <div class="synth-institution" id="synthInstitution">—</div>
+        <div id="synthBody"></div>
+      </div>
+    </div>
+
+    <div class="action-row" id="actionRow" style="display:none;">
+      <button class="btn-copy" id="btnCopy" onclick="copyOutput()">⊕ Copy Synthesis</button>
+      <button class="btn-copy" onclick="printReport()" style="background:var(--navy-card);color:var(--gold);border:1px solid rgba(201,168,76,0.3);">⊕ Save as PDF</button>
+      <button class="btn-clear" onclick="clearAll()">↺ New Synthesis</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="./assets/js/synthesis.js" defer></script>
+
+<!-- ══════════════════════════════════
+     PDF REPORT (hidden, revealed on print)
+     ══════════════════════════════════ -->
+<div id="pdfReport">
+
+  <!-- COVER PAGE -->
+  <div class="pdf-cover">
+    <div class="pdf-cover-top">
+      <div>
+        <div class="pdf-logo-name"><span class="blueme">Blueme</span><span class="bank">Bank</span></div>
+        <div class="pdf-logo-sub">Nerve Core · Bridge Diagnostic Synthesis</div>
+      </div>
+      <div class="pdf-cover-date" id="pdfCoverDate">—</div>
+    </div>
+
+    <div class="pdf-cover-mid">
+      <div class="pdf-cover-eyebrow">Nerve Core · Practitioner Synthesis</div>
+      <div class="pdf-cover-title">Bridge<br><em>Diagnostic</em></div>
+      <div class="pdf-cover-institution" id="pdfCoverInstitution">—</div>
+      <div class="pdf-cover-rule"></div>
+      <div class="pdf-cover-desc">
+        This report contains the results of the BluemeBank Bridge Diagnostic assessment and the Nerve Core synthesis — a practitioner-grade advisory narrative produced by the BluemeBank framework. It is specific to the institution assessed and should be treated as confidential.
+      </div>
+    </div>
+
+    <div class="pdf-cover-bottom">
+      <div class="pdf-cover-from">
+        Prepared by
+        <span>Sasidhar Bhavaraju</span>
+        sasidhar.bhavaraju@bluemebank.com
+      </div>
+      <div>
+        <div class="pdf-confidential" id="pdfConfidential">Confidential · Prepared for —</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCORES PAGE -->
+  <div class="pdf-page">
+    <div class="pdf-page-header">
+      <div class="pdf-page-logo"><span class="blueme">Blueme</span><span class="bank">Bank</span></div>
+      <div class="pdf-page-section">Autonomy Dividend · Cardinal Metrics</div>
+    </div>
+
+    <!-- AD Headline -->
+    <div class="pdf-ad-block">
+      <div class="pdf-ad-left">
+        <div class="pdf-ad-eyebrow">Autonomy Dividend</div>
+        <div>
+          <span class="pdf-ad-number" id="pdfAdNum">—</span>
+          <span class="pdf-ad-unit">%</span>
+        </div>
+        <div class="pdf-ad-classification" id="pdfAdClass">—</div>
+      </div>
+      <div class="pdf-ad-right">
+        <div class="pdf-ad-formula-label">Formula</div>
+        <div class="pdf-ad-formula">min ( DCI , RRV ) × ( DARR × DQIRR ÷ 100 )</div>
+        <div class="pdf-ad-calc" id="pdfAdCalc">—</div>
+      </div>
+    </div>
+
+    <!-- Cardinal Metrics -->
+    <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">The Four Cardinal Metrics</div>
+    <div class="pdf-metrics-grid" id="pdfMetricsGrid"></div>
+
+    <!-- Stage scale -->
+    <div style="font-family:'DM Mono',monospace;font-size:9px;color:#5a6f88;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;margin-top:20px;">Readiness Stage · CIQ <span id="pdfCiqNum" style="color:#F4F1EA">—</span>%</div>
+    <div class="pdf-stage-row" id="pdfStageRow">
+      <div class="pdf-stage-seg" id="pdfSeg1">
+        <div class="pdf-stage-seg-label">Foundation Constrained</div>
+        <div class="pdf-stage-seg-sub">AD below 15%</div>
+      </div>
+      <div class="pdf-stage-seg" id="pdfSeg2">
+        <div class="pdf-stage-seg-label">Operational Translation</div>
+        <div class="pdf-stage-seg-sub">AD 15–35%</div>
+      </div>
+      <div class="pdf-stage-seg" id="pdfSeg3">
+        <div class="pdf-stage-seg-label">Bridge-Ready</div>
+        <div class="pdf-stage-seg-sub">AD above 35%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEQUENCING PAGE -->
+  <div class="pdf-page">
+    <div class="pdf-page-header">
+      <div class="pdf-page-logo"><span class="blueme">Blueme</span><span class="bank">Bank</span></div>
+      <div class="pdf-page-section">Sequencing Position · Priority Actions</div>
+    </div>
+
+    <!-- Move -->
+    <div style="margin-bottom:24px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Current Sequencing Position</div>
+      <div class="pdf-move-roadmap">
+        <div class="pdf-mroad-item" id="pdfMroad1"><div class="pdf-mroad-num">1</div><div class="pdf-mroad-label">Assess Before<br>You Activate</div></div>
+        <div class="pdf-mroad-arrow">→</div>
+        <div class="pdf-mroad-item" id="pdfMroad2"><div class="pdf-mroad-num">2</div><div class="pdf-mroad-label">Choose the<br>Right Wedge</div></div>
+        <div class="pdf-mroad-arrow">→</div>
+        <div class="pdf-mroad-item" id="pdfMroad3"><div class="pdf-mroad-num">3</div><div class="pdf-mroad-label">Build the Sequence,<br>Not the Plan</div></div>
+        <div class="pdf-mroad-arrow">→</div>
+        <div class="pdf-mroad-item" id="pdfMroad4"><div class="pdf-mroad-num">4</div><div class="pdf-mroad-label">Measure Progress,<br>Not Activity</div></div>
+      </div>
+      <div style="background:#111f35;border:1px solid rgba(201,168,76,0.15);border-radius:10px;padding:18px 20px;margin-top:14px;">
+        <div style="font-size:13px;font-weight:700;color:#F4F1EA;margin-bottom:8px;" id="pdfMoveName">—</div>
+        <div style="font-size:12px;color:#8a9db5;line-height:1.8;" id="pdfMoveDesc">—</div>
+      </div>
+    </div>
+
+    <!-- Priority Actions -->
+    <div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">Priority Actions Before Moving Forward</div>
+      <div id="pdfPriorityList"></div>
+    </div>
+  </div>
+
+  <!-- SYNTHESIS PAGE -->
+  <div class="pdf-synthesis-page">
+    <div class="pdf-page-header">
+      <div class="pdf-page-logo"><span class="blueme">Blueme</span><span class="bank">Bank</span></div>
+      <div class="pdf-page-section">Nerve Core · Practitioner Synthesis</div>
+    </div>
+    <div id="pdfSynthesisBody"></div>
+  </div>
+
+
+  <!-- GLOSSARY + METHODOLOGY PAGE -->
+  <div class="pdf-page" style="page-break-before:always;padding:30px 50px !important;">
+    <div class="pdf-page-header">
+      <div class="pdf-page-logo"><span class="blueme">Blueme</span><span class="bank">Bank</span></div>
+      <div class="pdf-page-section">Glossary · Methodology</div>
+    </div>
+
+    <!-- Methodology -->
+    <div style="margin-bottom:16px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;padding-bottom:7px;border-bottom:1px solid rgba(201,168,76,0.15);">How This Is Calculated</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <div style="background:#111f35;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px 16px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">① Section Scores</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;margin-bottom:8px;">6 questions × score 1–4</div>
+          <div style="font-size:11px;color:#8a9db5;line-height:1.6;">Raw score ÷ 24 × 100 = percentage. Unknown answers score 1 — the most conservative assumption.</div>
+        </div>
+        <div style="background:#111f35;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px 16px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">② CIQ Score</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;margin-bottom:8px;">50% average + 50% minimum</div>
+          <div style="font-size:11px;color:#8a9db5;line-height:1.6;">Weighted toward the weakest dimension. A bank scoring 90/90/90/20 is not 72% ready — it is constrained by its weakest pillar.</div>
+        </div>
+        <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:10px 12px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">③ Autonomy Dividend</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;margin-bottom:8px;">min(DCI,RRV) × (DARR×DQIRR÷100)</div>
+          <div style="font-size:11px;color:#8a9db5;line-height:1.6;">Technical ceiling multiplied by operational clearance. Independent failure modes compound — they do not average.</div>
+        </div>
+        <div style="background:#111f35;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px 16px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">◈ Projected Values</div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;margin-bottom:8px;">24 responses, not live data</div>
+          <div style="font-size:11px;color:#8a9db5;line-height:1.6;">Diagnostic estimate. Accurate to within the honesty of the responses given. Validate against operational data before board or regulatory submission.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Glossary -->
+    <div>
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;padding-bottom:7px;border-bottom:1px solid rgba(201,168,76,0.15);">Key Terms</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
+
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:6px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">AD — Autonomy Dividend</div>
+          <div style="font-size:10.5px;color:#8a9db5;line-height:1.55;">The headline metric. The percentage of an institution's consequential decisions that could safely operate autonomously today. Calculated as min(DCI, RRV) × (DARR × DQIRR ÷ 100).</div>
+        </div>
+
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:6px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">CIQ — Continuous Intelligence Quotient</div>
+          <div style="font-size:10.5px;color:#8a9db5;line-height:1.55;">The overall readiness score. Weighted toward the weakest dimension: 50% average of four metrics plus 50% minimum score.</div>
+        </div>
+
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:6px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">Technical Autonomy Ceiling</div>
+          <div style="font-size:10.5px;color:#8a9db5;line-height:1.55;">min(DCI, RRV). The maximum AD achievable given data and infrastructure constraints. Grounded in Liebig's Law: a system's output is constrained by its scarcest resource, not its average.</div>
+        </div>
+
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:6px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">Operational Clearance Factor</div>
+          <div style="font-size:10.5px;color:#8a9db5;line-height:1.55;">DARR × DQIRR ÷ 100. The fraction of technically capable decisions that reach autonomous execution without governance or quality failure. Derived from reliability theory: independent failure modes compound.</div>
+        </div>
+
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:6px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">DCI — Data Convergence Index</div>
+          <div style="font-size:10.5px;color:#8a9db5;line-height:1.55;">Proportion of critical entities — customer, account, counterparty, product — sharing a common identity key resolvable across three or more core systems. Three is the threshold: two signals a point-to-point integration, not institutional coherence.</div>
+        </div>
+
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:6px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">RRV — Regulatory Response Velocity</div>
+          <div style="font-size:10.5px;color:#8a9db5;line-height:1.55;">Average elapsed time between a new regulatory requirement being published and the institution having certified, lineage-traced data available to meet it. A proxy for technology infrastructure maturity.</div>
+        </div>
+
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:6px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">DARR — Data Asset Reuse Ratio</div>
+          <div style="font-size:10.5px;color:#8a9db5;line-height:1.55;">Proportion of new use case requirements met by reusing or extending existing certified data assets. Measures whether the programme builds shared institutional capability or repeatedly builds the same data for different use cases.</div>
+        </div>
+
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:6px;">
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:#C9A84C;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">DQIRR — DQ Issue Resolution Rate</div>
+          <div style="font-size:10.5px;color:#8a9db5;line-height:1.55;">Proportion of data quality issues receiving a complete, traceable resolution response — root cause identified, upstream owner confirmed, fix timeline committed — within a defined service level.</div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:12px;padding:10px 14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:6px;font-size:9.5px;color:#5a6f88;line-height:1.6;font-style:italic;">
+        This synthesis was generated by the BluemeBank Nerve Core. It reflects the institution's own assessment of its operational reality, interpreted through the BluemeBank framework — not an external audit. Validate against live data before board or regulatory use. Metric scores are projected diagnostic values, not live operational data.
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="pdf-footer">
+    <div style="display:flex;flex-direction:column;gap:2px;">
+      <div style="font-family:'Raleway',sans-serif;font-weight:700;font-size:9px;color:#8a9db5;letter-spacing:0;">Sasidhar Bhavaraju &nbsp;·&nbsp; <span style="color:#5a6f88;font-weight:400;">sasidhar.bhavaraju@bluemebank.com &nbsp;·&nbsp; bluemebank.com</span></div>
+    </div>
+    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:10px;color:#5a6f88;" id="pdfFooterConfidential">Confidential · Prepared for —</div>
+  </div>
+
+</div>
+
+</body>
+</html>

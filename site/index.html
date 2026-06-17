@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BluemeBank — Intelligence in Every Decision</title>
+<link rel="stylesheet" href="./assets/css/index.css">
+</head>
+<body>
+
+
+<!-- ═══ HERO ═══ -->
+<div class="hero" id="hero">
+  <div class="hero-glow-r"></div>
+  <div class="hero-glow-l"></div>
+  <div class="hero-planes"></div>
+
+  <div class="wrap" style="position:relative;">
+    <p class="hero-eyebrow">BluemeBank</p>
+    <p class="hero-tagline">A Practitioner's View on How Banks Can Move from Workflow Execution to Coordinated Intelligence</p>
+    <p class="hero-p" style="color:rgba(240,237,230,0.75);font-size:1.2rem;max-width:620px;margin-top:1.5rem;">
+This primer draws from <strong>two detailed papers</strong> — totalling fifty pages — written by a single practitioner after twenty years inside banking data and architecture. The first sets out the architecture. The second addresses how to get there from where most institutions actually stand today.
+<br><br>
+<a href="#cta" style="display:inline-block; background-color:#C9A84C; color:#0A1628; padding:8px 20px; border-radius:4px; font-weight:bold; text-decoration:none; font-size:0.9em; letter-spacing:0.5px;">READ THE PAPERS ↓</a>    </p>
+    <div class="mobile-topbar" id="mobileTopbar" role="banner" aria-hidden="false">
+      <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="pageNav" aria-label="Open navigation">☰</button>
+      <span class="mobile-contents">Contents</span>
+    </div>
+    <nav class="page-nav" id="pageNav" role="navigation">
+      <a href="#hero">Overview</a>
+      <a href="#root-cause">Diagnosis</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#papers-address">Gaps</a>
+      <a href="#author">Author</a>
+      <a href="#cta" style="background-color:#C9A84C; color:#0A1628; padding:6px 14px; border-radius:4px; font-weight:bold;">Read the Papers ↓</a>
+    </nav>
+
+    <h1 class="hero-title">
+      Banks are built<br>like <em>factories.</em><br>
+      They need to work<br>like <em>nervous systems.</em>
+    </h1>
+
+    <div class="hero-rule"></div>
+
+    <p class="hero-p">
+      The workflow model continues to work. But it is degenerating —
+      gradually, behind the scenes. The gap between what it produces
+      and what banking actually requires will only become visible
+      when it is already expensive to close.
+    </p>
+    <p class="hero-p">
+      No amount of process improvement or digital investment makes
+      the required step-change. Not because the ambition is wrong.
+      Because these improvements are designed <em>into</em> the way
+      banks are built today. <strong>The operating model and the architecture
+      beneath it are the limiting factor. That is the ceiling.</strong>
+    </p>
+    <p class="hero-p">
+      Banks have always had the data to make better decisions.
+      What they have lacked is an architecture capable of reasoning
+      across it — continuously, in the moments that matter most.
+      That capability now exists — partially, and in an increasingly
+      usable form. What follows is a proposal for how to organise
+      a bank around it.
+    </p>
+
+  </div>
+</div>
+
+<!-- ═══ TRANSITION 1 ═══ -->
+<div class="tband">
+  <div class="tband-inner">
+    <div class="tband-mark"></div>
+    <p class="tband-text">Before introducing the proposed model —  Why the current architecture is the root cause, not a symptom to be managed.</p>
+  </div>
+</div>
+
+<!-- ═══ ROOT CAUSE ═══ -->
+<div class="sa" id="root-cause">
+  <div class="wrap">
+    <p class="s-kicker">01 &nbsp; Why the Workflow Model Is Running Out of Road</p>
+    <h2 class="s-title">Not failing.<br>But <em>running out<br>of road.</em></h2>
+
+    <div class="rc">
+      <p class="rc-head">The root cause is how banks are built.</p>
+      <p class="rc-body">
+        The workflow model — sequential by design, siloed by architecture,
+        reactive by nature — was rational for a world of batch processing.
+        It is no longer sufficient.
+      </p>
+      <p class="rc-body" style="margin-top:0.55rem;">
+        <strong>It manifests as sequential approvals.</strong>
+        Decisions moving one step at a time, context changing faster
+        than the process can follow.
+      </p>
+    </div>
+
+    <p class="c-label">The consequences are many. Some are familiar:</p>
+    <ul class="c-list">
+      <li>Static limits that reflect last quarter, not today.</li>
+      <li>Compliance discovered after the damage is done.</li>
+      <li>Data that arrives too late, from too many places, to matter.</li>
+    </ul>
+
+    <div class="pq">
+      <p>The workflow model continues to work. But it is degenerating — gradually, behind the scenes. The gap will only become visible when it is already expensive to close.</p>
+      <cite>— BluemeBank Architecture Note</cite>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TRANSITION 2 ═══ -->
+<div class="tband">
+  <div class="tband-inner">
+    <div class="tband-mark"></div>
+    <p class="tband-text">The diagnosis is clear. <strong>Here is what changes</strong> when the architecture is rebuilt — not just the interface — from first principles.</p>
+  </div>
+</div>
+
+<!-- ═══ ARCHITECTURE ═══ -->
+<div class="sb" id="architecture">
+  <div class="wrap">
+    <p class="s-kicker">02 &nbsp; The Architecture: Five Planes, One Coordinating Intelligence</p>
+    <h2 class="s-title">Simultaneous.<br>Interoperable.<br><em>Continuously assembled.</em></h2>
+
+    <p class="bt" style="margin-bottom:2.25rem;">
+      The architecture is organised around <strong>five decision planes</strong> —
+      identity, risk, commercial outcomes, operations and compliance —
+      operating simultaneously, coordinated by a sixth: the <strong>Nerve Core</strong>.
+      Each plane is purpose-built for a distinct domain. Together, they form
+      something banks have never had — a complete institutional picture,
+      <em>assembled</em> in the moment a decision is needed.
+    </p>
+
+    <div>
+      <div class="plane">
+        <div class="pn">01</div>
+        <div class="pb">
+          <p class="pname">Identity &amp; Trust</p>
+          <p class="pdesc">A continuously updated, verified picture of every customer — entities, relationships, beneficial ownership — maintained in real time. Not a snapshot consulted periodically.</p>
+        </div>
+      </div>
+      <div class="plane">
+        <div class="pn">02</div>
+        <div class="pb">
+          <p class="pname">Risk</p>
+          <p class="pdesc">A live, consolidated view of exposure across the entire portfolio. Limits that need adjustment surface in real time, with the supporting evidence already assembled.</p>
+        </div>
+      </div>
+      <div class="plane">
+        <div class="pn">03</div>
+        <div class="pb">
+          <p class="pname">Commercial</p>
+          <p class="pdesc">A continuous view of what each customer is genuinely trying to achieve. Pricing and structure configured around the customer's real position — not a standard product reviewed annually.</p>
+        </div>
+      </div>
+      <div class="plane">
+        <div class="pn">04</div>
+        <div class="pb">
+          <p class="pname">Operations</p>
+          <p class="pdesc">Intelligent triage and routing — exceptions classified by type, severity and domain as they arise. Decisions requiring human judgement clearly separated from those within established parameters.</p>
+        </div>
+      </div>
+      <div class="plane">
+        <div class="pn">05</div>
+        <div class="pb">
+          <p class="pname">Compliance</p>
+          <p class="pdesc">Policy that is active, not periodic. Embedded in every decision. The evidence required to demonstrate control assembled continuously — available on demand.</p>
+        </div>
+      </div>
+      <div class="nerve">
+        <h3>◈ &nbsp; The Nerve Core</h3>
+        <p>A control room-like AI orchestrator that synthesises intelligence across all five planes, surfaces conflicts, and routes decisions to the right human at the right time.</p>
+        <p class="nt">The Nerve Core is not the intelligence of this architecture. It is the coordination of it. The intelligence lives in the planes, the data, and the people who act on what they produce.</p>
+      </div>
+    </div>
+
+    <div class="ex">
+      <p class="ex-lbl">Applied to something every banker recognises</p>
+      <p class="bt">Consider a credit limit. Today it reflects the customer's position at the last review — which may have been six months ago. A business that has grown significantly, or one that is deteriorating, looks the same to the institution until the next cycle forces a reassessment.</p>
+      <p class="bt">In this architecture, a limit is not an event. It is a continuously held position — recalibrated as circumstances change, informed by everything the bank knows, owned by the people best placed to act on it.</p>
+      <p class="bt">The periodic review does not disappear. It becomes a confirmation of a position the institution already holds — rather than a reconstruction of one it lost track of.</p>
+      <p class="ex-note">This and nine further decisions are examined in the papers as proof points — spanning mortgage origination, regulatory reporting, AML escalation and exception resolution.</p>
+   <div style="text-align:center; margin:40px 0; padding:24px; background-color:#0D1E35; border:1px solid #C9A84C; border-radius:6px;">
+  <p style="color:#C9A84C; font-size:1.1em; margin-bottom:12px;">The architecture above is the summary. The papers go considerably deeper.</p>
+  <p style="color:#A8C4DC; font-size:0.95em;">Including the hardest unsolved problem, the sequencing playbook and what this architecture doesn't yet answer.</p>
+  <p style="margin-top:16px;"><a href="#cta" style="background-color:#C9A84C; color:#0A1628; padding:10px 24px; border-radius:4px; font-weight:bold; text-decoration:none;">Read the Papers ↓</a></p>
+</div>
+  </div>
+</div>
+
+<!-- ═══ TRANSITION 3 ═══ -->
+<div class="tband">
+  <div class="tband-inner">
+    <div class="tband-mark"></div>
+    <p class="tband-text"><strong>Limitations and open questions</strong> are addressed directly — and pragmatically, in stages, as the architecture is built.</p>
+  </div>
+</div>
+
+<!-- ═══ HONEST SECTION ═══ -->
+<div class="sa" id="papers-address">
+  <div class="wrap">
+    <p class="s-kicker">03 &nbsp; What the Papers Address — Including What Remains Unsolved</p>
+    <h2 class="s-title">The target state is<br>the <em>easier part</em><br>to describe.</h2>
+
+    <p class="bt">The papers do not stop at the architecture. They go directly to the questions that most architecture proposals do not reach.</p>
+
+    <div class="hb">
+      <p class="hb-label">The hardest unsolved problem</p>
+      <p class="bt">How does a system that reasons probabilistically — confidence scores, weighted recommendations, contextual judgement — produce a legally binding banking action? A ledger balances to the cent. A KYC check is pass or fail. There is no probabilistic middle ground in banking infrastructure.</p>
+      <p class="bt">This is the Translation Layer. The papers name it directly, propose a staged path through it, and are clear about where that path currently ends.</p>
+    </div>
+
+    <div class="hb">
+      <p class="hb-label">How programmes are funded, governed and pointed — and why it matters</p>
+      <p class="bt">Most banks already have a data programme, a CDAO, and significant annual investment in data capability. Most are still not ready for what this architecture requires.</p>
+      <p class="bt">The gap is not talent or ambition. It is that most data programmes are <strong>funded, governed and pointed</strong> in ways that structurally prevent them from building shared institutional capability. They are optimised for the next use case. They need to be building for the bank.</p>
+      <p class="bt">The sequencing logic — four moves, specific metrics, an account of the pitfalls that derail programmes that looked credible at the start — is addressed in full.</p>
+    </div>
+
+    <div class="econ">
+      <p>The question is less whether this architecture can be built immediately — and more how long the workflow model remains viable as the surrounding environment changes.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ AUTHOR ═══ -->
+<div class="sb">
+  <div class="wrap">
+    <div class="author" id="author">
+      <p class="a-name">Sasidhar Bhavaraju</p>
+      <p class="a-detail">
+        Practitioner &nbsp;·&nbsp; Former Managing Director, HSBC<br>
+        Twenty years inside the foundations this architecture describes.
+      </p>
+      <span class="a-gf">Grounded futurism.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CTA ═══ -->
+<div class="cta" id="cta">
+  <div class="wrap">
+    <p class="cta-kicker">Two papers &nbsp;·&nbsp; Nine chapters &nbsp;·&nbsp; Fifty pages</p>
+    <h2 class="cta-h">If this resonates —<br><em>the papers go<br>considerably deeper.</em></h2>
+    <p class="cta-body">The Translation Layer in full. The sequencing playbook. The economics. What this architecture does not yet solve — named directly.</p>
+    <p class="cta-link-text">View the papers below</p>
+    <div class="cta-links" id="paper-links" style="display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin-top:16px; max-width:800px; margin-left:auto; margin-right:auto;">
+  <a href="./paper1.html" 
+     style="display:inline-block; background-color:#C9A84C; color:#0A1628; padding:14px 28px; border-radius:4px; font-weight:bold; text-transform:uppercase; letter-spacing:1px; text-decoration:none; font-size:0.95em; min-width:260px; text-align:center; box-sizing:border-box; margin:4px;">
+    Paper 1 — The Architecture
+  </a>
+  <a href="./paper2.html" 
+     style="display:inline-block; background-color:#C9A84C; color:#0A1628; padding:14px 28px; border-radius:4px; font-weight:bold; text-transform:uppercase; letter-spacing:1px; text-decoration:none; font-size:0.95em; min-width:260px; text-align:center; box-sizing:border-box; margin:4px;">
+    Paper 2 — The Bridge
+  </a>
+  <a href="./paper3.html" 
+     style="display:inline-block; background-color:#C9A84C; color:#0A1628; padding:14px 28px; border-radius:4px; font-weight:bold; text-transform:uppercase; letter-spacing:1px; text-decoration:none; font-size:0.95em; min-width:260px; text-align:center; box-sizing:border-box; margin:4px;">
+    Paper 3 — The Autonomy Dividend
+  </a>
+  <a href="./diagnostics.html" 
+     style="display:inline-block; background-color:#2E9E8E; color:#0A1628; padding:14px 28px; border-radius:4px; font-weight:bold; text-transform:uppercase; letter-spacing:1px; text-decoration:none; font-size:0.95em; min-width:260px; text-align:center; box-sizing:border-box; margin:4px;">
+    Measure your Autonomy Dividend ◈
+  </a>
+</div>
+    <span class="cta-sub">Contact the Author: <a href="mailto:sasidhar.bhavaraju@gmail.com">sasidhar.bhavaraju@gmail.com</a></span>
+  </div>
+</div>
+
+<footer>
+  <p class="fb"><strong>Bleume</strong>Bank &nbsp;·&nbsp; Intelligence in Every Decision</p>
+  <p class="fm">© Sasidhar Bhavaraju · 2026</p>
+</footer>
+
+
+
+
+<script src="./assets/js/index.js" defer></script>
+</body>
+</html>
