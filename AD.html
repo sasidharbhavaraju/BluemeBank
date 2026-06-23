@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Autonomy Dividend — BluemeBank Paper 3</title>
-<meta name="theme-color" content="#0A1628">
+<meta name="theme-color" content="#F4F2EC">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -74,8 +74,8 @@ body{
   font-size:18px;font-weight:600;
   text-decoration:none;
 }
-.nav-logo .b{color:var(--teal)}
-.nav-logo .k{color:var(--ink)}
+.nav-logo .b{color:var(--ink)}
+.nav-logo .k{color:var(--teal)}
 .nav-links{display:flex;gap:24px;align-items:center}
 .nav-links a{
   font-family:'Fira Mono',monospace;
@@ -262,7 +262,7 @@ p em{font-style:italic;color:#1F4D72}
 }
 .fp-label{
   font-family:'Fira Mono',monospace;
-  font-size:12px;letter-spacing:1.5px;text-transform:none;
+  font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
   color:#1F4D72;margin-bottom:10px;font-weight:600;
 }
 .fp-expr{
@@ -299,7 +299,7 @@ p em{font-style:italic;color:#1F4D72}
 .factory-card:hover{border-color:rgba(26,92,74,0.25)}
 .fc-metric{
   font-family:'Fira Mono',monospace;
-  font-size:12px;letter-spacing:1.5px;text-transform:none;
+  font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
   color:var(--teal);margin-bottom:8px;font-weight:500;
 }
 .fc-factory{
@@ -322,14 +322,14 @@ p em{font-style:italic;color:#1F4D72}
   margin-top:12px;
   font-family:'Fira Mono',monospace;
   font-size:11px;letter-spacing:1.5px;
-  text-transform:none;
+  text-transform:uppercase;
   color:var(--teal);
   opacity:1;
 }
 
 /* ── CALLOUT ── */
 .callout{
-  border-radius:0 10px 10px 0;
+  border-radius:0;
   padding:18px 22px;
   margin:28px 0;
   font-size:16.5px;
@@ -337,17 +337,17 @@ p em{font-style:italic;color:#1F4D72}
 }
 .callout strong{font-weight:700}
 .callout-gold{
-  background:rgba(201,168,76,0.07);
+  background:rgba(26,92,74,0.06);
   border-left:2px solid var(--teal);
   color:rgba(30,58,82,0.75);
 }
 .callout-teal{
-  background:rgba(46,158,142,0.07);
+  background:rgba(26,92,74,0.06);
   border-left:2px solid var(--teal);
   color:rgba(30,58,82,0.75);
 }
 .callout-red{
-  background:rgba(192,57,43,0.07);
+  background:rgba(126,43,34,0.06);
   border-left:2px solid #c0392b;
   color:rgba(30,58,82,0.75);
 }
@@ -370,7 +370,7 @@ p em{font-style:italic;color:#1F4D72}
   background:rgba(30,58,82,0.05);
   border-radius:0px;overflow:hidden;
 }
-.bench-fill{height:100%;border-radius:3px}
+.bench-fill{height:100%;border-radius:0px;}
 .bench-val{
   width:60px;text-align:right;
   font-family:'Fira Mono',monospace;
