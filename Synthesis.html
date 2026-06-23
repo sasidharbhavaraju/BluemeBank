@@ -138,16 +138,16 @@ body {
 .paste-textarea::placeholder { color:var(--grey); opacity:0.6; }
 
 .btn-parse {
-  background:rgba(26,92,74,0.10);
-  border:1px solid rgba(26,92,74,0.25);
+  background:rgba(30,58,82,0.06);
+  border:1px solid rgba(30,58,82,0.20);
   border-radius:0px; padding:9px 18px;
-  color:var(--teal);
+  color:var(--ink);
   font-family:'Fira Mono',monospace; font-size:10px;
   letter-spacing:1.5px; text-transform:uppercase;
   cursor:pointer; transition:all 0.2s;
   align-self:flex-start;
 }
-.btn-parse:hover { background:rgba(26,92,74,0.18); border-color:var(--teal); }
+.btn-parse:hover { background:rgba(30,58,82,0.12); border-color:var(--ink); }
 
 /* Parsed scores display */
 .scores-display {
@@ -185,24 +185,24 @@ body {
 
 /* Generate button */
 .btn-generate {
-  background:var(--teal); color:var(--paper);
+  background:var(--ink); color:var(--paper);
   border:none; border-radius:0px; padding:13px 24px;
   font-family:'Source Sans 3',sans-serif;
   font-size:11px; font-weight:800;
   letter-spacing:2px; text-transform:uppercase;
-  cursor:pointer; transition:all 0.2s;
+  cursor:pointer; transition:background 0.2s;
   display:flex; align-items:center; gap:10px;
   justify-content:center;
 }
-.btn-generate:hover { background:var(--gold-light); box-shadow:0 4px 20px rgba(26,92,74,0.30); }
-.btn-generate:disabled { opacity:0.35; cursor:not-allowed; box-shadow:none; }
+.btn-generate:hover { background:var(--ink-mid); }
+.btn-generate:disabled { opacity:0.35; cursor:not-allowed; }
 
 .parse-status {
   font-family:'Fira Mono',monospace; font-size:10px;
   padding:8px 12px; border-radius:0px;
   display:none;
 }
-.parse-status.ok { display:block; background:rgba(46,158,142,0.1); color:var(--teal); border:1px solid rgba(46,158,142,0.2); }
+.parse-status.ok { display:block; background:rgba(26,92,74,0.08); color:var(--teal); border:1px solid rgba(26,92,74,0.20); }
 .parse-status.warn { display:block; background:rgba(217,123,53,0.1); color:var(--amber); border:1px solid rgba(217,123,53,0.2); }
 .parse-status.err { display:block; background:rgba(192,57,43,0.1); color:#E06050; border:1px solid rgba(192,57,43,0.2); }
 
@@ -225,7 +225,7 @@ body {
 }
 .output-status.waiting { background:rgba(90,111,136,0.1); color:var(--grey); border:1px solid rgba(90,111,136,0.2); }
 .output-status.generating { background:rgba(26,92,74,0.10); color:var(--teal); border:1px solid rgba(26,92,74,0.30); animation:pulse 1s infinite; }
-.output-status.done { background:rgba(46,158,142,0.1); color:var(--teal); border:1px solid rgba(46,158,142,0.3); }
+.output-status.done { background:rgba(26,92,74,0.08); color:var(--teal); border:1px solid rgba(26,92,74,0.25); }
 
 .output-card {
   background:var(--navy-card);
@@ -297,26 +297,26 @@ body {
   display:flex; gap:10px; flex-wrap:wrap;
 }
 .btn-copy {
-  background:var(--teal); color:var(--paper);
+  background:var(--ink); color:var(--paper);
   border:none; border-radius:0px; padding:10px 22px;
   font-family:'Source Sans 3',sans-serif;
   font-size:11px; font-weight:800;
   letter-spacing:1.5px; text-transform:uppercase;
-  cursor:pointer; transition:all 0.2s;
+  cursor:pointer; transition:background 0.2s;
 }
-.btn-copy:hover { background:var(--gold-light); }
-.btn-copy.copied { background:var(--teal); color:var(--ink); }
+.btn-copy:hover { background:var(--ink-mid); }
+.btn-copy.copied { background:var(--ink); color:var(--paper); }
 .btn-clear {
   background:transparent;
-  border:1px solid rgba(30,58,82,0.10);
+  border:1px solid rgba(30,58,82,0.18);
   border-radius:0px; padding:10px 20px;
-  color:var(--grey-light);
+  color:var(--ink);
   font-family:'Source Sans 3',sans-serif;
   font-size:11px; font-weight:700;
   letter-spacing:1px; text-transform:uppercase;
   cursor:pointer; transition:all 0.2s;
 }
-.btn-clear:hover { border-color:rgba(30,58,82,0.25); color:var(--ink); }
+.btn-clear:hover { border-color:var(--ink); background:rgba(30,58,82,0.04); }
 
 /* Loading ring */
 .loading-ring {
@@ -355,7 +355,7 @@ body {
   .header, .layout { display: none !important; }
 
   body {
-    background: var(--paper) !important;
+    background: #0A1628 !important;
     margin: 0 !important; padding: 0 !important;
   }
 
@@ -364,7 +364,7 @@ body {
     display: block !important;
     position: static !important;
     width: 100% !important;
-    background: var(--paper) !important;
+    background: #0A1628 !important;
   }
 
   /* Page breaks */
@@ -761,7 +761,7 @@ body {
 .pdf-mroad-label {
   font-size: 9px; color: #5a6f88; line-height: 1.4;
 }
-.pdf-mroad-active .pdf-mroad-label { color: #F4F2EC !important; font-weight: 700; }
+.pdf-mroad-active .pdf-mroad-label { color: #F4F1EA !important; font-weight: 700; }
 .pdf-mroad-arrow { color: #5a6f88; font-size: 14px; flex-shrink: 0; }
 
 /* ── PDF PRIORITY ITEMS ── */
@@ -878,7 +878,7 @@ The tool will automatically extract:
 
     <div class="action-row" id="actionRow" style="display:none;">
       <button class="btn-copy" id="btnCopy" onclick="copyOutput()">⊕ Copy Synthesis</button>
-      <button class="btn-copy" onclick="printReport()" style="background:var(--panel);color:var(--teal);border:1px solid rgba(26,92,74,0.30);">⊕ Save as PDF</button>
+      <button class="btn-copy" onclick="printReport()" style="background:var(--ink);color:var(--paper);border:none;">⊕ Save as PDF</button>
       <button class="btn-clear" onclick="clearAll()">↺ New Synthesis</button>
     </div>
 
@@ -1491,7 +1491,7 @@ function printReport() {
     <div class="pdf-metrics-grid" id="pdfMetricsGrid"></div>
 
     <!-- Stage scale -->
-    <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#5a6f88;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;margin-top:20px;">Readiness Stage · CIQ <span id="pdfCiqNum" style="color:#F4F2EC">—</span>%</div>
+    <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#5a6f88;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;margin-top:20px;">Readiness Stage · CIQ <span id="pdfCiqNum" style="color:#F4F1EA">—</span>%</div>
     <div class="pdf-stage-row" id="pdfStageRow">
       <div class="pdf-stage-seg" id="pdfSeg1">
         <div class="pdf-stage-seg-label">Foundation Constrained</div>
