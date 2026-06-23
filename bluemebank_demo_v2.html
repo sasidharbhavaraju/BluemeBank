@@ -2,9 +2,1197 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="refresh" content="0; url=/AD">
-<script>window.location.replace("/AD");</script>
-<title>Redirecting — BluemeBank</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BluemeBank — Nerve Core Intelligence Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A1628;
+    --navy-mid: #112240;
+    --navy-light: #1A3A5C;
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --white: #FFFFFF;
+    --off-white: #F0F4F8;
+    --light-blue: #A8C4DC;
+    --grey: #6B7E96;
+    --teal: #028090;
+    --red: #C0392B;
+    --amber: #E07B39;
+    --green: #2E7D52;
+    --blue: #2C5F9E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Raleway', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    background: rgba(10,22,40,0.97);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-mark {
+    width: 36px; height: 36px;
+    border: 2px solid var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 800; color: var(--gold);
+  }
+  .logo-text { font-size: 20px; font-weight: 800; color: var(--white); }
+  .logo-text span { color: var(--gold); }
+  .logo-sub { font-size: 10px; color: var(--grey); letter-spacing: 2px; text-transform: uppercase; }
+
+  .live-indicator {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--green); letter-spacing: 1px;
+    text-transform: uppercase; font-weight: 600;
+  }
+  .live-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--green); animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+  .api-section {
+    background: var(--navy-mid);
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    padding: 10px 32px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .api-label { font-size: 10px; color: var(--grey); text-transform: uppercase; letter-spacing: 1.5px; white-space: nowrap; font-weight: 600; }
+  .api-input {
+    flex: 1; max-width: 460px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 6px; padding: 7px 14px;
+    color: var(--light-blue);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .api-input:focus { border-color: var(--gold); }
+  .api-input::placeholder { color: var(--grey); }
+  .api-status { font-size: 10px; padding: 5px 12px; border-radius: 4px; font-weight: 700; letter-spacing: 0.5px; }
+  .api-status.ready { background: rgba(46,125,82,0.15); color: #4CAF82; border: 1px solid rgba(46,125,82,0.4); }
+  .api-status.waiting { background: rgba(107,126,150,0.1); color: var(--grey); border: 1px solid rgba(107,126,150,0.3); }
+
+  .main { display: grid; grid-template-columns: 300px 1fr; min-height: calc(100vh - 105px); }
+
+  .sidebar {
+    background: var(--navy-mid);
+    border-right: 1px solid rgba(255,255,255,0.05);
+    overflow-y: auto;
+  }
+
+  .sidebar-section { margin-bottom: 0; }
+  .sidebar-title {
+    font-size: 10px; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+    padding: 16px 20px 10px;
+    border-bottom: 1px solid rgba(201,168,76,0.08);
+  }
+
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px 16px; }
+  .stat-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px; padding: 10px 12px;
+  }
+  .stat-value { font-size: 18px; font-weight: 800; color: var(--white); }
+  .stat-label { font-size: 9px; color: var(--grey); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+  .stat-card.amber .stat-value { color: var(--amber); }
+  .stat-card.red .stat-value { color: var(--red); }
+  .stat-card.green .stat-value { color: #4CAF82; }
+  .stat-card.gold .stat-value { color: var(--gold); }
+
+  .customer-item {
+    padding: 14px 20px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: all 0.18s;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .customer-item:hover { background: rgba(201,168,76,0.04); border-left-color: rgba(201,168,76,0.25); }
+  .customer-item.active { background: rgba(201,168,76,0.07); border-left-color: var(--gold); }
+  .customer-name { font-size: 12px; font-weight: 700; color: var(--white); margin-bottom: 5px; }
+  .customer-meta { display: flex; justify-content: space-between; align-items: center; }
+  .customer-sector-small { font-size: 10px; color: var(--grey); margin-bottom: 4px; }
+  .customer-limit { font-size: 11px; color: var(--light-blue); font-family: 'JetBrains Mono', monospace; }
+  .signal-badge { font-size: 9px; font-weight: 700; letter-spacing: 0.5px; padding: 2px 7px; border-radius: 3px; text-transform: uppercase; }
+  .signal-badge.green { background: rgba(46,125,82,0.15); color: #4CAF82; border: 1px solid rgba(46,125,82,0.35); }
+  .signal-badge.amber { background: rgba(224,123,57,0.15); color: #F0A060; border: 1px solid rgba(224,123,57,0.35); }
+  .signal-badge.red { background: rgba(192,57,43,0.15); color: #E06050; border: 1px solid rgba(192,57,43,0.35); }
+
+  .content { padding: 28px; overflow-y: auto; }
+
+  .welcome {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 60vh; text-align: center; gap: 16px;
+  }
+  .welcome-icon { font-size: 52px; opacity: 0.2; }
+  .welcome-title { font-size: 22px; font-weight: 700; color: var(--light-blue); }
+  .welcome-sub { font-size: 13px; color: var(--grey); max-width: 420px; line-height: 1.7; }
+
+  .customer-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 20px; padding-bottom: 18px;
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+  }
+  .customer-title { font-size: 24px; font-weight: 800; }
+  .customer-sector { font-size: 12px; color: var(--grey); margin-top: 3px; }
+  .customer-reg { font-size: 11px; color: rgba(168,196,220,0.5); margin-top: 2px; font-family: 'JetBrains Mono', monospace; }
+
+  .assess-btn {
+    background: var(--gold); color: var(--navy);
+    border: none; border-radius: 8px;
+    padding: 12px 26px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 12px; font-weight: 800;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  }
+  .assess-btn:hover { background: var(--gold-light); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(201,168,76,0.25); }
+  .assess-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  /* DATA TABS */
+  .data-tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0; }
+  .data-tab {
+    font-size: 11px; font-weight: 600; color: var(--grey);
+    padding: 8px 16px; cursor: pointer;
+    border-bottom: 2px solid transparent;
+    text-transform: uppercase; letter-spacing: 1px;
+    transition: all 0.15s; margin-bottom: -1px;
+  }
+  .data-tab:hover { color: var(--light-blue); }
+  .data-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* PROFILE METRICS */
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+  .metric-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 10px; padding: 14px 16px;
+  }
+  .metric-label { font-size: 9px; color: var(--grey); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+  .metric-value { font-size: 20px; font-weight: 800; }
+  .metric-change { font-size: 10px; margin-top: 3px; }
+  .metric-card.up .metric-change { color: #4CAF82; }
+  .metric-card.down .metric-change { color: var(--amber); }
+  .metric-card.danger .metric-change { color: #E06050; }
+  .metric-card.neutral .metric-change { color: var(--grey); }
+
+  /* FINANCIAL TABLE */
+  .fin-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 20px; }
+  .fin-table th {
+    text-align: left; padding: 8px 12px;
+    font-size: 9px; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+  .fin-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--light-blue);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .fin-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .fin-table td.label { color: var(--white); font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 11px; }
+  .fin-table td.positive { color: #4CAF82; }
+  .fin-table td.negative { color: #E06050; }
+  .fin-table td.warning { color: var(--amber); }
+
+  /* COVENANT TABLE */
+  .covenant-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .covenant-name { font-size: 11px; color: var(--white); font-weight: 600; flex: 1; }
+  .covenant-required { font-size: 11px; color: var(--grey); font-family: 'JetBrains Mono', monospace; width: 80px; }
+  .covenant-actual { font-size: 11px; font-family: 'JetBrains Mono', monospace; width: 80px; font-weight: 700; }
+  .covenant-status { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .covenant-status.pass { background: rgba(46,125,82,0.15); color: #4CAF82; border: 1px solid rgba(46,125,82,0.3); }
+  .covenant-status.breach { background: rgba(192,57,43,0.15); color: #E06050; border: 1px solid rgba(192,57,43,0.3); }
+  .covenant-status.watch { background: rgba(224,123,57,0.15); color: #F0A060; border: 1px solid rgba(224,123,57,0.3); }
+
+  /* SIGNALS */
+  .signals-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+  .signal-card {
+    background: var(--navy-mid);
+    border-radius: 8px; padding: 12px 14px;
+    border-left: 3px solid;
+    font-size: 11px; line-height: 1.5;
+  }
+  .signal-card.danger { border-color: #E06050; }
+  .signal-card.warning { border-color: var(--amber); }
+  .signal-card.positive { border-color: #4CAF82; }
+  .signal-card.info { border-color: var(--light-blue); }
+  .signal-card-title { font-weight: 700; color: var(--white); margin-bottom: 3px; font-size: 11px; }
+  .signal-card-detail { color: var(--grey); font-size: 10px; }
+
+  /* TRANSACTION MINI CHART */
+  .mini-chart { display: flex; align-items: flex-end; gap: 3px; height: 40px; margin: 8px 0; }
+  .bar {
+    flex: 1; border-radius: 2px 2px 0 0;
+    transition: opacity 0.2s; cursor: default;
+    position: relative;
+  }
+  .bar:hover { opacity: 0.8; }
+
+  /* PLANES */
+  .planes-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .planes-title { font-size: 11px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+  .planes-note { font-size: 10px; color: var(--grey); font-style: italic; }
+
+  .planes-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+  .plane-card {
+    background: var(--navy-mid);
+    border-radius: 10px; overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.05);
+    transition: border-color 0.3s; min-height: 190px;
+  }
+  .plane-card.thinking { animation: border-pulse 1.2s infinite; }
+  @keyframes border-pulse { 0%,100%{border-color:rgba(201,168,76,0.15)} 50%{border-color:rgba(201,168,76,0.55)} }
+  .plane-card.done-identity { border-color: rgba(2,128,144,0.45); }
+  .plane-card.done-risk { border-color: rgba(192,57,43,0.45); }
+  .plane-card.done-commercial { border-color: rgba(201,168,76,0.45); }
+  .plane-card.done-operations { border-color: rgba(46,125,82,0.45); }
+  .plane-card.done-compliance { border-color: rgba(44,95,158,0.45); }
+
+  .plane-header { padding: 11px 13px 9px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+  .plane-num { font-size: 9px; color: var(--grey); font-weight: 600; letter-spacing: 1px; }
+  .plane-name { font-size: 11px; font-weight: 800; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .plane-status { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; margin-top: 5px; text-transform: uppercase; }
+  .plane-status.idle { color: var(--grey); }
+  .plane-status.thinking { color: var(--gold); }
+  .plane-status.done { color: #4CAF82; }
+
+  .plane-body { padding: 11px 13px; }
+  .plane-output { font-size: 10px; line-height: 1.6; color: var(--light-blue); min-height: 75px; }
+  .plane-output.streaming::after { content:'▊'; animation: blink 0.65s infinite; color: var(--gold); }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .plane-identity .plane-name { color: var(--teal); }
+  .plane-identity .plane-header { background: rgba(2,128,144,0.06); }
+  .plane-risk .plane-name { color: #E06050; }
+  .plane-risk .plane-header { background: rgba(192,57,43,0.06); }
+  .plane-commercial .plane-name { color: var(--gold); }
+  .plane-commercial .plane-header { background: rgba(201,168,76,0.06); }
+  .plane-operations .plane-name { color: #4CAF82; }
+  .plane-operations .plane-header { background: rgba(46,125,82,0.06); }
+  .plane-compliance .plane-name { color: #5B8FD4; }
+  .plane-compliance .plane-header { background: rgba(44,95,158,0.06); }
+
+  /* NERVE CORE */
+  .nerve-core {
+    background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 12px; overflow: hidden; transition: all 0.3s;
+  }
+  .nerve-core.active { border-color: rgba(201,168,76,0.5); box-shadow: 0 0 40px rgba(201,168,76,0.08); }
+
+  .nerve-header {
+    background: linear-gradient(135deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04));
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nerve-title { font-size: 12px; font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+  .nerve-subtitle { font-size: 10px; color: var(--grey); margin-top: 2px; }
+  .nerve-badge { font-size: 9px; font-weight: 700; letter-spacing: 1px; padding: 4px 11px; border-radius: 4px; text-transform: uppercase; }
+  .nerve-badge.synthesising { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid var(--gold); animation: border-pulse 1.2s infinite; }
+  .nerve-badge.complete { background: rgba(46,125,82,0.15); color: #4CAF82; border: 1px solid #4CAF82; }
+  .nerve-badge.idle { background: rgba(107,126,150,0.1); color: var(--grey); border: 1px solid rgba(107,126,150,0.25); }
+
+  .nerve-body { padding: 18px 20px; }
+  .nerve-output { font-size: 12.5px; line-height: 1.8; color: var(--white); min-height: 50px; }
+  .nerve-output.streaming::after { content:'▊'; animation: blink 0.65s infinite; color: var(--gold); }
+
+  .rec-box {
+    margin-top: 16px;
+    background: rgba(201,168,76,0.05);
+    border: 1px solid rgba(201,168,76,0.22);
+    border-radius: 8px; padding: 16px 18px;
+    display: none;
+  }
+  .rec-box.visible { display: block; }
+  .rec-label { font-size: 9px; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: 8px; }
+  .rec-action { font-size: 14px; font-weight: 700; color: var(--white); line-height: 1.5; }
+  .rec-meta { display: flex; gap: 20px; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); flex-wrap: wrap; }
+  .rec-meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .rec-meta-label { font-size: 9px; color: var(--grey); text-transform: uppercase; letter-spacing: 1px; }
+  .rec-meta-value { font-size: 12px; font-weight: 700; }
+  .conf-bar { width: 80px; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; margin-top: 2px; }
+  .conf-fill { height: 100%; border-radius: 2px; transition: width 1.2s ease; }
+
+  .error-box {
+    background: rgba(192,57,43,0.08); border: 1px solid rgba(192,57,43,0.3);
+    border-radius: 8px; padding: 12px 16px;
+    font-size: 12px; color: #E06050; margin-top: 12px; display: none;
+  }
+  .error-box.visible { display: block; }
+
+  .disclaimer {
+    margin-top: 20px; padding: 12px 16px;
+    background: rgba(107,126,150,0.05);
+    border: 1px solid rgba(107,126,150,0.15);
+    border-radius: 6px;
+    font-size: 10px; color: var(--grey); line-height: 1.6;
+  }
+  .disclaimer strong { color: rgba(168,196,220,0.6); }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.15); border-radius: 3px; }
+
+  .footer {
+    text-align: center; padding: 14px;
+    font-size: 10px; color: rgba(107,126,150,0.5);
+    border-top: 1px solid rgba(255,255,255,0.04);
+    letter-spacing: 1px;
+  }
+
+  .section-title {
+    font-size: 10px; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 2px; font-weight: 700;
+    margin-bottom: 12px; margin-top: 20px;
+  }
+  .section-title:first-child { margin-top: 0; }
+</style>
 </head>
-<body></body>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div class="logo-mark">B</div>
+    <div>
+      <div class="logo-text"><span>Bleume</span>Bank</div>
+      <div class="logo-sub">Intelligence in Every Decision</div>
+    </div>
+  </div>
+  <div class="live-indicator"><div class="live-dot"></div>Nerve Core Active</div>
+</div>
+
+<div class="api-section">
+  <div class="api-label">API Key</div>
+  <input class="api-input" type="password" id="apiKey" placeholder="Paste your Anthropic API key (sk-ant-...)" oninput="checkApiKey()">
+  <div class="api-status waiting" id="apiStatus">Not Connected</div>
+</div>
+
+<div class="main">
+
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Portfolio — BluemeBank Commercial</div>
+      <div class="stat-grid">
+        <div class="stat-card gold"><div class="stat-value">£4.2bn</div><div class="stat-label">Total Book</div></div>
+        <div class="stat-card"><div class="stat-value">847</div><div class="stat-label">Customers</div></div>
+        <div class="stat-card amber"><div class="stat-value">23</div><div class="stat-label">EWS Active</div></div>
+        <div class="stat-card red"><div class="stat-value">7</div><div class="stat-label">Limit Review</div></div>
+        <div class="stat-card"><div class="stat-value">134</div><div class="stat-label">Recon Breaks</div></div>
+        <div class="stat-card green"><div class="stat-value">94%</div><div class="stat-label">Data Quality</div></div>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Select Customer for Assessment</div>
+      <div id="customerList"></div>
+    </div>
+  </div>
+
+  <div class="content" id="mainContent">
+    <div class="welcome">
+      <div class="welcome-icon">◈</div>
+      <div class="welcome-title">Select a customer to begin</div>
+      <div class="welcome-sub">Choose a customer from the portfolio. Review their full financial profile, then activate the Nerve Core to run a simultaneous five-plane assessment.</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">BluemeBank · Nerve Core Intelligence Dashboard · © Sasidhar Bhavaraju 2026 · #GroundedFuturism</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// RICH CUSTOMER DATA — 18-24 MONTHS SYNTHETIC PROFILES
+// ═══════════════════════════════════════════════════════
+const customers = [
+  {
+    id: 1,
+    name: "Thornfield Manufacturing Ltd",
+    regNumber: "Co. Reg: 04821763 · Incorporated 2003",
+    sector: "Precision Engineering · West Midlands",
+    signal: "amber",
+    limit: "£12.4M",
+    utilisation: "94%",
+    utilisationNum: 94,
+
+    metrics: [
+      { label: "Facility Limit", value: "£12.4M", change: "Unchanged 18mo", dir: "neutral" },
+      { label: "Utilisation", value: "94%", change: "↑ from 71% (Jan 24)", dir: "down" },
+      { label: "Risk Rating", value: "B+", change: "↓ Downgraded Q3 24", dir: "down" },
+      { label: "EBITDA Margin", value: "9.1%", change: "↓ from 14.2% (FY23)", dir: "down" }
+    ],
+
+    financials: [
+      { period: "FY 2023", revenue: "£32.1M", ebitda: "£4.6M (14.3%)", netDebt: "£8.2M", dscr: "1.82x", wc: "£3.1M" },
+      { period: "FY 2024", revenue: "£28.3M", ebitda: "£2.6M (9.1%)", netDebt: "£11.4M", dscr: "1.21x", wc: "£1.4M" },
+      { period: "H1 2025", revenue: "£12.9M", ebitda: "£0.9M (7.2%)", netDebt: "£12.1M", dscr: "0.98x", wc: "£0.6M" },
+    ],
+
+    covenants: [
+      { name: "DSCR", required: "> 1.25x", actual: "0.98x", status: "breach", actualClass: "negative" },
+      { name: "Net Debt / EBITDA", required: "< 4.0x", actual: "4.66x", status: "breach", actualClass: "negative" },
+      { name: "Min Tangible Net Worth", required: "> £4.0M", actual: "£4.8M", status: "watch", actualClass: "warning" },
+      { name: "Utilisation Cap", required: "< 90%", actual: "94%", status: "breach", actualClass: "negative" },
+    ],
+
+    utilHistory: [71,74,72,78,81,83,87,89,91,90,93,94],
+
+    signals: [
+      { type: "danger", title: "Two covenant breaches — DSCR and leverage", detail: "Third breach in 18 months. Previous two waived. Waiver letter due for renewal." },
+      { type: "danger", title: "Loss of OEM contract — Jaguar Land Rover", detail: "£6.4M annual revenue exited Q3 2024. No replacement contract secured." },
+      { type: "warning", title: "Finance Director change — March 2025", detail: "Previous FD resigned. Replacement appointed internally. Limited institutional knowledge." },
+      { type: "warning", title: "Utilisation at 94% — at ceiling", detail: "Facility cap is 90%. Currently in breach. Cash headroom < £0.7M." },
+      { type: "info", title: "Export orders stable — Germany & Poland", detail: "Tier-2 aerospace supply chain holding. £4.2M forward order book." },
+      { type: "info", title: "Family ownership — 100% Baker family", detail: "Third generation. No succession plan documented." }
+    ],
+
+    ownership: "Baker family — 100% (Robert Baker, CEO & Sarah Baker-Hewitt, COO). No external shareholders. No charges registered beyond bank facility.",
+    kycDate: "Last KYC refresh: November 2023 — overdue for refresh",
+    pepSanction: "No PEP/Sanction flags. AML risk rating: Medium.",
+
+    context: `Thornfield Manufacturing Ltd is a West Midlands precision engineering business supplying tier-2 automotive and aerospace components. Founded 2003 by the Baker family, now third generation management.
+
+FINANCIAL TRAJECTORY: Revenue peaked at £34.2M in FY2022 before declining to £28.3M in FY2024 following loss of the Jaguar Land Rover supply contract (£6.4M annual value, exited Q3 2024). EBITDA margin has compressed from 14.3% to 9.1%. H1 2025 DSCR has fallen below 1.0x for the first time.
+
+COVENANT POSITION: Currently in breach of DSCR covenant (0.98x vs 1.25x requirement), Net Debt/EBITDA covenant (4.66x vs 4.0x limit), and utilisation cap (94% vs 90% maximum). Two previous covenant breaches in FY2024 — both waived. Third waiver letter is outstanding.
+
+MANAGEMENT: Finance Director resigned March 2025, replaced internally. New FD has 8 months experience in role. CEO Robert Baker is operationally focused with limited financial restructuring experience.
+
+FACILITY UTILISATION: Drawn to £11.65M against £12.4M limit (94%). Seasonal cash requirement peaks in Q4. Working capital position is critically tight at £0.6M.
+
+POSITIVES: Aerospace supply chain orders stable at £4.2M forward book. German and Polish export customers have not reduced volumes. Production facility fully owned — market value estimated £3.8M.
+
+KEY RISK: Without a replacement automotive contract or facility restructuring, the business faces a liquidity crisis in Q1 2026 if seasonal cash flows do not recover.`
+  },
+
+  {
+    id: 2,
+    name: "Cairn Hospitality Group",
+    regNumber: "Co. Reg: 07341892 · Incorporated 2009",
+    sector: "Boutique Hotels & Leisure · Scotland",
+    signal: "red",
+    limit: "£8.7M",
+    utilisation: "87%",
+    utilisationNum: 87,
+
+    metrics: [
+      { label: "Facility Limit", value: "£8.7M", change: "↑ Extended Jan 24", dir: "neutral" },
+      { label: "Utilisation", value: "87%", change: "↑ from 62% (Jan 24)", dir: "down" },
+      { label: "Risk Rating", value: "B-", change: "↓ Under Credit Watch", dir: "down" },
+      { label: "RevPAR", value: "£82", change: "↓ from £97 (2023)", dir: "down" }
+    ],
+
+    financials: [
+      { period: "FY 2022", revenue: "£17.3M", ebitda: "£3.1M (17.9%)", netDebt: "£4.8M", dscr: "2.10x", wc: "£2.2M" },
+      { period: "FY 2023", revenue: "£20.8M", ebitda: "£3.8M (18.3%)", netDebt: "£6.2M", dscr: "1.76x", wc: "£1.8M" },
+      { period: "FY 2024", revenue: "£19.1M", ebitda: "£1.4M (7.3%)", netDebt: "£7.9M", dscr: "0.71x", wc: "-£0.4M" },
+    ],
+
+    covenants: [
+      { name: "DSCR", required: "> 1.50x", actual: "0.71x", status: "breach", actualClass: "negative" },
+      { name: "Interest Cover", required: "> 2.5x", actual: "1.3x", status: "breach", actualClass: "negative" },
+      { name: "LTV (Property)", required: "< 65%", actual: "71%", status: "breach", actualClass: "negative" },
+      { name: "Working Capital", required: "> £0.5M", actual: "-£0.4M", status: "breach", actualClass: "negative" },
+    ],
+
+    utilHistory: [62,65,68,70,72,74,79,82,83,85,86,87],
+
+    signals: [
+      { type: "danger", title: "4 covenant breaches simultaneously", detail: "DSCR, interest cover, LTV and working capital all in breach. Formal review triggered." },
+      { type: "danger", title: "Three properties with negative operating cashflow", detail: "Glencairn Lodge, Portree House, Oban Bay Hotel all cash-negative in FY2024." },
+      { type: "danger", title: "Energy costs up 34% YoY — unhedged exposure", detail: "No energy hedging in place. £680K unbudgeted cost in FY2024." },
+      { type: "warning", title: "Asset sale in progress — no exchange", detail: "Pitlochry property marketed at £2.1M since March 2025. No buyer identified." },
+      { type: "warning", title: "Seasonal Q1 cash risk", detail: "Q1 historically 40% below average revenue. Cash reserves < 3 weeks." },
+      { type: "info", title: "Personal guarantee — £8.7M from founder", detail: "Angus Cairn has provided full personal guarantee. Net worth estimated £6.2M." }
+    ],
+
+    ownership: "Angus Cairn — 78%. Cairn Family Trust — 22%. Full personal guarantee registered. No other charges.",
+    kycDate: "Last KYC refresh: February 2024 — within tolerance",
+    pepSanction: "No PEP/Sanction flags. AML risk rating: Low.",
+
+    context: `Cairn Hospitality Group operates 7 boutique hotels across Scotland ranging from 12 to 48 rooms. Founded 2009 by Angus Cairn, hospitality entrepreneur.
+
+FINANCIAL TRAJECTORY: Revenue recovered strongly post-COVID to £20.8M in FY2023 driven by Scottish tourism boom. FY2024 performance deteriorated sharply — EBITDA fell from £3.8M to £1.4M as energy and staffing costs surged. RevPAR declined from £97 to £82.
+
+PROPERTY PORTFOLIO: 7 properties, 3 of which (Glencairn Lodge, Portree House, Oban Bay Hotel) generated negative operating cashflow in FY2024. LTV across portfolio at 71% against 65% covenant.
+
+COVENANT POSITION: All four financial covenants in breach simultaneously — DSCR (0.71x vs 1.5x), interest cover (1.3x vs 2.5x), LTV (71% vs 65%) and working capital (-£0.4M vs +£0.5M). Formal credit review has been triggered.
+
+DISPOSALS: Pitlochry property has been on market since March 2025 at £2.1M. No offers received. Sale proceeds required to reduce leverage.
+
+PERSONAL GUARANTEE: Angus Cairn has provided a full personal guarantee of £8.7M. His estimated net worth is £6.2M — guarantee not fully covered.
+
+LIQUIDITY: Working capital is negative at -£0.4M. Q1 is the weakest seasonal quarter — cash reserves estimated at less than 3 weeks of operating costs.
+
+ASSESSMENT: This is the highest-risk name in the portfolio currently. Without the Pitlochry sale or a formal restructuring, the group faces a default event within 6 months.`
+  },
+
+  {
+    id: 3,
+    name: "Whitmore Logistics plc",
+    regNumber: "Co. Reg: 03847291 · Incorporated 1998",
+    sector: "Third-Party Logistics · East of England",
+    signal: "green",
+    limit: "£22.1M",
+    utilisation: "61%",
+    utilisationNum: 61,
+
+    metrics: [
+      { label: "Facility Limit", value: "£22.1M", change: "↑ Increased Oct 24", dir: "up" },
+      { label: "Utilisation", value: "61%", change: "↓ from 74% (Jan 24)", dir: "up" },
+      { label: "Risk Rating", value: "A-", change: "→ Stable 18 months", dir: "neutral" },
+      { label: "EBITDA Margin", value: "14.8%", change: "↑ from 12.1% (FY23)", dir: "up" }
+    ],
+
+    financials: [
+      { period: "FY 2023", revenue: "£68.4M", ebitda: "£8.3M (12.1%)", netDebt: "£14.2M", dscr: "2.41x", wc: "£5.8M" },
+      { period: "FY 2024", revenue: "£74.6M", ebitda: "£11.0M (14.8%)", netDebt: "£13.5M", dscr: "2.88x", wc: "£7.2M" },
+      { period: "H1 2025", revenue: "£41.3M", ebitda: "£6.3M (15.3%)", netDebt: "£13.1M", dscr: "3.10x", wc: "£8.1M" },
+    ],
+
+    covenants: [
+      { name: "DSCR", required: "> 1.50x", actual: "3.10x", status: "pass", actualClass: "positive" },
+      { name: "Net Debt / EBITDA", required: "< 3.0x", actual: "1.23x", status: "pass", actualClass: "positive" },
+      { name: "Min Net Worth", required: "> £18M", actual: "£31.4M", status: "pass", actualClass: "positive" },
+      { name: "Utilisation Cap", required: "< 85%", actual: "61%", status: "pass", actualClass: "positive" },
+    ],
+
+    utilHistory: [74,72,69,71,68,65,63,62,61,60,61,61],
+
+    signals: [
+      { type: "positive", title: "5-year DHL contract signed — January 2026", detail: "£18.4M annual revenue. Commences Q2 2026. Significantly de-risks revenue concentration." },
+      { type: "positive", title: "ESG certification achieved — March 2026", detail: "ISO 14001 and BREEAM certification. Unlocks 3 major client renewal clauses." },
+      { type: "positive", title: "EBITDA margin expanding — 12% to 15%", detail: "Operational efficiency programme delivering. Target 16% by FY2026." },
+      { type: "info", title: "Capex programme planned — H2 2026", detail: "Two new distribution centres. Estimated £8.4M total investment. Part self-funded." },
+      { type: "info", title: "PE interest — preliminary discussions", detail: "Two PE firms have made preliminary contact. No formal process underway." },
+      { type: "positive", title: "Limit increase headroom available", detail: "Strong covenant position supports limit increase to support capex if required." }
+    ],
+
+    ownership: "Whitmore family — 54%. Management team — 12%. Institutional shareholders — 34% (2 funds). Plc structure — AIM listed.",
+    kycDate: "Last KYC refresh: January 2025 — within tolerance",
+    pepSanction: "No PEP/Sanction flags. AML risk rating: Low. AIM listed — enhanced transparency.",
+
+    context: `Whitmore Logistics plc is an AIM-listed third-party logistics provider operating 14 distribution centres across the East of England and Midlands. Founded 1998 by the Whitmore family.
+
+FINANCIAL PERFORMANCE: Revenue has grown from £68.4M to £74.6M with EBITDA margins expanding from 12.1% to 14.8% — among the strongest in the sector. H1 2025 continues the positive trend with margins reaching 15.3%.
+
+KEY CONTRACT WIN: A 5-year contract with DHL Parcel UK signed January 2026, worth £18.4M annual revenue commencing Q2 2026. This significantly reduces customer concentration (largest customer currently 22% of revenue, falling to 18% post-DHL).
+
+ESG POSITION: ISO 14001 environmental certification and BREEAM certification achieved March 2026. Three major client contracts have sustainability clauses that require this certification for renewal — estimated at risk revenue of £12M now secured.
+
+COVENANT POSITION: All covenants substantially met. DSCR at 3.10x (requirement 1.50x). Net Debt/EBITDA at 1.23x (requirement 3.0x). Significant covenant headroom throughout.
+
+CAPEX PLANS: Two new distribution centres planned H2 2026, total investment £8.4M. Majority self-funded from cashflow. May approach bank for £3-4M term facility.
+
+STRATEGIC: Preliminary PE interest suggests a potential exit within 2-4 years. AIM listing provides liquidity for minority shareholders. Management team is strong and long-tenured.
+
+OPPORTUNITY: This is the bank's strongest commercial customer. A proactive conversation about supporting the H2 2026 capex programme could deepen the relationship ahead of any PE exit process.`
+  },
+
+  {
+    id: 4,
+    name: "Aldgate Property Development",
+    regNumber: "Co. Reg: 09284761 · Incorporated 2014",
+    sector: "Residential Development · East London",
+    signal: "amber",
+    limit: "£6.3M",
+    utilisation: "78%",
+    utilisationNum: 78,
+
+    metrics: [
+      { label: "Facility Limit", value: "£6.3M", change: "Unchanged 24 months", dir: "neutral" },
+      { label: "Utilisation", value: "78%", change: "↑ from 65% (Jan 24)", dir: "down" },
+      { label: "Risk Rating", value: "B", change: "→ Stable", dir: "neutral" },
+      { label: "Pre-sales", value: "74%", change: "↑ from 58% (Q3 24)", dir: "up" }
+    ],
+
+    financials: [
+      { period: "FY 2023", revenue: "£8.4M", ebitda: "£1.9M (22.6%)", netDebt: "£4.1M", dscr: "1.62x", wc: "£1.2M" },
+      { period: "FY 2024", revenue: "£11.2M", ebitda: "£2.3M (20.5%)", netDebt: "£4.8M", dscr: "1.48x", wc: "£0.9M" },
+      { period: "H1 2025", revenue: "£4.8M", ebitda: "£0.8M (16.8%)", netDebt: "£4.9M", dscr: "1.31x", wc: "£0.7M" },
+    ],
+
+    covenants: [
+      { name: "DSCR", required: "> 1.25x", actual: "1.31x", status: "watch", actualClass: "warning" },
+      { name: "Pre-sales Covenant", required: "> 65%", actual: "74%", status: "pass", actualClass: "positive" },
+      { name: "LTV", required: "< 70%", actual: "68%", status: "watch", actualClass: "warning" },
+      { name: "Concentration Limit (Group)", required: "< £15M", actual: "£14.2M", status: "watch", actualClass: "warning" },
+    ],
+
+    utilHistory: [65,66,68,69,70,71,73,74,75,76,77,78],
+
+    signals: [
+      { type: "warning", title: "Valuation overdue — 14 months", detail: "Primary security last valued September 2023. Policy requires 12-month refresh. Overdue." },
+      { type: "warning", title: "3 related entities — group concentration £14.2M", detail: "Aldgate Properties Ltd, Aldgate Homes (East) Ltd and APD Holdings all connected. Combined exposure near limit." },
+      { type: "warning", title: "Planning permission pending — 2 sites", detail: "Bow Road (42 units) and Stratford High Street (28 units) awaiting decision. Expected Q3 2025." },
+      { type: "warning", title: "Variable rate exposure — BoE sensitivity", detail: "£4.9M at variable rate. 100bps increase = £49K additional annual cost." },
+      { type: "positive", title: "Pre-sales at 74% — above covenant", detail: "Current development 74% pre-sold. Covenant requires 65%. Healthy buffer." },
+      { type: "info", title: "Director: Priya Sharma — 2nd development", detail: "Experienced developer. Previous scheme delivered on time and under budget." }
+    ],
+
+    ownership: "Priya Sharma — 68%. Nexus Capital Partners (minority) — 32%. No cross-guarantees with related entities.",
+    kycDate: "Last KYC refresh: June 2024 — within tolerance",
+    pepSanction: "No PEP/Sanction flags. AML risk rating: Medium (property sector standard).",
+
+    context: `Aldgate Property Development focuses on residential development schemes in East London, primarily in Newham and Tower Hamlets. Founded 2014 by Priya Sharma.
+
+RELATED ENTITY RISK: Three connected entities (Aldgate Properties Ltd, Aldgate Homes (East) Ltd, APD Holdings) share beneficial ownership with Priya Sharma. Combined bank exposure across all three entities is £14.2M against a concentration policy limit of £15M. The bank is approaching its internal group limit.
+
+SECURITY POSITION: The primary security valuation is 14 months old, exceeding the 12-month policy refresh requirement. Current estimate suggests LTV at approximately 68%, close to the 70% covenant. A formal revaluation has been requested but not yet completed.
+
+PLANNING RISK: Two sites totalling 70 units are awaiting planning permission decisions. Combined GDV £28M. Planning refusal on either site would significantly impact the development pipeline and cashflow projections.
+
+COVENANT HEADROOM: DSCR is at 1.31x against a 1.25x requirement — thin headroom. Pre-sales at 74% provide comfort above the 65% covenant. LTV is estimated at 68% against a 70% limit — close to trigger.
+
+INTEREST RATE SENSITIVITY: All facility debt is at variable rate. The business has not hedged its interest rate exposure. Further Bank of England rate increases would compress margins.
+
+POSITIVE INDICATORS: Priya Sharma has a strong track record — previous scheme delivered on time and under budget. Pre-sales on the current development are ahead of covenant levels. The East London residential market remains structurally undersupplied.
+
+RISK SUMMARY: The concentration risk is the primary concern. Combined with the overdue valuation and thin covenant headroom, this name requires a proactive credit conversation.`
+  },
+
+  {
+    id: 5,
+    name: "Meridian Healthcare Solutions",
+    regNumber: "Co. Reg: 06743821 · Incorporated 2011",
+    sector: "NHS Managed Services · North West England",
+    signal: "green",
+    limit: "£15.8M",
+    utilisation: "44%",
+    utilisationNum: 44,
+
+    metrics: [
+      { label: "Facility Limit", value: "£15.8M", change: "↑ Increased Mar 25", dir: "up" },
+      { label: "Utilisation", value: "44%", change: "↓ Significant headroom", dir: "up" },
+      { label: "Risk Rating", value: "A", change: "↑ Upgraded Q1 25", dir: "up" },
+      { label: "Revenue Growth", value: "+18%", change: "3rd consecutive year", dir: "up" }
+    ],
+
+    financials: [
+      { period: "FY 2023", revenue: "£38.7M", ebitda: "£7.4M (19.1%)", netDebt: "£6.8M", dscr: "3.21x", wc: "£8.4M" },
+      { period: "FY 2024", revenue: "£44.3M", ebitda: "£9.7M (21.9%)", netDebt: "£6.4M", dscr: "3.84x", wc: "£9.8M" },
+      { period: "H1 2025", revenue: "£27.1M", ebitda: "£6.2M (22.8%)", netDebt: "£6.1M", dscr: "4.20x", wc: "£11.2M" },
+    ],
+
+    covenants: [
+      { name: "DSCR", required: "> 1.75x", actual: "4.20x", status: "pass", actualClass: "positive" },
+      { name: "Net Debt / EBITDA", required: "< 2.5x", actual: "0.63x", status: "pass", actualClass: "positive" },
+      { name: "Min Net Worth", required: "> £12M", actual: "£28.7M", status: "pass", actualClass: "positive" },
+      { name: "Revenue Concentration", required: "< 40% single client", actual: "31%", status: "pass", actualClass: "positive" },
+    ],
+
+    utilHistory: [58,56,53,51,49,47,46,45,44,44,44,44],
+
+    signals: [
+      { type: "positive", title: "3 NHS Trust contracts won — H2 2024", detail: "Manchester University NHS FT, Salford Royal, Wrightington Wigan Leigh. Total £14.2M TCV." },
+      { type: "positive", title: "EBITDA margin at 22.8% and expanding", detail: "Sector leading. Driven by operational leverage and contract mix improvement." },
+      { type: "positive", title: "Acquisition target identified — MedStaff North", detail: "£8M revenue business. Synergy case strong. Funding discussion appropriate." },
+      { type: "info", title: "PE interest — 2 firms in preliminary dialogue", detail: "Silverfleet Capital and Livingbridge have made contact. No formal process." },
+      { type: "info", title: "Limit significantly underutilised — 44%", detail: "£8.85M undrawn headroom. Proactive limit increase or acquisition facility warranted." },
+      { type: "positive", title: "NHS ICS framework approved — April 2026", detail: "Approved supplier on 3 Integrated Care System frameworks. Significant pipeline." }
+    ],
+
+    ownership: "Henderson family — 62%. Management team (6 individuals) — 14%. Panoramic Growth Equity — 24%.",
+    kycDate: "Last KYC refresh: March 2025 — current",
+    pepSanction: "No PEP/Sanction flags. AML risk rating: Low.",
+
+    context: `Meridian Healthcare Solutions provides workforce management, staffing and managed services to NHS Trusts across the North West. Founded 2011 by James Henderson.
+
+GROWTH TRAJECTORY: Revenue has grown at a CAGR of 14% over 3 years, reaching £44.3M in FY2024. Three major NHS Trust contracts won in H2 2024 (Manchester University NHS FT, Salford Royal, WWL) adding £14.2M total contract value. H1 2025 is tracking above budget.
+
+PROFITABILITY: EBITDA margins of 22.8% are sector-leading. The improvement is driven by operational leverage and a shift toward higher-margin managed services contracts versus pure staffing.
+
+COVENANT POSITION: Substantially outperforming all covenants. DSCR at 4.20x (requirement 1.75x). Net Debt/EBITDA at 0.63x (requirement 2.5x). Rating upgraded to A in Q1 2025.
+
+ACQUISITION: Management has identified MedStaff North (£8M revenue, North East focused) as an acquisition target. The synergy case is strong — geographic expansion and contract portfolio diversification. Funding of approximately £5-6M would be required.
+
+PE INTEREST: Silverfleet Capital and Livingbridge have made preliminary contact. While no formal process is underway, a PE exit within 24-36 months is a credible scenario. This has implications for the banking relationship.
+
+FACILITY UTILISATION: The facility is significantly underutilised at 44%. The bank should proactively offer an acquisition facility or limit restructuring to deepen the relationship before a PE process commences.
+
+STRATEGIC PRIORITY: This is an excellent customer with strong growth, excellent credit metrics and a significant funding opportunity. Relationship deepening is a commercial priority.`
+  }
+];
+
+// ═══════════════════════════════════════════════
+// RENDER FUNCTIONS
+// ═══════════════════════════════════════════════
+
+function renderCustomerList() {
+  const list = document.getElementById('customerList');
+  list.innerHTML = customers.map(c => `
+    <div class="customer-item" id="item-${c.id}" onclick="selectCustomer(${c.id})">
+      <div class="customer-name">${c.name}</div>
+      <div class="customer-sector-small">${c.sector.split('·')[0].trim()}</div>
+      <div class="customer-meta">
+        <div class="customer-limit">${c.limit} · ${c.utilisation} util.</div>
+        <div class="signal-badge ${c.signal}">${c.signal.toUpperCase()}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+let selectedCustomer = null;
+let activeTab = 'overview';
+
+function selectCustomer(id) {
+  selectedCustomer = customers.find(c => c.id === id);
+  document.querySelectorAll('.customer-item').forEach(el => el.classList.remove('active'));
+  document.getElementById(`item-${id}`).classList.add('active');
+  activeTab = 'overview';
+  renderCustomerView();
+}
+
+function switchTab(tab) {
+  activeTab = tab;
+  document.querySelectorAll('.data-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  document.getElementById(`panel-${tab}`).classList.add('active');
+}
+
+function renderCustomerView() {
+  const c = selectedCustomer;
+  const content = document.getElementById('mainContent');
+
+  const utilBars = c.utilHistory.map((v, i) => {
+    const maxH = 36;
+    const h = Math.round((v / 100) * maxH);
+    const color = v > 85 ? '#E06050' : v > 70 ? '#E07B39' : '#2E7D52';
+    const months = ['Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May'];
+    return `<div class="bar" style="height:${h}px;background:${color};opacity:0.8" title="${months[i]}: ${v}%"></div>`;
+  }).join('');
+
+  content.innerHTML = `
+    <div class="customer-header">
+      <div>
+        <div class="customer-title">${c.name}</div>
+        <div class="customer-sector">${c.sector}</div>
+        <div class="customer-reg">${c.regNumber}</div>
+      </div>
+      <button class="assess-btn" id="assessBtn" onclick="runAssessment()">◈ Activate Nerve Core</button>
+    </div>
+
+    <div class="data-tabs">
+      <div class="data-tab active" id="tab-overview" onclick="switchTab('overview')">Overview</div>
+      <div class="data-tab" id="tab-financials" onclick="switchTab('financials')">Financials</div>
+      <div class="data-tab" id="tab-covenants" onclick="switchTab('covenants')">Covenants</div>
+      <div class="data-tab" id="tab-signals" onclick="switchTab('signals')">Signals</div>
+      <div class="data-tab" id="tab-identity" onclick="switchTab('identity')">Identity & KYC</div>
+    </div>
+
+    <!-- OVERVIEW TAB -->
+    <div class="tab-panel active" id="panel-overview">
+      <div class="metrics-grid">
+        ${c.metrics.map(m => `
+          <div class="metric-card ${m.dir}">
+            <div class="metric-label">${m.label}</div>
+            <div class="metric-value">${m.value}</div>
+            <div class="metric-change">${m.change}</div>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="section-title">Facility Utilisation — 12 Month Trend</div>
+      <div style="background:var(--navy-mid);border-radius:8px;padding:16px 20px;margin-bottom:20px;">
+        <div class="mini-chart">${utilBars}</div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--grey);margin-top:4px;font-family:'JetBrains Mono',monospace;">
+          <span>Jun 24</span><span>Sep 24</span><span>Dec 24</span><span>Mar 25</span><span>May 25</span>
+        </div>
+      </div>
+
+      <div class="section-title">Covenant Summary</div>
+      <div style="background:var(--navy-mid);border-radius:8px;padding:14px 18px;margin-bottom:20px;">
+        ${c.covenants.map(cv => `
+          <div class="covenant-row">
+            <div class="covenant-name">${cv.name}</div>
+            <div class="covenant-required" style="color:var(--grey)">${cv.required}</div>
+            <div class="covenant-actual ${cv.actualClass}">${cv.actual}</div>
+            <div class="covenant-status ${cv.status}">${cv.status.toUpperCase()}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- FINANCIALS TAB -->
+    <div class="tab-panel" id="panel-financials">
+      <div class="section-title">Financial Summary — 3 Period View</div>
+      <table class="fin-table">
+        <thead>
+          <tr>
+            <th>Period</th><th>Revenue</th><th>EBITDA</th><th>Net Debt</th><th>DSCR</th><th>Working Capital</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${c.financials.map(f => `
+            <tr>
+              <td class="label">${f.period}</td>
+              <td>${f.revenue}</td>
+              <td>${f.ebitda}</td>
+              <td>${f.netDebt}</td>
+              <td class="${parseFloat(f.dscr) < 1.25 ? 'negative' : parseFloat(f.dscr) < 1.75 ? 'warning' : 'positive'}">${f.dscr}</td>
+              <td class="${f.wc.includes('-') ? 'negative' : ''}">${f.wc}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- COVENANTS TAB -->
+    <div class="tab-panel" id="panel-covenants">
+      <div class="section-title">Covenant Compliance Detail</div>
+      <div style="background:var(--navy-mid);border-radius:8px;padding:14px 18px;">
+        ${c.covenants.map(cv => `
+          <div class="covenant-row">
+            <div class="covenant-name">${cv.name}</div>
+            <div style="font-size:10px;color:var(--grey);flex:1">Required: ${cv.required}</div>
+            <div class="covenant-actual ${cv.actualClass}" style="font-size:14px">${cv.actual}</div>
+            <div class="covenant-status ${cv.status}">${cv.status.toUpperCase()}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- SIGNALS TAB -->
+    <div class="tab-panel" id="panel-signals">
+      <div class="section-title">Intelligence Signals — Active</div>
+      <div class="signals-grid">
+        ${c.signals.map(s => `
+          <div class="signal-card ${s.type}">
+            <div class="signal-card-title">${s.title}</div>
+            <div class="signal-card-detail">${s.detail}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- IDENTITY TAB -->
+    <div class="tab-panel" id="panel-identity">
+      <div class="section-title">Ownership & Beneficial Interest</div>
+      <div style="background:var(--navy-mid);border-radius:8px;padding:16px 18px;margin-bottom:16px;font-size:12px;color:var(--light-blue);line-height:1.7">${c.ownership}</div>
+
+      <div class="section-title">KYC Status</div>
+      <div style="background:var(--navy-mid);border-radius:8px;padding:14px 18px;margin-bottom:16px;">
+        <div style="font-size:12px;color:var(--light-blue);margin-bottom:6px">${c.kycDate}</div>
+        <div style="font-size:12px;color:var(--light-blue)">${c.pepSanction}</div>
+      </div>
+    </div>
+
+    <!-- PLANES SECTION -->
+    <div class="planes-header" style="margin-top:24px">
+      <div class="planes-title">Five Decision Planes — Simultaneous Nerve Core Assessment</div>
+      <div class="planes-note">All planes activate in parallel · Powered by Claude AI</div>
+    </div>
+
+    <div class="planes-grid">
+      ${renderPlane('identity','01','Identity & Trust','Awaiting activation')}
+      ${renderPlane('risk','02','Risk','Awaiting activation')}
+      ${renderPlane('commercial','03','Commercial','Awaiting activation')}
+      ${renderPlane('operations','04','Operations','Awaiting activation')}
+      ${renderPlane('compliance','05','Compliance','Awaiting activation')}
+    </div>
+
+    <div class="nerve-core" id="nerveCore">
+      <div class="nerve-header">
+        <div>
+          <div class="nerve-title">◈ The Nerve Core</div>
+          <div class="nerve-subtitle">Synthesising all five planes into a unified institutional recommendation</div>
+        </div>
+        <div class="nerve-badge idle" id="nerveStatus">Awaiting Planes</div>
+      </div>
+      <div class="nerve-body">
+        <div class="nerve-output" id="nerveOutput">Activate the Nerve Core above to begin simultaneous five-plane assessment.</div>
+        <div class="rec-box" id="recBox">
+          <div class="rec-label">Nerve Core Recommendation</div>
+          <div class="rec-action" id="recAction"></div>
+          <div class="rec-meta" id="recMeta"></div>
+        </div>
+        <div class="error-box" id="errorBox"></div>
+      </div>
+    </div>
+
+    <div class="disclaimer">
+      <strong>Demonstration note:</strong> This prototype demonstrates the reasoning logic and decision architecture of BluemeBank's Nerve Core. Customer data is synthetic and constructed for illustrative purposes. In production, each plane would run specialist ML models and real-time data feeds. The intelligence structure shown here — simultaneous plane activation, conflict surfacing and Nerve Core synthesis — reflects the target architecture described in the BluemeBank papers.
+    </div>
+  `;
+}
+
+function renderPlane(cls, num, name, desc) {
+  return `
+    <div class="plane-card plane-${cls}" id="plane-${cls}">
+      <div class="plane-header">
+        <div class="plane-num">Plane ${num}</div>
+        <div class="plane-name">${name}</div>
+        <div class="plane-status idle" id="status-${cls}">Standby</div>
+      </div>
+      <div class="plane-body">
+        <div class="plane-output" id="output-${cls}">${desc}</div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════
+// API & ASSESSMENT
+// ═══════════════════════════════════════════════
+
+function checkApiKey() {
+  const key = document.getElementById('apiKey').value.trim();
+  const status = document.getElementById('apiStatus');
+  if (key.startsWith('sk-ant-') && key.length > 20) {
+    status.textContent = 'Connected';
+    status.className = 'api-status ready';
+  } else {
+    status.textContent = 'Not Connected';
+    status.className = 'api-status waiting';
+  }
+}
+
+function buildPlanePrompt(plane, c) {
+  const fin = c.financials.map(f => `${f.period}: Revenue ${f.revenue}, EBITDA ${f.ebitda}, DSCR ${f.dscr}, Net Debt ${f.netDebt}`).join(' | ');
+  const cov = c.covenants.map(cv => `${cv.name}: required ${cv.required}, actual ${cv.actual} (${cv.status})`).join('; ');
+  const sigs = c.signals.map(s => `[${s.type.toUpperCase()}] ${s.title}: ${s.detail}`).join('\n');
+
+  const prompts = {
+    identity: `You are the Identity & Trust Plane of BluemeBank. Your role: verify entity integrity, beneficial ownership, relationship quality and identity risk.
+
+CUSTOMER: ${c.name} | ${c.regNumber}
+SECTOR: ${c.sector}
+OWNERSHIP: ${c.ownership}
+KYC STATUS: ${c.kycDate}
+AML/SANCTIONS: ${c.pepSanction}
+SIGNALS: ${sigs}
+
+Provide a precise 3-4 sentence identity and trust assessment for a credit decision. Address: (1) entity and ownership clarity, (2) KYC currency and adequacy, (3) relationship integrity signals, (4) any identity or ownership risk requiring escalation. End with one sentence: "Identity Risk Summary: [assessment]"`,
+
+    risk: `You are the Risk Plane of BluemeBank. Your role: assess credit exposure, covenant position, financial trajectory and portfolio risk.
+
+CUSTOMER: ${c.name}
+FACILITY: ${c.limit} | UTILISATION: ${c.utilisation}
+FINANCIAL HISTORY: ${fin}
+COVENANT POSITION: ${cov}
+SIGNALS: ${sigs}
+
+Provide a precise 3-4 sentence risk assessment. Address: (1) current covenant compliance and trajectory, (2) financial performance trend and key drivers, (3) security and exposure adequacy, (4) probability of default indicators. End with one sentence: "Risk Position Summary: [assessment]"`,
+
+    commercial: `You are the Commercial Plane of BluemeBank. Your role: assess relationship value, revenue quality, cross-sell opportunity and strategic importance.
+
+CUSTOMER: ${c.name} | ${c.sector}
+FACILITY: ${c.limit} | RATING: ${c.metrics[2].value}
+FINANCIAL PERFORMANCE: ${fin}
+SIGNALS: ${sigs}
+
+Provide a precise 3-4 sentence commercial assessment. Address: (1) relationship revenue and margin contribution, (2) growth trajectory and forward opportunity, (3) cross-sell or facility expansion potential, (4) strategic value and retention risk. End with one sentence: "Commercial Value Summary: [assessment]"`,
+
+    operations: `You are the Operations Plane of BluemeBank. Your role: assess process status, documentation currency, exceptions and operational actions required.
+
+CUSTOMER: ${c.name}
+FACILITY: ${c.limit} | UTILISATION: ${c.utilisation}
+COVENANTS: ${cov}
+KYC: ${c.kycDate}
+SIGNALS: ${sigs}
+
+Provide a precise 3-4 sentence operational assessment. Address: (1) documentation currency (valuations, KYC, covenants), (2) open exceptions or outstanding actions, (3) process and compliance workflow status, (4) priority operational actions. End with one sentence: "Operational Status Summary: [assessment]"`,
+
+    compliance: `You are the Compliance Plane of BluemeBank. Your role: assess regulatory compliance, policy adherence, sector limits and escalation requirements.
+
+CUSTOMER: ${c.name} | ${c.sector}
+FACILITY: ${c.limit} | RATING: ${c.metrics[2].value}
+COVENANT POSITION: ${cov}
+AML/KYC: ${c.pepSanction} | ${c.kycDate}
+SIGNALS: ${sigs}
+
+Provide a precise 3-4 sentence compliance assessment under UK PRA/FCA frameworks. Address: (1) regulatory covenant and concentration limit compliance, (2) KYC/AML adequacy, (3) sector policy requirements and any limit breaches, (4) escalation obligations under Senior Managers Regime. End with one sentence: "Compliance Status Summary: [assessment]"`
+  };
+  return prompts[plane];
+}
+
+function buildNerveCorePrompt(c, outputs) {
+  return `You are the Nerve Core of BluemeBank — synthesising five simultaneous plane assessments into a single unified institutional recommendation.
+
+CUSTOMER: ${c.name} | ${c.sector}
+FACILITY: ${c.limit} | UTILISATION: ${c.utilisation} | RATING: ${c.metrics[2].value}
+
+IDENTITY & TRUST PLANE:
+${outputs.identity}
+
+RISK PLANE:
+${outputs.risk}
+
+COMMERCIAL PLANE:
+${outputs.commercial}
+
+OPERATIONS PLANE:
+${outputs.operations}
+
+COMPLIANCE PLANE:
+${outputs.compliance}
+
+Your synthesis must:
+1. In 2 sentences: identify where planes ALIGN and where there is TENSION between them.
+2. Provide RECOMMENDATION: [specific action with amounts, timelines and accountabilities]
+3. CONFIDENCE: High / Medium / Low — [one sentence reason]
+4. NEXT ACTION: [single most important action for the relationship manager today]
+5. ESCALATION: [Yes/No — and if Yes, to whom and why]
+
+Be decisive. This is a live institutional decision with real financial consequence.`;
+}
+
+async function callClaude(prompt, apiKey) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 500,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'API error'); }
+  const d = await res.json();
+  return d.content[0].text;
+}
+
+async function streamText(elId, text, delay = 7) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.classList.add('streaming');
+  el.textContent = '';
+  for (let i = 0; i < text.length; i++) {
+    el.textContent += text[i];
+    if (i % 3 === 0) await new Promise(r => setTimeout(r, delay));
+  }
+  el.classList.remove('streaming');
+}
+
+async function runAssessment() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey.startsWith('sk-ant-')) { alert('Please enter your Anthropic API key at the top.'); return; }
+
+  const btn = document.getElementById('assessBtn');
+  btn.disabled = true;
+  btn.textContent = '◈ Planes Activating...';
+  document.getElementById('errorBox').classList.remove('visible');
+  document.getElementById('recBox').classList.remove('visible');
+
+  const planes = ['identity','risk','commercial','operations','compliance'];
+  const outputs = {};
+
+  planes.forEach(p => {
+    const card = document.getElementById(`plane-${p}`);
+    card.className = `plane-card plane-${p} thinking`;
+    document.getElementById(`status-${p}`).textContent = 'Reasoning...';
+    document.getElementById(`status-${p}`).className = 'plane-status thinking';
+    document.getElementById(`output-${p}`).textContent = 'Analysing customer data...';
+    document.getElementById(`output-${p}`).classList.add('streaming');
+  });
+
+  try {
+    await Promise.all(planes.map(async p => {
+      try {
+        const result = await callClaude(buildPlanePrompt(p, selectedCustomer), apiKey);
+        outputs[p] = result;
+        const out = document.getElementById(`output-${p}`);
+        out.classList.remove('streaming');
+        out.textContent = result;
+        document.getElementById(`plane-${p}`).className = `plane-card plane-${p} done-${p}`;
+        document.getElementById(`status-${p}`).textContent = 'Complete';
+        document.getElementById(`status-${p}`).className = 'plane-status done';
+      } catch(e) {
+        outputs[p] = `Assessment error: ${e.message}`;
+        document.getElementById(`output-${p}`).classList.remove('streaming');
+        document.getElementById(`output-${p}`).textContent = outputs[p];
+        document.getElementById(`status-${p}`).textContent = 'Error';
+        document.getElementById(`status-${p}`).className = 'plane-status idle';
+      }
+    }));
+
+    document.getElementById('nerveCore').classList.add('active');
+    document.getElementById('nerveStatus').textContent = 'Synthesising';
+    document.getElementById('nerveStatus').className = 'nerve-badge synthesising';
+    btn.textContent = '◈ Nerve Core Synthesising...';
+    document.getElementById('nerveOutput').textContent = 'Synthesising across all five planes...';
+
+    const nerveResult = await callClaude(buildNerveCorePrompt(selectedCustomer, outputs), apiKey);
+
+    const recMatch = nerveResult.match(/RECOMMENDATION:\s*([\s\S]+?)(?=CONFIDENCE:|$)/);
+    const confMatch = nerveResult.match(/CONFIDENCE:\s*([\s\S]+?)(?=NEXT ACTION:|$)/);
+    const nextMatch = nerveResult.match(/NEXT ACTION:\s*([\s\S]+?)(?=ESCALATION:|$)/);
+    const escalMatch = nerveResult.match(/ESCALATION:\s*([\s\S]+?)$/);
+
+    const synthesis = nerveResult.replace(/RECOMMENDATION:[\s\S]*$/, '').trim();
+    await streamText('nerveOutput', synthesis, 5);
+
+    document.getElementById('nerveStatus').textContent = 'Synthesis Complete';
+    document.getElementById('nerveStatus').className = 'nerve-badge complete';
+
+    if (recMatch) {
+      const recBox = document.getElementById('recBox');
+      recBox.classList.add('visible');
+      document.getElementById('recAction').textContent = recMatch[1].trim();
+
+      const confText = confMatch ? confMatch[1].trim() : '';
+      const isHigh = confText.toLowerCase().startsWith('high');
+      const isMed = confText.toLowerCase().startsWith('medium');
+      const confPct = isHigh ? '85%' : isMed ? '58%' : '38%';
+      const confColor = isHigh ? '#4CAF82' : isMed ? '#E07B39' : '#E06050';
+
+      let metaHtml = `
+        <div class="rec-meta-item">
+          <div class="rec-meta-label">Confidence</div>
+          <div class="rec-meta-value" style="color:${confColor}">${isHigh?'HIGH':isMed?'MEDIUM':'LOW'}</div>
+          <div class="conf-bar"><div class="conf-fill" style="width:0%;background:${confColor}" id="confFill"></div></div>
+        </div>`;
+      if (nextMatch) metaHtml += `<div class="rec-meta-item" style="flex:2"><div class="rec-meta-label">Next Action</div><div class="rec-meta-value" style="font-size:12px;color:var(--light-blue);font-weight:600">${nextMatch[1].trim()}</div></div>`;
+      if (escalMatch) {
+        const esc = escalMatch[1].trim();
+        const escColor = esc.toLowerCase().startsWith('yes') ? '#E06050' : '#4CAF82';
+        metaHtml += `<div class="rec-meta-item"><div class="rec-meta-label">Escalation</div><div class="rec-meta-value" style="color:${escColor}">${esc.split('—')[0].trim()}</div></div>`;
+      }
+      document.getElementById('recMeta').innerHTML = metaHtml;
+      setTimeout(() => { const f = document.getElementById('confFill'); if(f) f.style.width = confPct; }, 150);
+    }
+
+  } catch(err) {
+    document.getElementById('errorBox').textContent = `Error: ${err.message}`;
+    document.getElementById('errorBox').classList.add('visible');
+  }
+
+  btn.disabled = false;
+  btn.textContent = '◈ Re-assess';
+}
+
+renderCustomerList();
+</script>
+</body>
 </html>
