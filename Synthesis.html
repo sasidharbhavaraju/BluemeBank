@@ -355,7 +355,7 @@ body {
   .header, .layout { display: none !important; }
 
   body {
-    background: #0A1628 !important;
+    background: var(--paper) !important;
     margin: 0 !important; padding: 0 !important;
   }
 
@@ -364,7 +364,7 @@ body {
     display: block !important;
     position: static !important;
     width: 100% !important;
-    background: #0A1628 !important;
+    background: var(--paper) !important;
   }
 
   /* Page breaks */
@@ -761,7 +761,7 @@ body {
 .pdf-mroad-label {
   font-size: 9px; color: #5a6f88; line-height: 1.4;
 }
-.pdf-mroad-active .pdf-mroad-label { color: #F4F1EA !important; font-weight: 700; }
+.pdf-mroad-active .pdf-mroad-label { color: #F4F2EC !important; font-weight: 700; }
 .pdf-mroad-arrow { color: #5a6f88; font-size: 14px; flex-shrink: 0; }
 
 /* ── PDF PRIORITY ITEMS ── */
@@ -1491,7 +1491,7 @@ function printReport() {
     <div class="pdf-metrics-grid" id="pdfMetricsGrid"></div>
 
     <!-- Stage scale -->
-    <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#5a6f88;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;margin-top:20px;">Readiness Stage · CIQ <span id="pdfCiqNum" style="color:#F4F1EA">—</span>%</div>
+    <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#5a6f88;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;margin-top:20px;">Readiness Stage · CIQ <span id="pdfCiqNum" style="color:#F4F2EC">—</span>%</div>
     <div class="pdf-stage-row" id="pdfStageRow">
       <div class="pdf-stage-seg" id="pdfSeg1">
         <div class="pdf-stage-seg-label">Foundation Constrained</div>
