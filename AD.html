@@ -495,19 +495,17 @@ p em{font-style:italic;color:#1F4D72}
 }
 .btn-diagnostic{
   display:inline-flex;align-items:center;gap:12px;
-  background:var(--teal);color:var(--paper);
+  background:var(--ink);color:var(--paper);
   border:none;border-radius:0px;
   padding:16px 32px;
   font-family:'Source Sans 3',sans-serif;
   font-size:11px;font-weight:600;
   text-transform:none;letter-spacing:2px;
   text-decoration:none;
-  cursor:pointer;transition:all 0.2s;
+  cursor:pointer;transition:background 0.2s;
 }
 .btn-diagnostic:hover{
-  background:var(--gold-light);
-  transform:translateY(-2px);
-  
+  background:var(--ink-mid);
 }
 
 /* ── FACTORY CTA ── */
@@ -516,8 +514,8 @@ p em{font-style:italic;color:#1F4D72}
   align-items:center;
   justify-content:space-between;
   gap:20px;
-  background:rgba(201,168,76,0.05);
-  border:1px solid rgba(26,92,74,0.25);
+  background:rgba(30,58,82,0.04);
+  border:1px solid rgba(30,58,82,0.12);
   border-radius:0px;
   padding:18px 24px;
   margin:28px 0;
@@ -533,7 +531,7 @@ p em{font-style:italic;color:#1F4D72}
   font-family:'Fira Mono',monospace;
   font-size:11px;letter-spacing:1.5px;text-transform:none;
   color:var(--paper);
-  background:var(--teal);
+  background:var(--ink);
   padding:10px 20px;
   border-radius:0px;
   text-decoration:none;
@@ -542,7 +540,7 @@ p em{font-style:italic;color:#1F4D72}
   transition:background 0.2s;
   flex-shrink:0;
 }
-.factory-cta-link:hover{background:var(--gold-light)}
+.factory-cta-link:hover{background:var(--ink-mid)}
 
 /* ── AUTHOR BAND ── */
 .author-band{
