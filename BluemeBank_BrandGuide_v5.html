@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BluemeBank · Brand Architecture</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Raleway:wght@600&family=Source+Sans+3:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Blues — the document ink */
+  --paper:#F4F2EC;        /* primary canvas */
+  --panel:#E9E5DA;        /* data cells & samples */
+  --ink:#1E3A52;          /* deep slate blue — primary text & headings */
+  --ink-mid:#1F4D72;      /* midnight blue — display accent & secondary headings */
+  --ink-steel:#2C5F8A;    /* steel blue — wordmark Bank, links, tertiary labels */
+  --slate:#6A6A60;        /* label slate — metadata */
+  --divider:rgba(30,58,82,0.12);
+  /* State colours — appear only when signalling */
+  --forest:#15453B;       /* forest teal — live/nominal state */
+  --amber:#8A5A12;        /* variance amber — caution state */
+  --oxblood:#7E2B22;      /* exception oxblood — breach state */
+}
+html{background:var(--paper);}
+body{background:var(--paper);color:var(--ink);font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:400;line-height:1.65;min-height:100vh;}
+
+.wrap{max-width:800px;margin:0 auto;padding:60px 40px;}
+
+/* HEADER */
+.header{margin-bottom:52px;padding-bottom:32px;border-bottom:1px solid var(--divider);}
+.logo{font-family:'Raleway',sans-serif;font-size:24px;font-weight:600;letter-spacing:0px;margin-bottom:6px;text-transform:none;}
+.logo .b{color:var(--ink)}
+.logo .k{color:var(--ink-steel)}
+.logo-sub{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--slate);margin-bottom:24px;}
+.doc-title{font-family:'Libre Baskerville',serif;font-size:2.4rem;font-weight:400;color:var(--ink);line-height:1.2;margin-bottom:14px;}
+.doc-title em{font-style:italic;color:var(--ink-mid);font-weight:400;}
+.posture{font-size:14px;color:var(--ink);opacity:0.9;line-height:1.7;max-width:620px;margin-bottom:16px;}
+.posture strong{color:var(--ink-steel);font-weight:600;}
+.doc-sub{font-size:11px;color:var(--slate);font-family:'Fira Mono',monospace;letter-spacing:1px;text-transform:uppercase;}
+
+/* SECTIONS */
+.section{margin-bottom:48px;}
+.section-label{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-steel);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(44,95,138,0.20);}
+
+/* COLOUR SWATCHES */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:8px;}
+.swatch{border-radius:0px;overflow:hidden;border:1px solid var(--divider);}
+.swatch-color{height:48px;width:100%;}
+.swatch-info{background:var(--panel);padding:10px 12px;}
+.swatch-name{font-size:11px;font-weight:600;color:var(--ink);margin-bottom:2px;}
+.swatch-hex{font-family:'Fira Mono',monospace;font-size:10px;color:var(--slate);}
+.swatch-role{font-family:'Fira Mono',monospace;font-size:9px;color:var(--slate);margin-top:2px;letter-spacing:0.2px;}
+
+/* TYPOGRAPHY SAMPLES */
+.type-sample{background:var(--panel);border:1px solid var(--divider);border-radius:0px;padding:20px 24px;margin-bottom:10px;}
+.type-label{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-steel);margin-bottom:10px;}
+.type-display{font-family:'Libre Baskerville',serif;font-size:2rem;font-weight:400;color:var(--ink);line-height:1.2;}
+.type-display em{font-style:italic;color:var(--ink-mid);}
+.type-body{font-size:14px;color:var(--ink);opacity:0.95;line-height:1.7;}
+.type-mono{font-family:'Fira Mono',monospace;font-size:12px;letter-spacing:0.5px;color:var(--forest);}
+.type-spec{font-family:'Fira Mono',monospace;font-size:9px;color:var(--slate);margin-top:8px;line-height:1.5;}
+
+/* LOGO SECTION */
+.logo-demo{background:var(--panel);border:1px solid var(--divider);border-radius:0px;padding:28px 24px;margin-bottom:10px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+.logo-demo-mark{font-family:'Raleway',sans-serif;font-size:22px;font-weight:600;letter-spacing:0px;text-transform:none;}
+.logo-demo-mark .b{color:var(--ink)}.logo-demo-mark .k{color:var(--ink-steel)}
+.logo-demo-sub{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--slate);margin-top:3px;}
+.logo-rule{width:1px;height:40px;background:var(--divider);}
+.logo-spec{font-family:'Fira Mono',monospace;font-size:10px;color:var(--slate);line-height:1.8;}
+
+/* DISCIPLINE CARDS (motion) */
+.anim-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.anim-card{background:var(--panel);border:1px solid var(--divider);border-radius:0px;padding:16px 18px;}
+.anim-name{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-steel);margin-bottom:6px;}
+.anim-desc{font-size:12px;color:var(--ink);opacity:0.85;line-height:1.5;}
+.anim-spec{font-family:'Fira Mono',monospace;font-size:9px;color:var(--slate);margin-top:6px;line-height:1.5;}
+
+/* TONE */
+.tone-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tone-card{background:var(--panel);border:1px solid var(--divider);border-radius:0px;padding:16px 18px;}
+.tone-yes{border-top:2px solid var(--forest);}
+.tone-no{border-top:2px solid var(--oxblood);}
+.tone-label{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.tone-label.yes{color:var(--forest);}
+.tone-label.no{color:var(--oxblood);}
+.tone-item{font-size:12px;color:var(--ink);opacity:0.85;line-height:1.6;padding:4px 0;border-bottom:1px solid rgba(0,0,0,0.05);}
+.tone-item:last-child{border-bottom:none;}
+
+/* PRINCIPLES */
+.principle-list{display:flex;flex-direction:column;gap:8px;}
+.principle{background:var(--panel);border:1px solid var(--divider);border-radius:0px;padding:14px 18px;display:flex;gap:14px;align-items:flex-start;}
+.principle-dot{width:4px;height:4px;background:var(--ink-steel);flex-shrink:0;margin-top:8px;}
+.principle-text{font-size:13px;color:var(--ink);opacity:0.9;line-height:1.6;}
+.principle-text strong{color:var(--ink);font-weight:600;}
+
+/* FOOTER */
+.footer{margin-top:52px;padding-top:24px;border-top:1px solid var(--divider);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-brand{font-family:'Fira Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--slate);}
+.footer-brand strong{color:var(--ink-steel);}
+
+@media(max-width:600px){
+  .wrap{padding:40px 20px;}
+  .anim-grid,.tone-grid{grid-template-columns:1fr;}
+  .swatch-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="header">
+  <div class="logo"><span class="b">Blueme</span><span class="k">Bank</span></div>
+  <div class="logo-sub">Banking Operations Intelligence</div>
+  <h1 class="doc-title">Brand <em>Architecture</em></h1>
+  <p class="posture">The identity carries two signals at once. To an institution running on decades of legacy infrastructure, it must read as <strong>trusted</strong> — heritage typography, a printed-record canvas, nothing hidden. And it must read as the <strong>modern instrument</strong> that resolves the problem — engineering precision in the type, the data, and the geometry. The first earns the meeting. The second earns the mandate.</p>
+  <div class="doc-sub">Identity System · v5 · June 2026</div>
+</div>
+
+<div class="section">
+  <div class="section-label">01 // Colour System</div>
+  <div class="swatch-grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F4F2EC;"></div>
+      <div class="swatch-info"><div class="swatch-name">Warm Paper</div><div class="swatch-hex">#F4F2EC</div><div class="swatch-role">Primary Canvas</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#E9E5DA;"></div>
+      <div class="swatch-info"><div class="swatch-name">Panel Sand</div><div class="swatch-hex">#E9E5DA</div><div class="swatch-role">Data Cells & Samples</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1E3A52;"></div>
+      <div class="swatch-info"><div class="swatch-name">Deep Slate Blue</div><div class="swatch-hex">#1E3A52</div><div class="swatch-role">Primary Ink — Body & Headings</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1F4D72;"></div>
+      <div class="swatch-info"><div class="swatch-name">Midnight Blue</div><div class="swatch-hex">#1F4D72</div><div class="swatch-role">Secondary Headings & Emphasis</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#6A6A60;"></div>
+      <div class="swatch-info"><div class="swatch-name">Label Slate</div><div class="swatch-hex">#6A6A60</div><div class="swatch-role">Labels & Metadata</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#15453B;"></div>
+      <div class="swatch-info"><div class="swatch-name">Forest Teal</div><div class="swatch-hex">#15453B</div><div class="swatch-role">Deepest Accent — Rules</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#1A5C4A;"></div>
+      <div class="swatch-info"><div class="swatch-name">Signal Teal</div><div class="swatch-hex">#1A5C4A</div><div class="swatch-role">Primary Action & Section Labels</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#2C7A66;"></div>
+      <div class="swatch-info"><div class="swatch-name">Active Teal</div><div class="swatch-hex">#2C7A66</div><div class="swatch-role">Live Emphasis & Links</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#8A5A12;"></div>
+      <div class="swatch-info"><div class="swatch-name">Variance Amber</div><div class="swatch-hex">#8A5A12</div><div class="swatch-role">Caution State</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#7E2B22;"></div>
+      <div class="swatch-info"><div class="swatch-name">Exception Oxblood</div><div class="swatch-hex">#7E2B22</div><div class="swatch-role">Breach / Exception State</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">02 // Typography</div>
+
+  <div class="type-sample">
+    <div class="type-label">Display — Libre Baskerville</div>
+    <div class="type-display">The Autonomy <em>Dividend</em></div>
+    <div class="type-spec">Libre Baskerville · Regular 400 · Italic accent in Midnight Blue #1F4D72 · Reserved for the single accented term in a structural heading · Never set bold · Carries the heritage and credibility signal</div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-label">Body — Source Sans 3</div>
+    <div class="type-body">Most banks are running on invisible factories. They have been normalised as the cost of doing business, when in truth they are a cost that grows every year they are left unaddressed.</div>
+    <div class="type-spec">Source Sans 3 · Light to Regular (300–400) · 14px · Line height 1.65 · Deep Slate Blue #1E3A52 · Open-licensed, community-owned — no institutional provenance</div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-label">Data — Fira Mono</div>
+    <div class="type-mono">DCI · RECONCILIATION FACTORY · AD Δ 17%</div>
+    <div class="type-spec">Fira Mono · Regular 400 · 10–13px · Uppercase for labels · Forest Teal #15453B for live/nominal state · Steel Blue #2C5F8A for static labels · Mandated for all metrics, factory names, indices and row references</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">03 // Wordmark</div>
+  <div class="logo-demo">
+    <div>
+      <div class="logo-demo-mark"><span class="b">Blueme</span><span class="k">Bank</span></div>
+      <div class="logo-demo-sub">Banking Operations Intelligence</div>
+    </div>
+    <div class="logo-rule"></div>
+    <div class="logo-spec">
+      Typographic wordmark only — no icons, tokens, monograms or abstract geometric marks<br>
+      <strong style="color:var(--ink);">Blueme</strong> in Deep Slate Blue #1E3A52 · <strong style="color:var(--ink-steel);">Bank</strong> in Steel Blue #2C5F8A<br>
+      Setting: Raleway · 600 SemiBold · Mixed case · Tracking 0px<br>
+      Descriptor: Fira Mono · 9px · Uppercase · Tracking 2px · Label Slate #6A6A60<br>
+      Colour logic: blue carries the trust signal; teal carries the capability signal
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">04 // Motion Discipline</div>
+  <div class="anim-grid">
+    <div class="anim-card">
+      <div class="anim-name">Entrance</div>
+      <div class="anim-desc">Components rise a short, fixed distance into place on load. Stepped and firm — no blur, no long slide, no fade-drift.</div>
+      <div class="anim-spec">Duration: 0.4s · Easing: cubic-bezier(0.16, 1, 0.3, 1)</div>
+    </div>
+    <div class="anim-card">
+      <div class="anim-name">State Change</div>
+      <div class="anim-desc">Opacity steps (1.0 → 0.3 → 1.0) to mark a value that is updating. Applied only to live data, never to ornament.</div>
+      <div class="anim-spec">Interval: 1.5s · Restricted to active values</div>
+    </div>
+    <div class="anim-card">
+      <div class="anim-name">Principle</div>
+      <div class="anim-desc">Every motion must communicate a change of state. Decorative, floating or elastic motion is prohibited.</div>
+      <div class="anim-spec">No continuous float · No physics easing</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">05 // Surface Logic</div>
+  <div class="principle-list">
+    <div class="principle"><div class="principle-dot"></div><div class="principle-text"><strong>Blue is the document.</strong> Deep Slate Blue #1E3A52 is the primary ink. Midnight Blue #1F4D72 carries display accents and secondary emphasis. Steel Blue #2C5F8A carries the wordmark, links, and section labels. The entire system reads as blue — not as a colour choice but as the institution's natural ink.</div></div>
+    <div class="principle"><div class="principle-dot"></div><div class="principle-text"><strong>State colours signal, never decorate.</strong> Forest Teal (#15453B), Variance Amber (#8A5A12), and Exception Oxblood (#7E2B22) appear only when something is being communicated — a live metric, a caution, a breach. They earn their appearance.</div></div>
+    <div class="principle"><div class="principle-dot"></div><div class="principle-text"><strong>Light canvas, held.</strong> The workspace is locked to Warm Paper #F4F2EC. No dark panels, no glass, no gradients. The plainness signals that nothing is being dressed up or hidden.</div></div>
+    <div class="principle"><div class="principle-dot"></div><div class="principle-text"><strong>Square corners.</strong> Cells and blocks use a 0px corner radius. No pills, bubbles or conversational wrappers. The geometry reads as instrument, not application.</div></div>
+    <div class="principle"><div class="principle-dot"></div><div class="principle-text"><strong>No decoration.</strong> No vector illustration, stock financial imagery or icon sets. Hierarchy is carried entirely by type scale, rule weight and whitespace.</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">06 // Voice</div>
+  <div class="tone-grid">
+    <div class="tone-card tone-yes">
+      <div class="tone-label yes">Practitioner Register</div>
+      <div class="tone-item">Name the problem precisely — the invisible factory, the cost that compounds — in the institution's own operational terms</div>
+      <div class="tone-item">Write practitioner to practitioner; assume the reader has run these systems for decades</div>
+      <div class="tone-item">Let the diagnosis carry the weight; state findings plainly, without inflation</div>
+    </div>
+    <div class="tone-card tone-no">
+      <div class="tone-label no">Out of Register</div>
+      <div class="tone-item">Technology evangelism or hype about what AI will eventually do</div>
+      <div class="tone-item">False precision — benchmark claims sharper than the data can yet support</div>
+      <div class="tone-item">Vendor-speak, jargon-as-drama, or any language that talks down to a thirty-year operator</div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-brand"><strong>BluemeBank</strong> · Brand Architecture · v5 · 2026</div>
+  <div class="footer-brand">sasidhar.bhavaraju@bluemebank.com · bluemebank.com</div>
+</div>
+
+</div>
+</body>
+</html>
