@@ -2350,6 +2350,19 @@ const payload = {
 }
 
 async function requestSynthesisEmail() {
+  // Require email for synthesis request
+  const emailEl = document.getElementById('userEmail');
+  const email = emailEl ? emailEl.value.trim() : '';
+  if (!email || !email.includes('@')) {
+    if (emailEl) {
+      emailEl.style.border = '1px solid var(--oxblood)';
+      emailEl.placeholder = 'Email required to request synthesis';
+      emailEl.focus();
+    }
+    return;
+  }
+  if (emailEl) emailEl.style.border = '';
+
   const saveBtn = document.getElementById('btnRequestSynthesis');
   if (saveBtn) {
     saveBtn.disabled = true;
@@ -2360,7 +2373,7 @@ async function requestSynthesisEmail() {
 
   if (saveBtn) {
     saveBtn.textContent = '✓ Sent';
-    saveBtn.style.background = 'var(--teal)';
+    saveBtn.style.background = 'var(--forest)';
   }
 
   // Show confirmation
@@ -2379,8 +2392,8 @@ async function saveResultsManually() {
 
   if (btn) {
     btn.textContent = '✓ Saved';
-    btn.style.borderColor = 'var(--teal)';
-    btn.style.color = 'var(--teal)';
+    btn.style.borderColor = 'var(--ink-steel)';
+    btn.style.color = 'var(--ink-steel)';
   }
 }
 
