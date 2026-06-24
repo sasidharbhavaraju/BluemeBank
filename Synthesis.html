@@ -59,13 +59,13 @@ body {
 
 .header-badge {
   display:flex; align-items:center; gap:8px;
-  background:rgba(26,92,74,0.08);
-  border:1px solid rgba(26,92,74,0.20);
+  background:rgba(30,58,82,0.08);
+  border:1px solid rgba(30,58,82,0.20);
   border-radius:0px; padding:6px 14px;
 }
 .badge-dot { width:7px; height:7px; border-radius:50%; background:var(--teal); animation:pulse 2s infinite; }
 @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-.badge-text { font-family:'Fira Mono',monospace; font-size:9px; color:var(--teal); letter-spacing:2px; text-transform:uppercase; }
+.badge-text { font-family:'Fira Mono',monospace; font-size:9px; color:var(--ink-steel); letter-spacing:2px; text-transform:uppercase; }
 
 /* ── LAYOUT ── */
 .layout {
@@ -86,12 +86,12 @@ body {
 
 .panel-title {
   font-family:'Fira Mono',monospace;
-  font-size:10px; color:var(--teal);
+  font-size:10px; color:var(--ink-steel);
   letter-spacing:2.5px; text-transform:uppercase;
   margin-bottom:4px;
 }
 .panel-sub {
-  font-size:12px; color:var(--grey-light); line-height:1.7;
+  font-size:12px; color:var(--slate); line-height:1.7;
 }
 
 /* API Key */
@@ -101,13 +101,13 @@ body {
 .api-input {
   flex:1;
   background:rgba(30,58,82,0.04);
-  border:1px solid rgba(26,92,74,0.20);
+  border:1px solid rgba(30,58,82,0.20);
   border-radius:0px; padding:9px 14px;
   color:var(--ink);
   font-family:'Fira Mono',monospace; font-size:11px;
   outline:none; transition:border-color 0.2s;
 }
-.api-input:focus { border-color:var(--teal); }
+.api-input:focus { border-color:var(--ink-steel); }
 .api-input::placeholder { color:var(--grey); }
 
 /* Email paste area */
@@ -120,14 +120,14 @@ body {
 }
 .paste-label {
   font-family:'Fira Mono',monospace; font-size:9px;
-  color:var(--teal); letter-spacing:2px; text-transform:uppercase;
+  color:var(--ink-steel); letter-spacing:2px; text-transform:uppercase;
 }
 .paste-textarea {
   background:rgba(255,255,255,0.03);
   border:1px solid rgba(30,58,82,0.06);
   border-radius:0px;
   padding:12px 14px;
-  color:var(--grey-light);
+  color:var(--slate);
   font-family:'Fira Mono',monospace; font-size:10px;
   line-height:1.6;
   resize:vertical;
@@ -135,7 +135,7 @@ body {
   outline:none; transition:border-color 0.2s;
   width:100%;
 }
-.paste-textarea:focus { border-color:rgba(26,92,74,0.30); color:var(--ink); }
+.paste-textarea:focus { border-color:rgba(30,58,82,0.30); color:var(--ink); }
 .paste-textarea::placeholder { color:var(--grey); opacity:0.6; }
 
 .btn-parse {
@@ -169,15 +169,15 @@ body {
   border-radius:0px; padding:10px 12px;
   display:flex; justify-content:space-between; align-items:center;
 }
-.score-label { font-family:'Fira Mono',monospace; font-size:9px; color:var(--teal); letter-spacing:1.5px; text-transform:uppercase; }
+.score-label { font-family:'Fira Mono',monospace; font-size:9px; color:var(--ink-steel); letter-spacing:1.5px; text-transform:uppercase; }
 .score-val { font-family:'Fira Mono',monospace; font-size:15px; font-weight:500; color:var(--ink); }
 .score-val.low { color:#E06050; }
 .score-val.mid { color:var(--amber); }
-.score-val.high { color:var(--teal); }
+.score-val.high { color:var(--ink-steel); }
 
 .institution-display {
-  background:rgba(26,92,74,0.06);
-  border:1px solid rgba(26,92,74,0.10);
+  background:rgba(30,58,82,0.06);
+  border:1px solid rgba(30,58,82,0.10);
   border-radius:0px; padding:10px 14px;
   margin-bottom:10px;
 }
@@ -203,7 +203,7 @@ body {
   padding:8px 12px; border-radius:0px;
   display:none;
 }
-.parse-status.ok { display:block; background:rgba(26,92,74,0.08); color:var(--teal); border:1px solid rgba(26,92,74,0.20); }
+.parse-status.ok { display:block; background:rgba(30,58,82,0.08); color:var(--ink-steel); border:1px solid rgba(30,58,82,0.20); }
 .parse-status.warn { display:block; background:rgba(217,123,53,0.1); color:var(--amber); border:1px solid rgba(217,123,53,0.2); }
 .parse-status.err { display:block; background:rgba(192,57,43,0.1); color:#E06050; border:1px solid rgba(192,57,43,0.2); }
 
@@ -225,8 +225,8 @@ body {
   padding:5px 12px; border-radius:0px;
 }
 .output-status.waiting { background:rgba(90,111,136,0.1); color:var(--grey); border:1px solid rgba(90,111,136,0.2); }
-.output-status.generating { background:rgba(26,92,74,0.10); color:var(--teal); border:1px solid rgba(26,92,74,0.30); animation:pulse 1s infinite; }
-.output-status.done { background:rgba(26,92,74,0.08); color:var(--teal); border:1px solid rgba(26,92,74,0.25); }
+.output-status.generating { background:rgba(30,58,82,0.10); color:var(--ink-steel); border:1px solid rgba(30,58,82,0.30); animation:pulse 1s infinite; }
+.output-status.done { background:rgba(30,58,82,0.08); color:var(--ink-steel); border:1px solid rgba(30,58,82,0.25); }
 
 .output-card {
   background:var(--panel);
@@ -267,7 +267,7 @@ body {
   border-bottom:1px solid rgba(30,58,82,0.12);
 }
 .synth-section-content {
-  font-size:13px; color:#B8CCD8; line-height:1.85;
+  font-size:13px; color:var(--ink); line-height:1.85;
 }
 .synth-bullet {
   display:flex; gap:10px; margin-bottom:7px; align-items:flex-start;
@@ -414,7 +414,7 @@ body {
     position: static !important;
     margin-top: 40px !important;
     padding: 12px 0 !important;
-    border-top: 1px solid rgba(26,92,74,0.10) !important;
+    border-top: 1px solid rgba(30,58,82,0.10) !important;
   }
 }
 
@@ -555,7 +555,7 @@ body {
   align-items: center;
   margin-bottom: 40px;
   padding-bottom: 16px;
-  border-bottom: 1px solid rgba(26,92,74,0.10);
+  border-bottom: 1px solid rgba(30,58,82,0.10);
 }
 
 .pdf-page-logo { font-family: 'Raleway', sans-serif; font-size: 15px; font-weight: 600; text-transform: none; }
@@ -571,7 +571,7 @@ body {
 /* AD Headline on scores page */
 .pdf-ad-block {
   background: rgba(30,58,82,0.04);
-  border: 1px solid rgba(26,92,74,0.30);
+  border: 1px solid rgba(30,58,82,0.30);
   border-radius:0px; padding: 32px;
   margin-bottom: 24px;
   display: flex;
@@ -672,7 +672,7 @@ body {
 }
 .pdf-stage-seg.active {
   border-color: #2C5F8A;
-  background: rgba(26,92,74,0.10);
+  background: rgba(30,58,82,0.10);
 }
 .pdf-stage-seg-label {
   font-size: 11px; font-weight: 700;
@@ -699,10 +699,10 @@ body {
   font-size: 9px; color: #2C5F8A;
   letter-spacing: 2.5px; text-transform: uppercase;
   margin-bottom: 10px; padding-bottom: 7px;
-  border-bottom: 1px solid rgba(26,92,74,0.18);
+  border-bottom: 1px solid rgba(30,58,82,0.18);
 }
 .pdf-synth-text {
-  font-size: 12.5px; color: #B8CCD8; line-height: 1.85;
+  font-size: 12.5px; color: var(--ink); line-height: 1.85;
 }
 .pdf-synth-bullet {
   display: flex; gap: 10px;
@@ -711,8 +711,8 @@ body {
 .pdf-synth-dot { color: #2C5F8A; flex-shrink: 0; margin-top: 3px; }
 
 .pdf-board-box {
-  background: rgba(26,92,74,0.06);
-  border: 1px solid rgba(26,92,74,0.20);
+  background: rgba(30,58,82,0.06);
+  border: 1px solid rgba(30,58,82,0.20);
   border-radius:0px; padding: 20px 24px;
   margin-top: 10px;
 }
@@ -750,7 +750,7 @@ body {
 }
 .pdf-mroad-active {
   border-color: #2C5F8A !important;
-  background: rgba(26,92,74,0.08) !important;
+  background: rgba(30,58,82,0.08) !important;
 }
 .pdf-mroad-num {
   width: 22px; height: 22px; border-radius: 50%;
@@ -760,7 +760,7 @@ body {
 }
 .pdf-mroad-active .pdf-mroad-num {
   border-color: #2C5F8A !important; color: #2C5F8A !important;
-  background: rgba(26,92,74,0.10) !important;
+  background: rgba(30,58,82,0.10) !important;
 }
 .pdf-mroad-label {
   font-size: 9px; color: #5a6f88; line-height: 1.4;
@@ -777,13 +777,13 @@ body {
 .pdf-priority-item:last-child { border-bottom: none; }
 .pdf-priority-num {
   width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
-  background: rgba(26,92,74,0.10);
-  border: 1px solid rgba(26,92,74,0.25);
+  background: rgba(30,58,82,0.10);
+  border: 1px solid rgba(30,58,82,0.25);
   display: flex; align-items: center; justify-content: center;
   font-family: 'Fira Mono', monospace; font-size: 10px; color: #2C5F8A;
 }
 .pdf-priority-text {
-  font-size: 12px; color: #B8CCD8; line-height: 1.75;
+  font-size: 12px; color: var(--ink); line-height: 1.75;
 }
 .pdf-priority-text strong { color: #1E3A52; font-weight: 700; }
 
@@ -1531,7 +1531,7 @@ function printReport() {
         <div class="pdf-mroad-arrow">→</div>
         <div class="pdf-mroad-item" id="pdfMroad4"><div class="pdf-mroad-num">4</div><div class="pdf-mroad-label">Measure Progress,<br>Not Activity</div></div>
       </div>
-      <div style="background:#111f35;border:1px solid rgba(26,92,74,0.10);border-radius:0px;padding:18px 20px;margin-top:14px;">
+      <div style="background:#111f35;border:1px solid rgba(30,58,82,0.10);border-radius:0px;padding:18px 20px;margin-top:14px;">
         <div style="font-size:13px;font-weight:700;color:#1E3A52;margin-bottom:8px;" id="pdfMoveName">—</div>
         <div style="font-size:12px;color:#6A6A60;line-height:1.8;" id="pdfMoveDesc">—</div>
       </div>
@@ -1563,7 +1563,7 @@ function printReport() {
 
     <!-- Methodology -->
     <div style="margin-bottom:16px;">
-      <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;padding-bottom:7px;border-bottom:1px solid rgba(26,92,74,0.10);">How This Is Calculated</div>
+      <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;padding-bottom:7px;border-bottom:1px solid rgba(30,58,82,0.10);">How This Is Calculated</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div style="background:#111f35;border:1px solid rgba(30,58,82,0.06);border-radius:0px;padding:14px 16px;">
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">① Section Scores</div>
@@ -1575,7 +1575,7 @@ function printReport() {
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;margin-bottom:8px;">50% average + 50% minimum</div>
           <div style="font-size:11px;color:#6A6A60;line-height:1.6;">Weighted toward the weakest dimension. A bank scoring 90/90/90/20 is not 72% ready — it is constrained by its weakest pillar.</div>
         </div>
-        <div style="background:rgba(26,92,74,0.06);border:1px solid rgba(26,92,74,0.20);border-radius:0px;padding:10px 12px;">
+        <div style="background:rgba(30,58,82,0.06);border:1px solid rgba(30,58,82,0.20);border-radius:0px;padding:10px 12px;">
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">③ Autonomy Dividend</div>
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;margin-bottom:8px;">min(DCI,RRV) × (DARR×DQIRR÷100)</div>
           <div style="font-size:11px;color:#6A6A60;line-height:1.6;">Technical ceiling multiplied by operational clearance. Independent failure modes compound — they do not average.</div>
@@ -1590,45 +1590,45 @@ function printReport() {
 
     <!-- Glossary -->
     <div>
-      <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;padding-bottom:7px;border-bottom:1px solid rgba(26,92,74,0.10);">Key Terms</div>
+      <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;padding-bottom:7px;border-bottom:1px solid rgba(30,58,82,0.10);">Key Terms</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
 
-        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(26,92,74,0.10);border-radius:0px;">
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(30,58,82,0.10);border-radius:0px;">
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">AD — Autonomy Dividend</div>
           <div style="font-size:10.5px;color:#6A6A60;line-height:1.55;">The headline metric. The percentage of an institution's consequential decisions that could safely operate autonomously today. Calculated as min(DCI, RRV) × (DARR × DQIRR ÷ 100).</div>
         </div>
 
-        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(26,92,74,0.10);border-radius:0px;">
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(30,58,82,0.10);border-radius:0px;">
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">CIQ — Continuous Intelligence Quotient</div>
           <div style="font-size:10.5px;color:#6A6A60;line-height:1.55;">The overall readiness score. Weighted toward the weakest dimension: 50% average of four metrics plus 50% minimum score.</div>
         </div>
 
-        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(26,92,74,0.10);border-radius:0px;">
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(30,58,82,0.10);border-radius:0px;">
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">Technical Autonomy Ceiling</div>
           <div style="font-size:10.5px;color:#6A6A60;line-height:1.55;">min(DCI, RRV). The maximum AD achievable given data and infrastructure constraints. Grounded in Liebig's Law: a system's output is constrained by its scarcest resource, not its average.</div>
         </div>
 
-        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(26,92,74,0.10);border-radius:0px;">
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(30,58,82,0.10);border-radius:0px;">
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">Operational Clearance Factor</div>
           <div style="font-size:10.5px;color:#6A6A60;line-height:1.55;">DARR × DQIRR ÷ 100. The fraction of technically capable decisions that reach autonomous execution without governance or quality failure. Derived from reliability theory: independent failure modes compound.</div>
         </div>
 
-        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(26,92,74,0.10);border-radius:0px;">
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(30,58,82,0.10);border-radius:0px;">
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">DCI — Data Convergence Index</div>
           <div style="font-size:10.5px;color:#6A6A60;line-height:1.55;">Proportion of critical entities — customer, account, counterparty, product — sharing a common identity key resolvable across three or more core systems. Three is the threshold: two signals a point-to-point integration, not institutional coherence.</div>
         </div>
 
-        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(26,92,74,0.10);border-radius:0px;">
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(30,58,82,0.10);border-radius:0px;">
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">RRV — Regulatory Response Velocity</div>
           <div style="font-size:10.5px;color:#6A6A60;line-height:1.55;">Average elapsed time between a new regulatory requirement being published and the institution having certified, lineage-traced data available to meet it. A proxy for technology infrastructure maturity.</div>
         </div>
 
-        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(26,92,74,0.10);border-radius:0px;">
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(30,58,82,0.10);border-radius:0px;">
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">DARR — Data Asset Reuse Ratio</div>
           <div style="font-size:10.5px;color:#6A6A60;line-height:1.55;">Proportion of new use case requirements met by reusing or extending existing certified data assets. Measures whether the programme builds shared institutional capability or repeatedly builds the same data for different use cases.</div>
         </div>
 
-        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(26,92,74,0.10);border-radius:0px;">
+        <div style="padding:9px 12px;background:rgba(255,255,255,0.02);border:1px solid rgba(30,58,82,0.10);border-radius:0px;">
           <div style="font-family:'Fira Mono',monospace;font-size:9px;color:#2C5F8A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;">DQIRR — DQ Issue Resolution Rate</div>
           <div style="font-size:10.5px;color:#6A6A60;line-height:1.55;">Proportion of data quality issues receiving a complete, traceable resolution response — root cause identified, upstream owner confirmed, fix timeline committed — within a defined service level.</div>
         </div>
