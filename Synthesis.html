@@ -877,14 +877,15 @@ The tool will automatically extract:
       <div class="synthesis-content" id="synthesisContent">
         <div class="synth-institution" id="synthInstitution">—</div>
         <div id="synthBody"></div>
+        <div class="action-row" id="actionRow" style="display:none;">
+          <button class="btn-copy" id="btnCopy" onclick="copyOutput()">⊕ Copy Synthesis</button>
+          <button class="btn-copy" onclick="printReport()" style="background:var(--ink);color:var(--paper);border:none;">⊕ Save as PDF</button>
+          <button class="btn-clear" onclick="clearAll()">↺ New Synthesis</button>
+        </div>
       </div>
     </div>
 
-    <div class="action-row" id="actionRow" style="display:none;">
-      <button class="btn-copy" id="btnCopy" onclick="copyOutput()">⊕ Copy Synthesis</button>
-      <button class="btn-copy" onclick="printReport()" style="background:var(--ink);color:var(--paper);border:none;">⊕ Save as PDF</button>
-      <button class="btn-clear" onclick="clearAll()">↺ New Synthesis</button>
-    </div>
+
 
   </div>
 </div>
