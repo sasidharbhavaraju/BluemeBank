@@ -229,8 +229,8 @@ body {
 .output-status.done { background:rgba(26,92,74,0.08); color:var(--teal); border:1px solid rgba(26,92,74,0.25); }
 
 .output-card {
-  background:var(--navy-card);
-  border:1px solid var(--border);
+  background:var(--panel);
+  border:1px solid var(--divider);
   border-radius:0px; padding:28px;
   flex:1;
   min-height:400px;
@@ -252,7 +252,7 @@ body {
 
 .synth-institution {
   font-family:'Fira Mono',monospace; font-size:9px;
-  color:var(--teal); letter-spacing:2px; text-transform:uppercase;
+  color:var(--ink-steel); letter-spacing:2px; text-transform:uppercase;
   margin-bottom:16px; padding-bottom:12px;
   border-bottom:1px solid var(--border);
 }
@@ -262,9 +262,9 @@ body {
 }
 .synth-section-label {
   font-family:'Fira Mono',monospace; font-size:9px;
-  color:var(--teal); letter-spacing:2px; text-transform:uppercase;
+  color:var(--ink-steel); letter-spacing:2px; text-transform:uppercase;
   margin-bottom:10px; padding-bottom:6px;
-  border-bottom:1px solid rgba(26,92,74,0.10);
+  border-bottom:1px solid rgba(30,58,82,0.12);
 }
 .synth-section-content {
   font-size:13px; color:#B8CCD8; line-height:1.85;
@@ -272,11 +272,11 @@ body {
 .synth-bullet {
   display:flex; gap:10px; margin-bottom:7px; align-items:flex-start;
 }
-.synth-bullet-dot { color:var(--teal); flex-shrink:0; margin-top:3px; }
+.synth-bullet-dot { color:var(--ink-steel); flex-shrink:0; margin-top:3px; }
 
 .synth-board-sentence {
-  background:rgba(26,92,74,0.06);
-  border:1px solid rgba(26,92,74,0.20);
+  background:rgba(30,58,82,0.04);
+  border:1px solid rgba(30,58,82,0.15);
   border-radius:0px; padding:14px 18px;
   font-family:'Libre Baskerville',serif;
   font-style:italic; font-size:15px;
@@ -286,9 +286,9 @@ body {
 .synth-disclosure {
   margin-top: 24px;
   padding-top: 16px;
-  border-top: 1px solid rgba(26,92,74,0.10);
+  border-top: 1px solid rgba(30,58,82,0.12);
   font-size: 11px;
-  color: var(--grey-light);
+  color: var(--slate);
   font-style: italic;
   line-height: 1.7;
 }
@@ -296,6 +296,9 @@ body {
 /* Action buttons */
 .action-row {
   display:flex; gap:10px; flex-wrap:wrap;
+  margin-top:24px;
+  padding-top:20px;
+  border-top:1px solid var(--divider);
 }
 .btn-copy {
   background:var(--ink); color:var(--paper);
@@ -323,7 +326,7 @@ body {
 .loading-ring {
   display:inline-block;
   width:18px; height:18px; border-radius:50%;
-  border:2px solid rgba(26,92,74,0.20);
+  border:2px solid rgba(30,58,82,0.15);
   border-top-color:var(--ink);
   animation:spin 0.8s linear infinite;
 }
@@ -331,7 +334,7 @@ body {
 
 /* Streaming cursor */
 .streaming-cursor::after {
-  content:'▋'; animation:blink 0.8s infinite; color:var(--teal);
+  content:'▋'; animation:blink 0.8s infinite; color:var(--ink-steel);
 }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
@@ -724,7 +727,7 @@ body {
   padding: 14px 70px;
   margin-top: 30px;
   display: flex; justify-content: space-between; align-items: center;
-  border-top: 1px solid rgba(26,92,74,0.10);
+  border-top: 1px solid rgba(30,58,82,0.12);
   background: #F4F2EC;
   font-family: 'Fira Mono', monospace;
   font-size: 8px; color: #5a6f88;
@@ -1047,7 +1050,7 @@ async function generateSynthesis() {
   document.getElementById('synthesisContent').classList.add('visible');
   document.getElementById('synthInstitution').textContent =
     parsedData.institution.toUpperCase() + ' · AD ' + parsedData.ad + '% · ' + new Date().toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'});
-  document.getElementById('synthBody').innerHTML = '<div style="font-family:\'Fira Mono\',monospace;font-size:10px;color:var(--teal);letter-spacing:1px;" class="streaming-cursor">Nerve Core synthesising</div>';
+  document.getElementById('synthBody').innerHTML = '<div style="font-family:\'Fira Mono\',monospace;font-size:10px;color:var(--ink-steel);letter-spacing:1px;" class="streaming-cursor">Nerve Core synthesising</div>';
 
   const d = parsedData;
   const stageNames = ['','Pre-Foundation','Foundation in Progress','Bridge-Ready'];
