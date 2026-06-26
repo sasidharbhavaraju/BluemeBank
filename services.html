@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BluemeBank · What We Do</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&family=Fira+Mono:wght@400;500&family=Raleway:wght@600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --paper:    #F4F2EC;
+  --panel:    #E9E5DA;
+  --ink:      #1E3A52;
+  --ink-mid:  #1F4D72;
+  --ink-steel:#2C5F8A;
+  --slate:    #6A6A60;
+  --divider:  rgba(30,58,82,0.12);
+  --forest:   #15453B;
+  --amber:    #8A5A12;
+  --oxblood:  #7E2B22;
+}
+
+html{ background:var(--paper); scroll-behavior:smooth; }
+
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Source Sans 3',sans-serif;
+  font-size:14px;
+  font-weight:300;
+  line-height:1.65;
+  min-height:100vh;
+}
+
+/* ── NAV ── */
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 48px;
+  border-bottom:1px solid var(--divider);
+  position:sticky;top:0;z-index:100;
+  background:var(--paper);
+}
+.wordmark{
+  font-family:'Raleway',sans-serif;
+  font-size:17px;font-weight:600;
+  text-decoration:none;letter-spacing:0;
+}
+.wordmark .b{color:var(--ink)}
+.wordmark .k{color:var(--ink-steel)}
+.wordmark-desc{
+  font-family:'Fira Mono',monospace;
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--slate);margin-top:2px;
+}
+.nav-links{display:flex;gap:28px;}
+.nav-links a{
+  font-family:'Fira Mono',monospace;
+  font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--slate);text-decoration:none;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--ink-steel)}
+
+/* ── LAYOUT ── */
+.wrap{max-width:860px;margin:0 auto;padding:0 48px;}
+
+/* ── HERO ── */
+.hero{
+  padding:72px 0 56px;
+  border-bottom:1px solid var(--divider);
+  opacity:0;transform:translateY(16px);
+  animation:rise 0.4s cubic-bezier(0.16,1,0.3,1) 0.05s both;
+}
+.hero-eyebrow{
+  font-family:'Fira Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--ink-steel);margin-bottom:20px;
+}
+.hero-title{
+  font-family:'Libre Baskerville',Georgia,serif;
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:400;line-height:1.1;
+  letter-spacing:-0.01em;
+  color:var(--ink);margin-bottom:20px;
+}
+.hero-title em{font-style:italic;color:var(--ink-mid);}
+.hero-body{
+  max-width:580px;
+  font-size:15px;font-weight:300;
+  color:var(--ink);line-height:1.75;
+  margin-bottom:32px;
+}
+.hero-body strong{font-weight:600;color:var(--ink);}
+
+/* ── SECTION LABELS ── */
+.section-label{
+  font-family:'Fira Mono',monospace;
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--ink-steel);
+  margin-bottom:24px;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--divider);
+}
+
+/* ── TIERS ── */
+.tiers{
+  padding:56px 0;
+  border-bottom:1px solid var(--divider);
+  opacity:0;transform:translateY(16px);
+  animation:rise 0.4s cubic-bezier(0.16,1,0.3,1) 0.15s both;
+}
+.tier-row{
+  display:grid;
+  grid-template-columns:120px 1fr;
+  gap:0;
+  border-top:1px solid var(--divider);
+  padding:28px 0;
+}
+.tier-row:last-child{border-bottom:1px solid var(--divider);}
+.tier-num{
+  font-family:'Fira Mono',monospace;
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--slate);padding-top:3px;
+}
+.tier-content{}
+.tier-name{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.15rem;font-weight:400;
+  color:var(--ink);margin-bottom:8px;
+  line-height:1.2;
+}
+.tier-name em{font-style:italic;color:var(--ink-mid);}
+.tier-desc{
+  font-size:14px;font-weight:300;
+  color:var(--ink);line-height:1.7;
+  max-width:520px;
+}
+.tier-tag{
+  margin-top:10px;
+  font-family:'Fira Mono',monospace;
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--forest);
+}
+
+/* ── FACTORY FIXES ── */
+.factories{
+  padding:56px 0;
+  border-bottom:1px solid var(--divider);
+  opacity:0;transform:translateY(16px);
+  animation:rise 0.4s cubic-bezier(0.16,1,0.3,1) 0.25s both;
+}
+.factory-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;
+  background:var(--divider);
+  border:1px solid var(--divider);
+  margin-top:4px;
+}
+.factory-cell{
+  background:var(--paper);
+  padding:28px 26px;
+}
+.fc-metric{
+  font-family:'Fira Mono',monospace;
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--ink-steel);margin-bottom:6px;
+}
+.fc-name{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.05rem;font-weight:400;
+  color:var(--ink);margin-bottom:12px;line-height:1.2;
+}
+.fc-rule{height:1px;background:var(--divider);margin-bottom:12px;}
+.fc-what{
+  font-size:12px;font-weight:300;
+  color:var(--ink);line-height:1.65;
+  margin-bottom:10px;
+}
+.fc-what strong{font-weight:600;}
+.fc-role{
+  font-family:'Fira Mono',monospace;
+  font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--forest);
+  padding-top:8px;
+  border-top:1px solid var(--divider);
+}
+
+
+/* ── CAPABILITIES ── */
+.capabilities{
+  padding:56px 0;
+  border-bottom:1px solid var(--divider);
+  opacity:0;transform:translateY(16px);
+  animation:rise 0.4s cubic-bezier(0.16,1,0.3,1) 0.35s both;
+}
+.cap-intro{
+  font-size:14px;font-weight:300;color:var(--ink);
+  line-height:1.7;max-width:580px;margin-bottom:32px;
+}
+.cap-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--divider);
+  border:1px solid var(--divider);
+}
+.cap-col{
+  background:var(--paper);
+  display:flex;flex-direction:column;
+}
+.cap-col-header{
+  padding:20px 18px 16px;
+  border-bottom:1px solid var(--divider);
+}
+.cap-col-metric{
+  font-family:'Fira Mono',monospace;
+  font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:8px;font-weight:500;
+}
+.cap-col-factory{
+  font-family:'Libre Baskerville',serif;
+  font-size:1rem;font-weight:400;
+  color:var(--ink);line-height:1.2;
+}
+.cap-services{
+  padding:16px 18px;flex:1;
+}
+.cap-service{
+  display:grid;
+  grid-template-columns:24px 1fr;
+  gap:6px;
+  font-size:11px;font-weight:300;
+  color:var(--ink);line-height:1.55;
+  padding:5px 0;
+  border-bottom:1px solid rgba(30,58,82,0.06);
+}
+.cap-service:last-child{border-bottom:none;}
+.cap-n{
+  font-family:'Fira Mono',monospace;
+  font-size:8px;font-weight:500;
+  padding-top:2px;
+}
+.cap-nature{
+  font-family:'Fira Mono',monospace;
+  font-size:8px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--slate);
+  padding:12px 18px;
+  border-top:1px solid var(--divider);
+  background:var(--panel);
+}
+
+
+/* ── SEQUENCE ── */
+.sequence{
+  padding:56px 0;
+  border-bottom:1px solid var(--divider);
+  opacity:0;transform:translateY(16px);
+  animation:rise 0.4s cubic-bezier(0.16,1,0.3,1) 0.35s both;
+}
+.seq-intro{
+  font-size:14px;font-weight:300;
+  color:var(--ink);line-height:1.7;
+  max-width:580px;margin-bottom:36px;
+}
+.seq-principle{
+  display:grid;
+  grid-template-columns:32px 1fr;
+  gap:16px;
+  padding:20px 0;
+  border-top:1px solid var(--divider);
+  align-items:flex-start;
+}
+.seq-principle:last-child{border-bottom:1px solid var(--divider);}
+.seq-num{
+  font-family:'Fira Mono',monospace;
+  font-size:11px;font-weight:500;
+  color:var(--ink-steel);
+  padding-top:2px;
+}
+.seq-body{}
+.seq-title{
+  font-size:14px;font-weight:600;
+  color:var(--ink);margin-bottom:5px;
+}
+.seq-desc{
+  font-size:13px;font-weight:300;
+  color:var(--ink);line-height:1.65;
+}
+.seq-desc em{font-style:italic;color:var(--ink-mid);}
+
+/* ── SEQUENCE FLOW VISUAL ── */
+.seq-flow{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--divider);
+  border:1px solid var(--divider);
+  margin:32px 0 8px;
+}
+.seq-step{
+  background:var(--paper);
+  padding:18px 16px;
+  text-align:center;
+}
+.seq-step.primary{background:var(--panel);}
+.seq-step-order{
+  font-family:'Fira Mono',monospace;
+  font-size:8px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--slate);margin-bottom:6px;
+}
+.seq-step-factory{
+  font-size:12px;font-weight:600;
+  color:var(--ink);margin-bottom:4px;line-height:1.3;
+}
+.seq-step-metric{
+  font-family:'Fira Mono',monospace;
+  font-size:8px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--ink-steel);
+}
+.seq-step-why{
+  font-size:10px;font-weight:300;
+  color:var(--slate);margin-top:8px;
+  line-height:1.5;
+  padding-top:8px;
+  border-top:1px solid var(--divider);
+}
+.seq-flow-note{
+  font-family:'Fira Mono',monospace;
+  font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--slate);margin-top:10px;
+}
+
+/* ── CTA ── */
+.cta-section{
+  padding:56px 0 72px;
+  opacity:0;transform:translateY(16px);
+  animation:rise 0.4s cubic-bezier(0.16,1,0.3,1) 0.45s both;
+}
+.cta-inner{
+  background:var(--panel);
+  border:1px solid var(--divider);
+  padding:36px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:32px;
+  flex-wrap:wrap;
+}
+.cta-text{}
+.cta-title{
+  font-family:'Libre Baskerville',serif;
+  font-size:1.2rem;font-weight:400;
+  color:var(--ink);margin-bottom:6px;line-height:1.2;
+}
+.cta-title em{font-style:italic;color:var(--ink-mid);}
+.cta-desc{font-size:13px;font-weight:300;color:var(--ink);line-height:1.6;}
+.cta-link{
+  font-family:'Fira Mono',monospace;
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--paper);
+  background:var(--ink);
+  padding:12px 24px;
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background 0.2s;
+  flex-shrink:0;
+}
+.cta-link:hover{background:var(--ink-mid);}
+
+/* ── FOOTER ── */
+.footer{
+  border-top:1px solid var(--divider);
+  padding:24px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-text{
+  font-family:'Fira Mono',monospace;
+  font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--slate);
+}
+.footer-text a{color:var(--ink-steel);text-decoration:none;}
+
+/* ── ANIMATION ── */
+@keyframes rise{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .nav{padding:14px 20px;}
+  .nav-links{display:none;}
+  .wrap{padding:0 20px;}
+  .factory-grid{grid-template-columns:1fr;}
+  .cap-grid{grid-template-columns:1fr 1fr;}
+  .seq-flow{grid-template-columns:repeat(2,1fr);}
+  .cta-inner{flex-direction:column;align-items:flex-start;}
+  .hero{padding:48px 0 40px;}
+  .footer{padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div>
+    <a class="wordmark" href="https://bluemebank.com">
+      <span class="b">Blueme</span><span class="k">Bank</span>
+    </a>
+    <div class="wordmark-desc">Banking Operations Intelligence</div>
+  </div>
+  <div class="nav-links">
+    <a href="https://sasidharbhavaraju.github.io/BluemeBank/BluemeBank-An_Architectural_Note_2026_F.pdf">Paper 1</a>
+    <a href="https://sasidharbhavaraju.github.io/BluemeBank/Bridge_to_BluemeBank-Data_and_Infrastructure_Readiness_F.pdf">Paper 2</a>
+    <a href="https://bluemebank.com/AD">Paper 3</a>
+    <a href="https://sasidharbhavaraju.github.io/BluemeBank/B_Diagnostics">Diagnostic</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="wrap">
+<div class="hero">
+  <div class="hero-eyebrow">BluemeBank · What We Do</div>
+  <h1 class="hero-title"><span style="color:var(--ink);">Blueme</span><span style="color:var(--ink-steel);">Bank.</span></h1>
+  <p class="hero-body">
+    Fully autonomous and continuously intelligent banking depends on data foundations. We define precisely what those foundations are, identify which one is holding your institution back, and deliver the sequence that closes it.
+  </p>
+</div>
+
+<!-- TIERS -->
+<div class="tiers">
+  <div class="section-label">The Three-Tier Engagement Model</div>
+
+  <div class="tier-row">
+    <div class="tier-num">Tier 01</div>
+    <div class="tier-content">
+      <div class="tier-name">Bridge <em>Diagnostic</em></div>
+      <div class="tier-desc">The starting point is a 24-question diagnostic that any senior practitioner can complete from institutional knowledge alone — no data extraction, no external assessment, no preparation required. It takes about fifteen minutes. The output is a single computable number — the Autonomy Dividend — and a precise identification of which of the four data foundations is the binding constraint on your institution's autonomous potential. Most senior leaders who complete it find their number is lower than expected. That is the diagnostic working as intended.</div>
+      <div class="tier-tag">Self-serve · No commitment required · bluemebank.com/diagnostic</div>
+    </div>
+  </div>
+
+  <div class="tier-row">
+    <div class="tier-num">Tier 02</div>
+    <div class="tier-content">
+      <div class="tier-name">Factory <em>Advisory</em></div>
+      <div class="tier-desc">Once you have your number, the question is what to do with it. This is a structured working engagement with the CDAO and COO — typically two to three sessions. We interpret the diagnostic in depth, establish what the binding constraint is actually costing in undeployed autonomous potential, and produce the sequencing mandate: which foundation to address first, which follows, what the dependency chain looks like, and what structural changes each one requires. The sequencing logic is BluemeBank's core intellectual property. It is not a project plan — it is the architectural reasoning that makes the investment case for the right work in the right order.</div>
+      <div class="tier-tag">Paid engagement · Practitioner-led · Delivers the sequencing mandate</div>
+    </div>
+  </div>
+
+  <div class="tier-row">
+    <div class="tier-num">Tier 03</div>
+    <div class="tier-content">
+      <div class="tier-name">Design <em>Authority</em></div>
+      <div class="tier-desc">The sequencing mandate defines what needs to be built. BluemeBank holds the design authority — we specify the target state, govern the architecture decisions, and ensure the delivery stays true to the structural intent. Technology partners build and implement: hyperscalers, systems integrators, platform vendors, whoever best fits what the institution already has in place. Our role is not to deliver technology. It is to ensure that what gets delivered closes the constraint it was designed to close — and does not quietly create a new one in the process. We hold the sequence. We own the outcome definition.</div>
+      <div class="tier-tag">Governance mandate · Partner-delivered · Outcome-aligned</div>
+    </div>
+  </div>
+</div>
+
+<!-- FACTORY FIXES -->
+<div class="factories">
+  <div class="section-label">The Four Factory Fixes</div>
+  <div class="factory-grid">
+
+    <div class="factory-cell">
+      <div class="fc-metric">DCI · Data Convergence Index</div>
+      <div class="fc-name">The Reconciliation Factory</div>
+      <div class="fc-rule"></div>
+      <div class="fc-what"><strong>What keeps it running:</strong> Identity resolution that does not hold across more than two systems. Every downstream process rebuilds the customer from scratch.</div>
+      <div class="fc-what"><strong>What closes it:</strong> Master data management, deterministic entity resolution, golden record architecture — and a governance model that makes shared identity the path of least resistance.</div>
+      <div class="fc-what"><strong>Nature:</strong> Technology + Governance. Long horizon. The bedrock of everything else.</div>
+      <div class="fc-role">BluemeBank role · Design + sequence + govern</div>
+    </div>
+
+    <div class="factory-cell">
+      <div class="fc-metric">RRV · Regulatory Response Velocity</div>
+      <div class="fc-name">The Interpretation Factory</div>
+      <div class="fc-rule"></div>
+      <div class="fc-what"><strong>What keeps it running:</strong> Regulatory change absorbed through heroic effort rather than architecture. Every new requirement triggers a scramble rather than a system response.</div>
+      <div class="fc-what"><strong>What closes it:</strong> Real-time data fabric, lineage tooling, adaptive regulatory change operating model — so that a new rule flows through the system, not around it.</div>
+      <div class="fc-what"><strong>Nature:</strong> Technology + Operating Model. Fast to intermediate. Pays dividends immediately on RRV.</div>
+      <div class="fc-role">BluemeBank role · Design + operating model + govern</div>
+    </div>
+
+    <div class="factory-cell">
+      <div class="fc-metric">DQIRR · DQ Issue Resolution Rate</div>
+      <div class="fc-name">The Escalation Factory</div>
+      <div class="fc-rule"></div>
+      <div class="fc-what"><strong>What keeps it running:</strong> Data quality issues that cannot be resolved at source — routed upward, accumulated in queues, owned by nobody. The immune system of the data estate is suppressed.</div>
+      <div class="fc-what"><strong>What closes it:</strong> Source ownership models, automated quality controls at ingestion, business performance metrics that make data quality a front-office accountability rather than a back-office ticket.</div>
+      <div class="fc-what"><strong>Nature:</strong> Operating Model + Culture. Addressed in parallel throughout — a suppressed Escalation Factory will rebuild every other factory you close.</div>
+      <div class="fc-role">BluemeBank role · Accountability design + SLA framework</div>
+    </div>
+
+    <div class="factory-cell">
+      <div class="fc-metric">DARR · Data Asset Reuse Ratio</div>
+      <div class="fc-name">The Duplication Factory</div>
+      <div class="fc-rule"></div>
+      <div class="fc-what"><strong>What keeps it running:</strong> A funding model that rewards siloed, use-case-by-use-case data builds. Every team rebuilds what already exists — and the architecture becomes impossible to automate.</div>
+      <div class="fc-what"><strong>What closes it:</strong> Data Design Authority with veto power, capability funding model ring-fenced from use-case pressure, standardised reuse targets enforced across business units.</div>
+      <div class="fc-what"><strong>Nature:</strong> Funding Model + Governance. Relatively fast to design. Requires an absolute executive mandate to sustain.</div>
+      <div class="fc-role">BluemeBank role · Governance design + funding model</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- CAPABILITIES & SERVICES -->
+<div class="capabilities">
+  <div class="section-label">Capabilities &amp; Services</div>
+  <p class="cap-intro">Each factory has a defined service model. The diagnostic determines which factory is addressed first — the services below are delivered in sequence, not simultaneously.</p>
+
+  <div class="cap-grid">
+
+    <div class="cap-col">
+      <div class="cap-col-header" style="border-top:3px solid #15453B;">
+        <div class="cap-col-metric" style="color:#15453B;">DCI · Data Convergence Index</div>
+        <div class="cap-col-factory">Reconciliation<br>Factory</div>
+      </div>
+      <div class="cap-services">
+        <div class="cap-service"><span class="cap-n" style="color:#15453B;">01</span>Master data management design and implementation roadmap</div>
+        <div class="cap-service"><span class="cap-n" style="color:#15453B;">02</span>Deterministic and probabilistic entity resolution architecture</div>
+        <div class="cap-service"><span class="cap-n" style="color:#15453B;">03</span>Golden record governance model and ownership design</div>
+        <div class="cap-service"><span class="cap-n" style="color:#15453B;">04</span>Reference data management — code sets, classifications, hierarchies</div>
+        <div class="cap-service"><span class="cap-n" style="color:#15453B;">05</span>Metadata management — lineage, cataloguing, identity traceability</div>
+        <div class="cap-service"><span class="cap-n" style="color:#15453B;">06</span>System migration sequencing and legacy dependency mapping</div>
+        <div class="cap-service"><span class="cap-n" style="color:#15453B;">07</span>Cross-domain identity standards and enforcement framework</div>
+      </div>
+      <div class="cap-nature">Technology + Governance · Long horizon</div>
+    </div>
+
+    <div class="cap-col">
+      <div class="cap-col-header" style="border-top:3px solid #2C5F8A;">
+        <div class="cap-col-metric" style="color:#2C5F8A;">RRV · Regulatory Response Velocity</div>
+        <div class="cap-col-factory">Interpretation<br>Factory</div>
+      </div>
+      <div class="cap-services">
+        <div class="cap-service"><span class="cap-n" style="color:#2C5F8A;">01</span>Real-time data fabric architecture and integration design</div>
+        <div class="cap-service"><span class="cap-n" style="color:#2C5F8A;">02</span>End-to-end data lineage tooling and traceability framework</div>
+        <div class="cap-service"><span class="cap-n" style="color:#2C5F8A;">03</span>Data integration design — source to regulatory report flow</div>
+        <div class="cap-service"><span class="cap-n" style="color:#2C5F8A;">04</span>Regulatory metadata layer design and change versioning</div>
+        <div class="cap-service"><span class="cap-n" style="color:#2C5F8A;">05</span>Adaptive regulatory change operating model</div>
+        <div class="cap-service"><span class="cap-n" style="color:#2C5F8A;">06</span>Change Data Capture deployment sequencing</div>
+      </div>
+      <div class="cap-nature">Technology + Operating Model · Fast to intermediate</div>
+    </div>
+
+    <div class="cap-col">
+      <div class="cap-col-header" style="border-top:3px solid #8A5A12;">
+        <div class="cap-col-metric" style="color:#8A5A12;">DQIRR · DQ Issue Resolution Rate</div>
+        <div class="cap-col-factory">Escalation<br>Factory</div>
+      </div>
+      <div class="cap-services">
+        <div class="cap-service"><span class="cap-n" style="color:#8A5A12;">01</span>Source ownership model design and RACI framework</div>
+        <div class="cap-service"><span class="cap-n" style="color:#8A5A12;">02</span>Data quality SLA framework and resolution workflow design</div>
+        <div class="cap-service"><span class="cap-n" style="color:#8A5A12;">03</span>Automated quality controls at ingestion layer</div>
+        <div class="cap-service"><span class="cap-n" style="color:#8A5A12;">04</span>Business performance metrics — data quality as front-office KPI</div>
+        <div class="cap-service"><span class="cap-n" style="color:#8A5A12;">05</span>Issue resolution accountability structure and escalation redesign</div>
+        <div class="cap-service"><span class="cap-n" style="color:#8A5A12;">06</span>Data quality operating model — continuous not periodic</div>
+      </div>
+      <div class="cap-nature">Operating Model + Culture · In parallel throughout</div>
+    </div>
+
+    <div class="cap-col">
+      <div class="cap-col-header" style="border-top:3px solid #7E2B22;">
+        <div class="cap-col-metric" style="color:#7E2B22;">DARR · Data Asset Reuse Ratio</div>
+        <div class="cap-col-factory">Duplication<br>Factory</div>
+      </div>
+      <div class="cap-services">
+        <div class="cap-service"><span class="cap-n" style="color:#7E2B22;">01</span>Data Design Authority setup — mandate, veto structure, governance cadence</div>
+        <div class="cap-service"><span class="cap-n" style="color:#7E2B22;">02</span>Data architecture review — new build proposals against existing assets</div>
+        <div class="cap-service"><span class="cap-n" style="color:#7E2B22;">03</span>Capability funding model redesign — ring-fenced from use-case pressure</div>
+        <div class="cap-service"><span class="cap-n" style="color:#7E2B22;">04</span>Standardised reuse targets and cross-BU enforcement framework</div>
+        <div class="cap-service"><span class="cap-n" style="color:#7E2B22;">05</span>Data catalogue design and mesh access standards</div>
+        <div class="cap-service"><span class="cap-n" style="color:#7E2B22;">06</span>Data product ownership model and reuse incentive structure</div>
+      </div>
+      <div class="cap-nature">Funding Model + Governance · Fast to design</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- SEQUENCE -->
+<div class="sequence">
+  <div class="section-label">The Sequencing Logic</div>
+  <p class="seq-intro">The Autonomy Dividend is the headline metric. It measures precisely how much of an institution's autonomous potential its factories are consuming — expressed as a single computable number between 0 and 100. A CDAO who calculates their AD quarterly and watches the trend will know, precisely, whether the factory closure work is converting to autonomous capacity. The number forces the right conversation — and the trend holds the programme accountable.</p>
+
+  <p class="seq-intro">The four factories are not addressed simultaneously — resources split four ways means none closes properly. And because the AD formula uses a minimum, partial improvement in three factories while the ceiling factory stays low produces almost no movement in the number. The sequence is determined by the diagnostic scores and governed by four principles.</p>
+
+  <div class="seq-flow">
+    <div class="seq-step primary">
+      <div class="seq-step-order">First</div>
+      <div class="seq-step-factory">Ceiling Factory</div>
+      <div class="seq-step-metric">DCI or RRV — whichever is lower</div>
+      <div class="seq-step-why">Sets the Technical Autonomy Ceiling. Nothing else moves the AD until this moves.</div>
+    </div>
+    <div class="seq-step">
+      <div class="seq-step-order">If both low</div>
+      <div class="seq-step-factory">Reconciliation before Interpretation</div>
+      <div class="seq-step-metric">DCI before RRV</div>
+      <div class="seq-step-why">Identity resolution is the foundation regulatory data flow depends on.</div>
+    </div>
+    <div class="seq-step">
+      <div class="seq-step-order">In parallel</div>
+      <div class="seq-step-factory">Escalation Factory</div>
+      <div class="seq-step-metric">DQIRR — throughout</div>
+      <div class="seq-step-why">The immune system. Must be moving throughout or every factory you close gets rebuilt.</div>
+    </div>
+    <div class="seq-step">
+      <div class="seq-step-order">Third</div>
+      <div class="seq-step-factory">Duplication Factory</div>
+      <div class="seq-step-metric">DARR — after DQIRR</div>
+      <div class="seq-step-why">Reuse culture built on untrustworthy data compounds the problem. Quality ownership comes first.</div>
+    </div>
+  </div>
+  <div class="seq-flow-note">Sequence is determined by diagnostic scores — not by preference or budget availability</div>
+
+  <div class="seq-principle">
+    <div class="seq-num">P1</div>
+    <div class="seq-body">
+      <div class="seq-title">The ceiling factory always goes first.</div>
+      <div class="seq-desc">The factory setting the Technical Autonomy Ceiling — whichever of DCI or RRV scores lower — is the primary priority. The AD formula uses a minimum, not an average. Every investment in other dimensions has diminishing returns until the ceiling moves.</div>
+    </div>
+  </div>
+
+  <div class="seq-principle">
+    <div class="seq-num">P2</div>
+    <div class="seq-body">
+      <div class="seq-title">DCI before RRV when both are weak.</div>
+      <div class="seq-desc">Identity resolution is the foundation that regulatory data flow depends on. You cannot build a reliable data fabric on unresolved entities. <em>Fix the identity layer first. The regulatory velocity follows.</em></div>
+    </div>
+  </div>
+
+  <div class="seq-principle">
+    <div class="seq-num">P3</div>
+    <div class="seq-body">
+      <div class="seq-title">The Escalation Factory runs in parallel throughout.</div>
+      <div class="seq-desc">DQIRR is the immune system of the programme. A suppressed Escalation Factory will rebuild any factory you close — a resolved identity problem degrades if data quality issues are not caught and fixed at source. DQIRR does not have to be fully closed first. But it must be moving throughout.</div>
+    </div>
+  </div>
+
+  <div class="seq-principle">
+    <div class="seq-num">P4</div>
+    <div class="seq-body">
+      <div class="seq-title">DQIRR before DARR.</div>
+      <div class="seq-desc">Build the reuse culture on data you can trust. A Duplication Factory closed on top of untrustworthy data assets does not reduce duplication — it scales it. Accountability and quality ownership must be structurally in place before reuse becomes reliable.</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-text">
+      <div class="cta-title">Start with the <em>diagnostic.</em></div>
+      <div class="cta-desc">Twenty-four questions. Fifteen minutes. Your Autonomy Dividend — and the factory behind it.</div>
+    </div>
+    <a class="cta-link" href="https://sasidharbhavaraju.github.io/BluemeBank/B_Diagnostics">
+      Take the Diagnostic →
+    </a>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-text">
+    <span style="color:var(--ink);font-weight:500;">BluemeBank</span> &nbsp;·&nbsp; Banking Operations Intelligence &nbsp;·&nbsp; 2026
+  </div>
+  <div class="footer-text">
+    <a href="mailto:sasidhar.bhavaraju@bluemebank.com">sasidhar.bhavaraju@bluemebank.com</a> &nbsp;·&nbsp; <a href="https://bluemebank.com">bluemebank.com</a>
+  </div>
+</div>
+
+</body>
+</html>
