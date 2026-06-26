@@ -7,8 +7,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Raleway:wght@600&family=Source+Sans+3:wght@300;400;500;600&family=Fira+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --paper:#F4F2EC;
-  --panel:#E9E5DA;
+  --paper:#FFFFFF;
+  --panel:#F0EEE8;
   --ink:#1E3A52;
   --ink-mid:#1F4D72;
   --ink-steel:#2C5F8A;
@@ -16,11 +16,11 @@
   --forest:#15453B;
   --amber:#8A5A12;
   --oxblood:#7E2B22;
-  --divider:rgba(30,58,82,0.12);
+  --divider:rgba(30,58,82,0.15);
   /* legacy aliases */
-  --navy:#F4F2EC;
-  --navy-mid:#E9E5DA;
-  --navy-card:#E9E5DA;
+  --navy:#FFFFFF;
+  --navy-mid:#F0EEE8;
+  --navy-card:#F0EEE8;
   --gold:#2C5F8A;
   --gold-light:#1F4D72;
   --gold-dim:rgba(44,95,138,0.10);
@@ -30,7 +30,7 @@
   --teal:#2C5F8A;
   --teal-bright:#2C5F8A;
   --red:#7E2B22;
-  --border:rgba(30,58,82,0.12);
+  --border:rgba(30,58,82,0.15);
 }
 
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
@@ -148,7 +148,7 @@ body {
   cursor:pointer; transition:all 0.2s;
   align-self:flex-start;
 }
-.btn-parse:hover { background:rgba(30,58,82,0.12); border-color:var(--ink); }
+.btn-parse:hover { background:rgba(30,58,82,0.15); border-color:var(--ink); }
 
 /* Parsed scores display */
 .scores-display {
@@ -264,7 +264,7 @@ body {
   font-family:'Fira Mono',monospace; font-size:9px;
   color:var(--ink-steel); letter-spacing:2px; text-transform:uppercase;
   margin-bottom:10px; padding-bottom:6px;
-  border-bottom:1px solid rgba(30,58,82,0.12);
+  border-bottom:1px solid rgba(30,58,82,0.15);
 }
 .synth-section-content {
   font-size:13px; color:var(--ink); line-height:1.85;
@@ -286,7 +286,7 @@ body {
 .synth-disclosure {
   margin-top: 24px;
   padding-top: 16px;
-  border-top: 1px solid rgba(30,58,82,0.12);
+  border-top: 1px solid rgba(30,58,82,0.15);
   font-size: 11px;
   color: var(--slate);
   font-style: italic;
@@ -359,7 +359,7 @@ body {
   .header, .layout { display: none !important; }
 
   body {
-    background: #F4F2EC !important;
+    background: #FFFFFF !important;
     margin: 0 !important; padding: 0 !important;
   }
 
@@ -368,7 +368,7 @@ body {
     display: block !important;
     position: static !important;
     width: 100% !important;
-    background: #F4F2EC !important;
+    background: #FFFFFF !important;
   }
 
   /* Page breaks */
@@ -424,7 +424,7 @@ body {
 #pdfReport {
   display: none;
   font-family: 'Source Sans 3', sans-serif;
-  background: #F4F2EC;
+  background: #FFFFFF;
   color: #1E3A52;
 }
 
@@ -434,7 +434,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   padding: 50px 60px;
-  background: #F4F2EC;
+  background: #FFFFFF;
   position: relative;
   overflow: hidden;
   page-break-after: always;
@@ -544,7 +544,7 @@ body {
 .pdf-page {
   min-height: 100vh;
   padding: 60px 70px;
-  background: #F4F2EC;
+  background: #FFFFFF;
   page-break-after: always;
   position: relative;
 }
@@ -666,13 +666,13 @@ body {
 }
 .pdf-stage-seg {
   padding: 10px 12px;
-  border: 1px solid rgba(30,58,82,0.12);
-  background: #F4F2EC;
+  border: 1px solid rgba(30,58,82,0.15);
+  background: #FFFFFF;
   border-radius:0px; text-align: center;
 }
 .pdf-stage-seg.active {
   border-color: #1E3A52;
-  background: #E9E5DA;
+  background: #F0EEE8;
 }
 .pdf-stage-seg-label {
   font-size: 11px; font-weight: 700;
@@ -687,7 +687,7 @@ body {
 /* Synthesis page */
 .pdf-synthesis-page {
   padding: 60px 70px;
-  background: #F4F2EC;
+  background: #FFFFFF;
   position: relative;
 }
 
@@ -727,8 +727,8 @@ body {
   padding: 14px 70px;
   margin-top: 30px;
   display: flex; justify-content: space-between; align-items: center;
-  border-top: 1px solid rgba(30,58,82,0.12);
-  background: #F4F2EC;
+  border-top: 1px solid rgba(30,58,82,0.15);
+  background: #FFFFFF;
   font-family: 'Fira Mono', monospace;
   font-size: 8px; color: #6A6A60;
   letter-spacing: 1px;
@@ -743,14 +743,14 @@ body {
 .pdf-mroad-item {
   flex: 1; display: flex; flex-direction: column; align-items: center;
   gap: 5px; padding: 10px 6px;
-  border: 1px solid rgba(30,58,82,0.12);
+  border: 1px solid rgba(30,58,82,0.15);
   border-radius:0px;
-  background: #F4F2EC;
+  background: #FFFFFF;
   text-align: center;
 }
 .pdf-mroad-active {
   border-color: #1E3A52 !important;
-  background: #E9E5DA !important;
+  background: #F0EEE8 !important;
 }
 .pdf-mroad-num {
   width: 22px; height: 22px; border-radius: 50%;
@@ -760,7 +760,7 @@ body {
 }
 .pdf-mroad-active .pdf-mroad-num {
   border-color: #1E3A52 !important; color: #1E3A52 !important;
-  background: #E9E5DA !important;
+  background: #F0EEE8 !important;
 }
 .pdf-mroad-label {
   font-size: 9px; color: #6A6A60; line-height: 1.4;
